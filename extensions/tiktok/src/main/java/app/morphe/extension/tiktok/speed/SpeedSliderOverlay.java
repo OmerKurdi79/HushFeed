@@ -209,12 +209,18 @@ public final class SpeedSliderOverlay {
                     // Pulling down while already locked resets back to normal 1.0x
                     currentlyLocked = false;
                     PlaybackSpeedPatch.setLiveSpeed(1.0f);
+                    if (Settings.REMEMBER_SPEED.get()) {
+                        PlaybackSpeedPatch.rememberPlaybackSpeed(1.0f, "long_press");
+                    }
                     if (view != null) {
                         view.setLockedState(false, true);
                     }
                 } else {
                     // Lock current speed
                     currentlyLocked = true;
+                    if (Settings.REMEMBER_SPEED.get() && speedSteps != null && currentIndex >= 0 && currentIndex < speedSteps.size()) {
+                        PlaybackSpeedPatch.rememberPlaybackSpeed(speedSteps.get(currentIndex), "long_press");
+                    }
                     if (view != null) {
                         view.setLockedState(true, false);
                     }
@@ -243,6 +249,10 @@ public final class SpeedSliderOverlay {
                     float chosen = speedSteps.get(currentIndex);
                     PlaybackSpeedPatch.setLiveSpeed(chosen);
                     Settings.HOLD_SPEED.save(PlaybackSpeedPatch.speedLabel(chosen));
+
+                    if (Settings.REMEMBER_SPEED.get()) {
+                        PlaybackSpeedPatch.rememberPlaybackSpeed(chosen, "long_press");
+                    }
 
                     if (view != null) {
                         view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 50);
