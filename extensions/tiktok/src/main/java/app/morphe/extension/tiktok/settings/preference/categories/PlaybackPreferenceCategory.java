@@ -335,6 +335,14 @@ public final class PlaybackPreferenceCategory extends ConditionalPreferenceCateg
             addPreference(new ChoicePreference(context, "Speed while you hold the video", Settings.HOLD_SPEED,
                     new String[]{"1.25x", "1.5x", "1.75x", "2x", "2.5x", "3x"},
                     new String[]{"1.25", "1.5", "1.75", "2", "2.5", "3"}));
+            addPreference(new TogglePreference(context, "Interactive speed slider on hold",
+                    "Slide horizontally on long-press to scrub speeds, and pull down to lock or reset (MX Player style)",
+                    Settings.HOLD_SPEED_SLIDER_ENABLED));
+            InputTextPreference sliderSteps = new InputTextPreference(context, "Hold speed slider steps",
+                    "Custom comma-separated speeds available when scrubbing on hold. Example: 0.5, 1.0, 1.5, 2.0, 2.5, 3.0",
+                    Settings.HOLD_SPEED_SLIDER_STEPS);
+            sliderSteps.withNameKeyboard();
+            addPreference(sliderSteps);
         }
         if (SettingsStatus.playbackQualityEnabled || SettingsStatus.sdrPlaybackEnabled
                 || SettingsStatus.h264PlaybackEnabled) {

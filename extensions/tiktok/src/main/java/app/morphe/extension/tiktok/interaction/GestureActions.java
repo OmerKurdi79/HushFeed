@@ -32,6 +32,7 @@ import app.morphe.extension.tiktok.feedfilter.SoundIdentity;
 import app.morphe.extension.tiktok.settings.Settings;
 import app.morphe.extension.tiktok.settings.L10n;
 import app.morphe.extension.tiktok.speed.PlaybackSpeedPatch;
+import app.morphe.extension.tiktok.speed.SpeedSliderOverlay;
 import app.morphe.extension.tiktok.wellbeing.SleepTimer;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -869,6 +870,7 @@ public final class GestureActions {
     /** Each event, at the start of the pager's dispatch: before anything in it asks whether it may page. */
     public static void onMainPagerDispatch(Object pager, MotionEvent event) {
         if (event == null) return;
+        SpeedSliderOverlay.onDispatchTouch(event);
         swipeLastX = event.getX();
         if (event.getActionMasked() != MotionEvent.ACTION_DOWN) return;
         swipeDownX = event.getX();

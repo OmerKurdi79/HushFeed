@@ -35,6 +35,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION = "Lapp/morphe/extension/tiktok/speed/PlaybackSpeedPatch;"
+private const val SLIDER_EXTENSION = "Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;"
 private const val AWEME = "Lcom/ss/android/ugc/aweme/feed/model/Aweme;"
 private const val VIEW = "Landroid/view/View;"
 private const val BASE_SHARE_PACKAGE = "Lcom/ss/android/ugc/aweme/share/base/model/BaseSharePackage;"
@@ -377,6 +378,15 @@ val playbackSpeedPatch = bytecodePatch(
         release.routeThroughHoldSpeed(release.holdSpeedLiterals("the hold gesture's release method"))
         rewordHoldSpeedToasts(release)
         rewordHoldSpeedBanners(HoldBannerReceiverFingerprint.method)
+
+        press.addInstruction(
+            0,
+            "invoke-static {p1, p2}, $SLIDER_EXTENSION->onHoldPress(FF)V",
+        )
+        release.addInstruction(
+            0,
+            "invoke-static {p1}, $SLIDER_EXTENSION->onHoldRelease(Z)V",
+        )
 
         SettingsStatusLoadFingerprint.method.addInstruction(0,
             "invoke-static {}, Lapp/morphe/extension/tiktok/settings/SettingsStatus;->enablePlaybackSpeed()V")

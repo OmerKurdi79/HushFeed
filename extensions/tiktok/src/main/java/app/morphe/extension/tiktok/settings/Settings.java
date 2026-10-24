@@ -713,6 +713,10 @@ public class Settings extends BaseSettings {
     public static final StringSetting CUSTOM_SPEEDS = new StringSetting("custom_speeds", "", true);
     /** The speed the hold gesture plays at and its pull-down lock keeps; TikTok's own is 2x (upstream #52). */
     public static final StringSetting HOLD_SPEED = new StringSetting("hold_speed", "2");
+    /** Interactive MX Player style speed scrubber HUD on hold (slide side to side, pull down to lock/reset). */
+    public static final BooleanSetting HOLD_SPEED_SLIDER_ENABLED = new BooleanSetting("hold_speed_slider_enabled", TRUE, true);
+    public static final StringSetting HOLD_SPEED_SLIDER_STEPS = new StringSetting(
+            "hold_speed_slider_steps", "0.5, 1.0, 1.5, 2.0, 2.5, 3.0", false, Setting.parent(HOLD_SPEED_SLIDER_ENABLED));
     public static final BooleanSetting AUTO_ADVANCE = new BooleanSetting("auto_advance", FALSE, true);
     public static final IntegerSetting AUTO_ADVANCE_LIMIT = new IntegerSetting(
             "auto_advance_limit", 0, false, Setting.parent(AUTO_ADVANCE)).withRange(0, 1000);

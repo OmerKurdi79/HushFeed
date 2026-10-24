@@ -495,6 +495,10 @@ public final class PlaybackSpeedPatch {
      * the text TikTok gave it, so a changed row or a pause shows up at the next hold.
      */
     public static void holdSpeedBanner(ViewGroup banner) {
+        if (Settings.HOLD_SPEED_SLIDER_ENABLED.get()) {
+            banner.setVisibility(android.view.View.GONE);
+            return;
+        }
         for (int i = 0; i < banner.getChildCount(); i++) {
             if (!(banner.getChildAt(i) instanceof TextView)) continue;
             TextView label = (TextView) banner.getChildAt(i);
