@@ -2,6 +2,7 @@ package app.morphe.extension.tiktok.speed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import app.morphe.extension.shared.Logger;
@@ -18,6 +20,7 @@ import app.morphe.extension.shared.Utils;
 import app.morphe.extension.tiktok.settings.Settings;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +44,8 @@ public final class SpeedSliderOverlay {
 
     private static List<Float> speedSteps = new ArrayList<>();
     private static WeakReference<SpeedSliderView> viewReference = new WeakReference<>(null);
+    private static WeakReference<Window> interceptedWindow = new WeakReference<>(null);
+    private static Window.Callback originalWindowCallback = null;
 
     private SpeedSliderOverlay() {}
 
@@ -93,7 +98,7 @@ public final class SpeedSliderOverlay {
 
         Utils.runOnMainThread(() -> {
             try {
-                Activity activity = Utils.getActivity();
+                Activity activity = Utils.getVisibleActivity();
                 if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
 
                 speedSteps = parseSpeedSteps(Settings.HOLD_SPEED_SLIDER_STEPS.get());
@@ -145,20 +150,20 @@ public final class SpeedSliderOverlay {
             float dxTotal = curX - startX;
             float dyTotal = curY - startY;
 
-            Activity activity = Utils.getActivity();
+            Activity activity = Utils.getVisibleActivity();
             if (activity == null) return;
             float density = activity.getResources().getDisplayMetrics().density;
 
             // 1. Check for vertical dominant intent (Axis Locking)
             // If dragging downward significantly more than sideways, lock out horizontal changes
-            if (!axisLockedVertical && dyTotal > 20f * density && dyTotal > Math.abs(dxTotal)) {
+            if (!axisLockedVertical && dyTotal > 18f * density && dyTotal > Math.abs(dxTotal)) {
                 axisLockedVertical = true;
             }
 
             // 2. Relative horizontal scrub (only when not locked to vertical axis)
             if (!axisLockedVertical) {
                 // Check if user has started sliding horizontally
-                if (!isSliding && Math.abs(dxTotal) > 18f * density) {
+                if (!isSliding && Math.abs(dxTotal) > 16f * density) {
                     isSliding = true;
                     lastScrubX = curX;
                     SpeedSliderView view = viewReference.get();
@@ -169,7 +174,7 @@ public final class SpeedSliderOverlay {
 
                 if (isSliding) {
                     float scrubDelta = curX - lastScrubX;
-                    float stepThreshold = 34f * density;
+                    float stepThreshold = 32f * density;
 
                     if (Math.abs(scrubDelta) >= stepThreshold) {
                         int stepCount = (int) (scrubDelta / stepThreshold);
@@ -195,7 +200,7 @@ public final class SpeedSliderOverlay {
             }
 
             // 3. Vertical pull-down to lock or reset to normal
-            float lockThreshold = 60f * density;
+            float lockThreshold = 52f * density;
             if (dyTotal > lockThreshold && !draggedDown) {
                 draggedDown = true;
                 SpeedSliderView view = viewReference.get();
@@ -229,9 +234,22 @@ public final class SpeedSliderOverlay {
         holding = false;
 
         Utils.runOnMainThread(() -> {
+            detachTouchInterceptor();
             SpeedSliderView view = viewReference.get();
             if (currentlyLocked) {
-                // Keep playing at chosen speed; fade HUD out smoothly
+                // Keep playing at chosen speed; actively enforce to avoid any native reset
+                if (speedSteps != null && currentIndex >= 0 && currentIndex < speedSteps.size()) {
+                    float chosen = speedSteps.get(currentIndex);
+                    PlaybackSpeedPatch.setLiveSpeed(chosen);
+                    Settings.HOLD_SPEED.save(PlaybackSpeedPatch.speedLabel(chosen));
+
+                    if (view != null) {
+                        view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 50);
+                        view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 150);
+                        view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 300);
+                    }
+                }
+
                 if (view != null) {
                     view.animate()
                         .alpha(0f)
@@ -244,6 +262,7 @@ public final class SpeedSliderOverlay {
                 // Not locked: immediately return to normal 1.0x playback
                 PlaybackSpeedPatch.setLiveSpeed(1.0f);
                 if (view != null) {
+                    view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(1.0f), 50);
                     view.animate()
                         .alpha(0f)
                         .setDuration(200)
@@ -254,11 +273,57 @@ public final class SpeedSliderOverlay {
         });
     }
 
+    private static void attachTouchInterceptor(Activity activity) {
+        try {
+            if (activity == null) return;
+            Window window = activity.getWindow();
+            if (window == null) return;
+
+            Window.Callback original = window.getCallback();
+            if (original == null) return;
+
+            originalWindowCallback = original;
+            interceptedWindow = new WeakReference<>(window);
+
+            Window.Callback proxy = (Window.Callback) Proxy.newProxyInstance(
+                Window.Callback.class.getClassLoader(),
+                new Class<?>[]{Window.Callback.class},
+                (proxyObj, method, args) -> {
+                    if ("dispatchTouchEvent".equals(method.getName()) && args != null && args.length > 0) {
+                        if (args[0] instanceof MotionEvent) {
+                            onDispatchTouch((MotionEvent) args[0]);
+                        }
+                    }
+                    return method.invoke(original, args);
+                }
+            );
+
+            window.setCallback(proxy);
+        } catch (Throwable t) {
+            Logger.printException(() -> "Could not attach window touch interceptor", t);
+        }
+    }
+
+    private static void detachTouchInterceptor() {
+        try {
+            Window window = interceptedWindow.get();
+            if (window != null && originalWindowCallback != null) {
+                window.setCallback(originalWindowCallback);
+            }
+        } catch (Throwable t) {
+            Logger.printException(() -> "Could not detach window touch interceptor", t);
+        } finally {
+            originalWindowCallback = null;
+            interceptedWindow.clear();
+        }
+    }
+
     private static void showOverlay(Activity activity, List<Float> speeds, int activeIdx, boolean locked) {
         ViewGroup root = activity.findViewById(android.R.id.content);
         if (root == null) return;
 
         removeOverlay();
+        attachTouchInterceptor(activity);
 
         SpeedSliderView view = new SpeedSliderView(activity, speeds, activeIdx, locked);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
@@ -266,7 +331,10 @@ public final class SpeedSliderOverlay {
             ViewGroup.LayoutParams.WRAP_CONTENT
         );
         lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        lp.topMargin = (int) (activity.getResources().getDisplayMetrics().heightPixels * 0.16f);
+
+        boolean isLandscape = activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        float marginRatio = isLandscape ? 0.08f : 0.14f;
+        lp.topMargin = (int) (activity.getResources().getDisplayMetrics().heightPixels * marginRatio);
 
         view.setLayoutParams(lp);
         view.setAlpha(0f);
@@ -280,6 +348,7 @@ public final class SpeedSliderOverlay {
     }
 
     private static void removeOverlay() {
+        detachTouchInterceptor();
         SpeedSliderView view = viewReference.get();
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();

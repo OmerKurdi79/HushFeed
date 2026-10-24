@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.tiktok.shared.requireLocals
 import app.morphe.util.getReference
 import app.morphe.util.literalReads
 import app.morphe.util.readsAfter
@@ -149,6 +150,18 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
         it.name == lockCall.name && it.parameterTypes == listOf("F", "Z") && it.returnType == "V"
     }.singleOrPatchException("Playback speed: hold lock banner show")
     lockShow.routeThroughHoldSpeed(lockShow.holdSpeedLiterals("the hold lock banner"))
+
+    lockShow.requireLocals("Playback speed", 1)
+    lockShow.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+            move-result v0
+            if-nez v0, :keep_lock_show
+            return-void
+        """,
+        ExternalLabel("keep_lock_show", lockShow.getInstruction(0)),
+    )
 
     var reworded = 0
     lockBanner.methods.forEach { method ->
