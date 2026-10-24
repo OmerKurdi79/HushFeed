@@ -258,6 +258,8 @@ public final class SpeedSliderOverlay {
                         view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 50);
                         view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 150);
                         view.postDelayed(() -> PlaybackSpeedPatch.setLiveSpeed(chosen), 300);
+                        view.postDelayed(() -> dismissNativeBanners(Utils.getVisibleActivity()), 100);
+                        view.postDelayed(() -> dismissNativeBanners(Utils.getVisibleActivity()), 300);
                     }
                 }
 
@@ -391,9 +393,13 @@ public final class SpeedSliderOverlay {
                 CharSequence cs = tv.getText();
                 if (cs != null) {
                     String s = cs.toString().toLowerCase();
-                    if (s.contains("اسحب") || s.contains("pull down") || s.contains("swipe down")) {
+                    if (s.contains("اسحب") || s.contains("pull down") || s.contains("swipe down")
+                            || s.contains("السرعة") || s.contains("speed:") || s.contains("قفل")) {
                         View container = (child.getParent() instanceof View) ? (View) child.getParent() : child;
-                        container.setVisibility(View.GONE);
+                        int h = container.getHeight();
+                        if (h <= 0 || h < 350) {
+                            container.setVisibility(View.GONE);
+                        }
                     }
                 }
             } else if (child instanceof ViewGroup) {

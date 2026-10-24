@@ -119,6 +119,34 @@ internal fun BytecodePatchContext.rewordHoldSpeedToasts(release: MutableMethod) 
             ExternalLabel("hold_speed_toast_kept_$n", release.getInstruction(index + 1)),
         )
     }
+
+    val toastClass = calls.firstOrNull()?.second?.getReference<MethodReference>()?.definingClass?.let(::classDefByOrNull)
+    if (toastClass != null) {
+        val showCalls = release.implementation!!.instructions.mapNotNull { instruction ->
+            if (instruction.opcode != Opcode.INVOKE_VIRTUAL) return@mapNotNull null
+            val ref = instruction.getReference<MethodReference>() ?: return@mapNotNull null
+            if (ref.definingClass == toastClass.type && ref.parameterTypes.isEmpty() && ref.returnType == "V") {
+                ref.name
+            } else null
+        }.distinct()
+        val mutableToast = mutableClassDefBy(toastClass.type)
+        showCalls.forEach { showName ->
+            val showMethod = mutableToast.methods.firstOrNull { it.name == showName && it.parameterTypes.isEmpty() && it.returnType == "V" }
+            if (showMethod != null) {
+                showMethod.requireLocals("Playback speed", 1)
+                showMethod.addInstructionsWithLabels(
+                    0,
+                    """
+                        invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+                        move-result v0
+                        if-eqz v0, :keep_toast_show_$showName
+                        return-void
+                    """,
+                    ExternalLabel("keep_toast_show_$showName", showMethod.getInstruction(0)),
+                )
+            }
+        }
+    }
 }
 
 /** The builder's one text setter taking a CharSequence, as a smali method reference. */
@@ -142,7 +170,7 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod
         """
             invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
             move-result v0
-            if-nez v0, :keep_receiver
+            if-eqz v0, :keep_receiver
             return-void
         """,
         ExternalLabel("keep_receiver", receiver.getInstruction(0)),
@@ -169,7 +197,7 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod
         """
             invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
             move-result v0
-            if-nez v0, :keep_lock_show
+            if-eqz v0, :keep_lock_show
             return-void
         """,
         ExternalLabel("keep_lock_show", lockShow.getInstruction(0)),
@@ -217,7 +245,7 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod
             """
                 invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
                 move-result v0
-                if-nez v0, :keep_plain_banner_${reference.name}
+                if-eqz v0, :keep_plain_banner_${reference.name}
                 return-void
             """,
             ExternalLabel("keep_plain_banner_${reference.name}", bannerMethod.getInstruction(0)),
