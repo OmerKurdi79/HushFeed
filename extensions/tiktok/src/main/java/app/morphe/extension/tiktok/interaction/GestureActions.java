@@ -351,6 +351,10 @@ public final class GestureActions {
             likeOnScreenVideo();
             return true;
         }
+        if ("toggle_like".equals(action)) {
+            toggleLikeOnScreenVideo();
+            return true;
+        }
         if ("copy_link".equals(action)) {
             copyVideoLink(onScreenAweme());
             return true;
@@ -535,6 +539,45 @@ public final class GestureActions {
         if (!likeVisibleVideo(playing)) {
             Utils.showToastShort(L10n.t("Likes aren't available for this video"));
         }
+    }
+
+    /**
+     * Toggles heart on the video on screen (likes if not liked yet, unlikes if already liked).
+     */
+    static void toggleLikeOnScreenVideo() {
+        String playing = Reflect.string(CurrentVideoAuthor.getAweme(), "getAid", "aid");
+        if (!toggleLikeVisibleVideo(playing)) {
+            Utils.showToastShort(L10n.t("Likes aren't available for this video"));
+        }
+    }
+
+    static boolean toggleLikeVisibleVideo(String playingId) {
+        OnScreen screen = onScreen(playingId);
+        View button = screen.view;
+        if (button == null && !screen.feedInFront) {
+            Map.Entry<Object, CommentControl> bound = boundButton(playingId, true);
+            if (bound != null) button = bound.getValue().view.get();
+        }
+        if (button == null) return false;
+        View heartView = heartViewBeside(button);
+        if (heartView != null) {
+            Utils.runOnMainThread(heartView::performClick);
+            return true;
+        }
+        return false;
+    }
+
+    static View heartViewBeside(View button) {
+        for (ViewParent parent = button.getParent(); parent instanceof View; parent = parent.getParent()) {
+            if (holdsCells(parent)) break;
+            for (Map.Entry<Object, WeakReference<View>> entry : HEARTS.entrySet()) {
+                View heart = entry.getValue().get();
+                if (heart != null && heart.isAttachedToWindow() && isInside(heart, (View) parent)) {
+                    return heart;
+                }
+            }
+        }
+        return null;
     }
 
     /**

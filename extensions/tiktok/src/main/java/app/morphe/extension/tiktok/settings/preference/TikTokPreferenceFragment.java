@@ -1041,8 +1041,17 @@ public class TikTokPreferenceFragment extends AbstractPreferenceFragment {
             Setting<?> setting = result.flipsInPlace ? Setting.getSettingFromPath(result.key) : null;
             if (setting instanceof app.morphe.extension.shared.settings.BooleanSetting
                     && setting.isAvailable() && flipped.add(setting.key)) {
+                Runnable onLongClick = () -> {
+                    app.morphe.extension.tiktok.settings.SettingsSearchHistory.add(typed);
+                    searchIndexStale = true;
+                    if (BaseSettings.PAUSED.key.equals(result.key)) {
+                        openSection(null, result.key, null);
+                    } else {
+                        openSection(result.section, result.key, result.member);
+                    }
+                };
                 SearchTogglePreference toggle = new SearchTogglePreference(getActivity(), result.title,
-                        result.displaySummary(), (app.morphe.extension.shared.settings.BooleanSetting) setting, typed);
+                        result.displaySummary(), (app.morphe.extension.shared.settings.BooleanSetting) setting, typed, onLongClick);
                 toggle.setOrder(order++);
                 searchRows.add(toggle);
                 searchScreen.addPreference(toggle);

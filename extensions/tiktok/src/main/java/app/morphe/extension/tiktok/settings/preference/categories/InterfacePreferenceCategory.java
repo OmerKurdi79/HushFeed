@@ -759,11 +759,11 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
             // speed toggle changes the playing video's speed, so it needs the Playback speed patch's
             // player bridge, and Clear display posts TikTok's own event through Remember clear
             // display's bridge (#136).
-            List<String> tapLabels = new ArrayList<>(Arrays.asList("TikTok default", "Do nothing", "Open comments",
+            List<String> tapLabels = new ArrayList<>(Arrays.asList("TikTok default", "Like or unlike (toggle heart)", "Do nothing", "Open comments",
                     "Save the original sound", "Copy the video link", "Copy the sound link",
                     "Find the sound on YouTube Music", "Set a sleep timer that closes TikTok",
                     "Save the frame on screen as a photo", "Save the video's cover"));
-            List<String> tapValues = new ArrayList<>(Arrays.asList("default", "nothing", "comments", "original_sound",
+            List<String> tapValues = new ArrayList<>(Arrays.asList("default", "toggle_like", "nothing", "comments", "original_sound",
                     "copy_link", "copy_sound_link", "youtube_music", "sleep_timer", "save_frame", "save_cover"));
             if (SettingsStatus.liveSpeedEnabled) {
                 tapLabels.add("Speed up this video, double tap again to undo");
@@ -798,11 +798,11 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
         if (SettingsStatus.longPressEnabled) {
             // Double tap's actions and a like, which TikTok's own double tap already does.
             List<String> pressLabels = new ArrayList<>(Arrays.asList("TikTok default (hold to speed up, quick share)",
-                    "Do nothing", "Like the video", "Open comments", "Save the original sound",
+                    "Do nothing", "Like the video", "Like or unlike (toggle heart)", "Open comments", "Save the original sound",
                     "Copy the video link", "Copy the sound link", "Find the sound on YouTube Music",
                     "Set a sleep timer that closes TikTok", "Save the frame on screen as a photo",
                     "Save the video's cover"));
-            List<String> pressValues = new ArrayList<>(Arrays.asList("default", "nothing", "like", "comments",
+            List<String> pressValues = new ArrayList<>(Arrays.asList("default", "nothing", "like", "toggle_like", "comments",
                     "original_sound", "copy_link", "copy_sound_link", "youtube_music", "sleep_timer", "save_frame",
                     "save_cover"));
             if (SettingsStatus.automaticClearDisplayEnabled) {

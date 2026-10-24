@@ -23,14 +23,20 @@ import app.morphe.extension.tiktok.settings.SettingsSearchHistory;
 @SuppressWarnings("deprecation")
 final class SearchTogglePreference extends SwitchPreference {
     private final String query;
+    private final Runnable onLongClickAction;
 
-    SearchTogglePreference(Context context, String title, String summary, BooleanSetting setting, String query) {
+    SearchTogglePreference(Context context, String title, String summary, BooleanSetting setting, String query, Runnable onLongClickAction) {
         super(context);
         this.query = query;
+        this.onLongClickAction = onLongClickAction;
         setTitle(title);
         setSummary(summary);
         setKey(setting.key);
         setChecked(setting.savedValue());
+    }
+
+    SearchTogglePreference(Context context, String title, String summary, BooleanSetting setting, String query) {
+        this(context, title, summary, setting, query, null);
     }
 
     /** Flipping a found switch is the search doing its job, so it's kept like opening a result (#232). */
@@ -44,5 +50,15 @@ final class SearchTogglePreference extends SwitchPreference {
     protected void onBindView(View view) {
         super.onBindView(view);
         Utils.setTitleAndSummaryColor(view);
+        if (onLongClickAction != null) {
+            view.setLongClickable(true);
+            view.setOnLongClickListener(v -> {
+                try {
+                    v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+                } catch (Throwable ignored) {}
+                onLongClickAction.run();
+                return true;
+            });
+        }
     }
 }
