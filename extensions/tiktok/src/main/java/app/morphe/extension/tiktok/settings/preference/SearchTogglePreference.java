@@ -59,6 +59,7 @@ final class SearchTogglePreference extends SwitchPreference {
                 onLongClickAction.run();
                 return true;
             });
+            view.setOnClickListener(v -> onClick());
         }
     }
 }
