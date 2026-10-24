@@ -135,7 +135,19 @@ private fun ClassDef.textSetter(): String? = methods.singleOrNull {
  * gesture's own. The plain banner builds its label once, so it is reworded as it is shown and
  * hidden.
  */
-internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
+internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod) {
+    receiver.requireLocals("Playback speed", 1)
+    receiver.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+            move-result v0
+            if-nez v0, :keep_receiver
+            return-void
+        """,
+        ExternalLabel("keep_receiver", receiver.getInstruction(0)),
+    )
+
     val calls = receiver.implementation!!.instructions.mapNotNull { instruction ->
         instruction.getReference<MethodReference>()?.let { instruction.opcode to it }
     }
@@ -196,11 +208,19 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
         throw PatchException("Playback speed: the plain hold banner is shown and hidden by ${plain.size} calls, not two.")
     }
     plain.forEach { reference ->
-        plainBanner.methods.filter {
+        val bannerMethod = plainBanner.methods.filter {
             it.name == reference.name && it.parameterTypes.isEmpty() && it.returnType == "V"
-        }.singleOrPatchException("Playback speed: plain hold banner ${reference.name}").addInstruction(
+        }.singleOrPatchException("Playback speed: plain hold banner ${reference.name}")
+        bannerMethod.requireLocals("Playback speed", 1)
+        bannerMethod.addInstructionsWithLabels(
             0,
-            "invoke-static/range {p0 .. p0}, $EXTENSION->holdSpeedBanner(Landroid/view/ViewGroup;)V",
+            """
+                invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+                move-result v0
+                if-nez v0, :keep_plain_banner_${reference.name}
+                return-void
+            """,
+            ExternalLabel("keep_plain_banner_${reference.name}", bannerMethod.getInstruction(0)),
         )
     }
 }

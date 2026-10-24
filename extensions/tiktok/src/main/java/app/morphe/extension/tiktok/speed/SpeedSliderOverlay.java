@@ -235,6 +235,7 @@ public final class SpeedSliderOverlay {
 
         Utils.runOnMainThread(() -> {
             detachTouchInterceptor();
+            dismissNativeBanners(Utils.getVisibleActivity());
             SpeedSliderView view = viewReference.get();
             if (currentlyLocked) {
                 // Keep playing at chosen speed; actively enforce to avoid any native reset
@@ -323,6 +324,7 @@ public final class SpeedSliderOverlay {
         if (root == null) return;
 
         removeOverlay();
+        dismissNativeBanners(activity);
         attachTouchInterceptor(activity);
 
         SpeedSliderView view = new SpeedSliderView(activity, speeds, activeIdx, locked);
@@ -356,6 +358,36 @@ public final class SpeedSliderOverlay {
                 parent.removeView(view);
             }
             viewReference.clear();
+        }
+    }
+
+    public static void dismissNativeBanners(Activity activity) {
+        if (activity == null) return;
+        try {
+            View decor = activity.getWindow().getDecorView();
+            if (decor instanceof ViewGroup root) {
+                hideBannersRecursively(root);
+            }
+        } catch (Throwable ignored) {}
+    }
+
+    private static void hideBannersRecursively(ViewGroup parent) {
+        if (parent == null) return;
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof android.widget.TextView) {
+                android.widget.TextView tv = (android.widget.TextView) child;
+                CharSequence cs = tv.getText();
+                if (cs != null) {
+                    String s = cs.toString().toLowerCase();
+                    if (s.contains("اسحب") || s.contains("pull down") || s.contains("swipe down")) {
+                        View container = (child.getParent() instanceof View) ? (View) child.getParent() : child;
+                        container.setVisibility(View.GONE);
+                    }
+                }
+            } else if (child instanceof ViewGroup) {
+                hideBannersRecursively((ViewGroup) child);
+            }
         }
     }
 
