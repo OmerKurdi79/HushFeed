@@ -63,4 +63,4 @@ jobs:
           git push origin :refs/tags/"$TAG_NAME" || true
           gh release create "$TAG_NAME" "${{ steps.find_asset.outputs.mpp_file }}" \
             --title "TikTok Morphe Patches $TAG_NAME" \
-            --notes "Morphe patch bundle (.mpp) with interactive MX Player speed slider HUD on hold, pull-down lock/toggle, and custom speed steps."
+            --notes "Morphe patch bundle (.mpp) with interactive speed slider HUD on hold, pull-down lock/toggle, and custom speed steps."
