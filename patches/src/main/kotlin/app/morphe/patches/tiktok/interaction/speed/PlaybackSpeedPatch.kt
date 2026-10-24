@@ -381,11 +381,11 @@ val playbackSpeedPatch = bytecodePatch(
 
         press.addInstruction(
             0,
-            "invoke-static {p1, p2}, $SLIDER_EXTENSION->onHoldPress(FF)V",
+            "invoke-static/range {p1 .. p2}, $SLIDER_EXTENSION->onHoldPress(FF)V",
         )
         release.addInstruction(
             0,
-            "invoke-static {p1}, $SLIDER_EXTENSION->onHoldRelease(Z)V",
+            "invoke-static/range {p1 .. p1}, $SLIDER_EXTENSION->onHoldRelease(Z)V",
         )
 
         SettingsStatusLoadFingerprint.method.addInstruction(0,
