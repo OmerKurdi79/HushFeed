@@ -375,7 +375,8 @@ public final class SpeedSliderOverlay {
         if (activity == null) return;
         try {
             View decor = activity.getWindow().getDecorView();
-            if (decor instanceof ViewGroup root) {
+            if (decor instanceof ViewGroup) {
+                ViewGroup root = (ViewGroup) decor;
                 hideBannersRecursively(root);
             }
         } catch (Throwable ignored) {}
