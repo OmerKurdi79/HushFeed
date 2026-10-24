@@ -144,7 +144,7 @@ public final class SpeedSliderOverlay {
                 PlaybackSpeedPatch.setLiveSpeed(speed);
 
                 // Remember this speed for next time
-                Settings.HOLD_SPEED.set(PlaybackSpeedPatch.speedLabel(speed));
+                Settings.HOLD_SPEED.save(PlaybackSpeedPatch.speedLabel(speed));
 
                 SpeedSliderView view = viewReference.get();
                 if (view != null) {
