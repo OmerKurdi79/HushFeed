@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.tiktok.shared.requireLocals
 import app.morphe.util.getReference
 import app.morphe.util.literalReads
 import app.morphe.util.readsAfter
@@ -118,6 +119,34 @@ internal fun BytecodePatchContext.rewordHoldSpeedToasts(release: MutableMethod) 
             ExternalLabel("hold_speed_toast_kept_$n", release.getInstruction(index + 1)),
         )
     }
+
+    val toastClass = calls.firstOrNull()?.second?.getReference<MethodReference>()?.definingClass?.let(::classDefByOrNull)
+    if (toastClass != null) {
+        val showCalls = release.implementation!!.instructions.mapNotNull { instruction ->
+            if (instruction.opcode != Opcode.INVOKE_VIRTUAL) return@mapNotNull null
+            val ref = instruction.getReference<MethodReference>() ?: return@mapNotNull null
+            if (ref.definingClass == toastClass.type && ref.parameterTypes.isEmpty() && ref.returnType == "V") {
+                ref.name
+            } else null
+        }.distinct()
+        val mutableToast = mutableClassDefBy(toastClass.type)
+        showCalls.forEach { showName ->
+            val showMethod = mutableToast.methods.firstOrNull { it.name == showName && it.parameterTypes.isEmpty() && it.returnType == "V" }
+            if (showMethod != null) {
+                showMethod.requireLocals("Playback speed", 1)
+                showMethod.addInstructionsWithLabels(
+                    0,
+                    """
+                        invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+                        move-result v0
+                        if-eqz v0, :keep_toast_show_$showName
+                        return-void
+                    """,
+                    ExternalLabel("keep_toast_show_$showName", showMethod.getInstruction(0)),
+                )
+            }
+        }
+    }
 }
 
 /** The builder's one text setter taking a CharSequence, as a smali method reference. */
@@ -134,7 +163,19 @@ private fun ClassDef.textSetter(): String? = methods.singleOrNull {
  * gesture's own. The plain banner builds its label once, so it is reworded as it is shown and
  * hidden.
  */
-internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
+internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod) {
+    receiver.requireLocals("Playback speed", 1)
+    receiver.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+            move-result v0
+            if-eqz v0, :keep_receiver
+            return-void
+        """,
+        ExternalLabel("keep_receiver", receiver.getInstruction(0)),
+    )
+
     val calls = receiver.implementation!!.instructions.mapNotNull { instruction ->
         instruction.getReference<MethodReference>()?.let { instruction.opcode to it }
     }
@@ -149,6 +190,18 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
         it.name == lockCall.name && it.parameterTypes == listOf("F", "Z") && it.returnType == "V"
     }.singleOrPatchException("Playback speed: hold lock banner show")
     lockShow.routeThroughHoldSpeed(lockShow.holdSpeedLiterals("the hold lock banner"))
+
+    lockShow.requireLocals("Playback speed", 1)
+    lockShow.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+            move-result v0
+            if-eqz v0, :keep_lock_show
+            return-void
+        """,
+        ExternalLabel("keep_lock_show", lockShow.getInstruction(0)),
+    )
 
     var reworded = 0
     lockBanner.methods.forEach { method ->
@@ -183,11 +236,19 @@ internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: Method) {
         throw PatchException("Playback speed: the plain hold banner is shown and hidden by ${plain.size} calls, not two.")
     }
     plain.forEach { reference ->
-        plainBanner.methods.filter {
+        val bannerMethod = plainBanner.methods.filter {
             it.name == reference.name && it.parameterTypes.isEmpty() && it.returnType == "V"
-        }.singleOrPatchException("Playback speed: plain hold banner ${reference.name}").addInstruction(
+        }.singleOrPatchException("Playback speed: plain hold banner ${reference.name}")
+        bannerMethod.requireLocals("Playback speed", 1)
+        bannerMethod.addInstructionsWithLabels(
             0,
-            "invoke-static/range {p0 .. p0}, $EXTENSION->holdSpeedBanner(Landroid/view/ViewGroup;)V",
+            """
+                invoke-static {}, Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;->suppressNativeBanner()Z
+                move-result v0
+                if-eqz v0, :keep_plain_banner_${reference.name}
+                return-void
+            """,
+            ExternalLabel("keep_plain_banner_${reference.name}", bannerMethod.getInstruction(0)),
         )
     }
 }

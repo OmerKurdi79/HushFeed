@@ -1,0 +1,65 @@
+name: Build and Release Morphe Patches (.mpp)
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build & Release Morphe Patch (.mpp)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build Morphe Patches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :patches:buildAndroid -x test --dependency-verification=off --no-daemon
+
+      - name: Locate .mpp File
+        id: find_asset
+        run: |
+          MPP_PATH=$(find patches/build/release -name "patches-*.mpp" -type f 2>/dev/null | head -n 1)
+          if [ -z "$MPP_PATH" ]; then
+            MPP_PATH=$(find patches/build -name "patches-*.mpp" ! -name "*-javadoc*" ! -name "*-sources*" -type f 2>/dev/null | head -n 1)
+          fi
+          if [ -z "$MPP_PATH" ]; then
+            echo "ERROR: .mpp bundle file not found after build!"
+            find . -name "*.mpp"
+            exit 1
+          fi
+          echo "Found Morphe Patch bundle: $MPP_PATH ($(ls -lh "$MPP_PATH" | awk '{print $5}'))"
+          echo "mpp_file=$MPP_PATH" >> $GITHUB_OUTPUT
+          echo "mpp_name=$(basename $MPP_PATH)" >> $GITHUB_OUTPUT
+
+      - name: Release Morphe Patch Bundle
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="v1.0.${{ github.run_number }}"
+          gh release delete "$TAG_NAME" --yes || true
+          git tag -d "$TAG_NAME" || true
+          git push origin :refs/tags/"$TAG_NAME" || true
+          gh release create "$TAG_NAME" "${{ steps.find_asset.outputs.mpp_file }}" \
+            --title "TikTok Morphe Patches $TAG_NAME" \
+            --notes "Morphe patch bundle (.mpp) synced with latest upstream Hushfeed."
