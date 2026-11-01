@@ -3,6 +3,7 @@ name: Build and Release Morphe Patches (.mpp)
 on:
   push:
     branches:
+      - main
       - dev
   workflow_dispatch:
 
@@ -36,7 +37,7 @@ jobs:
           chmod +x ./gradlew
           ./gradlew :patches:buildAndroid -x test --dependency-verification=off --no-daemon
 
-      - name: Locate .mpp File
+      - name: Locate and Rename .mpp File
         id: find_asset
         run: |
           MPP_PATH=$(find patches/build/release -name "patches-*.mpp" -type f 2>/dev/null | head -n 1)
@@ -48,18 +49,25 @@ jobs:
             find . -name "*.mpp"
             exit 1
           fi
-          echo "Found Morphe Patch bundle: $MPP_PATH ($(ls -lh "$MPP_PATH" | awk '{print $5}'))"
-          echo "mpp_file=$MPP_PATH" >> $GITHUB_OUTPUT
-          echo "mpp_name=$(basename $MPP_PATH)" >> $GITHUB_OUTPUT
+
+          BRANCH="${GITHUB_REF_NAME}"
+          ORIG_NAME=$(basename "$MPP_PATH")
+          TARGET_NAME=$(echo "$ORIG_NAME" | sed "s/^patches-/patches-${BRANCH}-/")
+          TARGET_PATH="$(dirname "$MPP_PATH")/$TARGET_NAME"
+          mv "$MPP_PATH" "$TARGET_PATH"
+
+          echo "Found Morphe Patch bundle: $TARGET_PATH ($(ls -lh "$TARGET_PATH" | awk '{print $5}'))"
+          echo "mpp_file=$TARGET_PATH" >> $GITHUB_OUTPUT
+          echo "mpp_name=$TARGET_NAME" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Release Morphe Patch Bundle
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG_NAME="v1.0.${{ github.run_number }}"
+          BRANCH="${{ steps.find_asset.outputs.branch }}"
+          TAG_NAME="${BRANCH}-v1.0.${{ github.run_number }}"
           gh release delete "$TAG_NAME" --yes || true
           git tag -d "$TAG_NAME" || true
           git push origin :refs/tags/"$TAG_NAME" || true
-          gh release create "$TAG_NAME" "${{ steps.find_asset.outputs.mpp_file }}" \
-            --title "TikTok Morphe Patches $TAG_NAME" \
-            --notes "Morphe patch bundle (.mpp) synced with latest upstream Hushfeed."
+          gh release create "$TAG_NAME" "${{ steps.find_asset.outputs.mpp_file }}"             --title "TikTok Morphe Patches ($BRANCH) v1.0.${{ github.run_number }}"             --notes "Morphe patch bundle (.mpp) automatically built from $BRANCH branch."
