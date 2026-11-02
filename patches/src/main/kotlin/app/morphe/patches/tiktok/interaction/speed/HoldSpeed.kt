@@ -225,7 +225,7 @@ private fun ClassDef.textSetter(): String? = methods.singleOrNull {
  * gesture's own. The plain banner builds its label once, so it is reworded as it is shown and
  * hidden. Returns the lock banner's show method, for [hideHoldLockBannerOnShow].
  */
-internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod) {
+internal fun BytecodePatchContext.rewordHoldSpeedBanners(receiver: MutableMethod): MutableMethod {
     receiver.requireLocals("Playback speed", 1)
     receiver.addInstructionsWithLabels(
         0,

@@ -5,6 +5,7 @@
 package app.morphe.extension.tiktok.speed;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import app.morphe.extension.shared.Logger;
@@ -521,7 +522,7 @@ public final class PlaybackSpeedPatch {
      */
     public static void holdLockBanner(View banner) {
         try {
-            if (banner != null && HoldSpeedHud.enabled()) banner.setVisibility(View.INVISIBLE);
+            if (banner != null && SpeedSliderOverlay.suppressNativeBanner()) banner.setVisibility(View.INVISIBLE);
         } catch (RuntimeException ex) {
             Logger.printException(() -> "Could not hide the hold lock banner", ex);
         }
