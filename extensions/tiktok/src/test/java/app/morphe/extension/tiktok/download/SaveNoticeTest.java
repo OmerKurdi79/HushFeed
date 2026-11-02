@@ -52,6 +52,25 @@ public class SaveNoticeTest {
         SaveNotice.windowRootsForTests = null;
     }
 
+    /** A quick save finished inside its own two-second toast, and the banner drew over it (#299). */
+    @Test public void theBannerTakesDownTheSavingToastItWouldLandOn() {
+        try (var owner = Robolectric.buildActivity(HostActivity.class).setup().visible()) {
+            Utils.setActivity(owner.get());
+            Utils.showToastShort("Saving video to DCIM/TikTok");
+            Shadows.shadowOf(Looper.getMainLooper()).idle();
+            android.widget.Toast saving = ShadowToast.getLatestToast();
+            assertNotNull(saving);
+
+            SaveNotice.saved("Video saved to DCIM/TikTok", new MediaFileWriter.Saved("a.mp4",
+                    Uri.parse("content://media/external/video/media/78")));
+            assertTrue("the toast went before there was a banner to replace it",
+                    !Shadows.shadowOf(saving).isCancelled());
+            idlePastTheSheetSettle();
+
+            assertTrue("the toast is still up under the banner", Shadows.shadowOf(saving).isCancelled());
+        }
+    }
+
     @Test public void aSaveWithARowShowsTheBannerAndOpenStartsAViewerOnIt() {
         try (var owner = Robolectric.buildActivity(HostActivity.class).setup().visible()) {
             Activity activity = owner.get();
@@ -102,7 +121,7 @@ public class SaveNoticeTest {
                         : LiveRecordingSaver.partialText(LiveRecorder.End.STORAGE, LiveRecordingSaver.folder());
                 ViewGroup root = activity.findViewById(android.R.id.content);
                 assertNotNull("the visible notice lost the audio status",
-                        find(root, message + "\nThis screen recording has no sound."));
+                        find(root, message + "\nThis screen recording has no sound"));
                 TextView open = find(root, "Open");
                 assertNotNull(open);
                 View clickable = open;
@@ -135,8 +154,8 @@ public class SaveNoticeTest {
 
             ViewGroup root = activity.findViewById(android.R.id.content);
             assertNotNull("the recovery banner lost the stop reason or audio status", find(root,
-                    "The LIVE ended or the connection dropped. What was recorded is saved to "
-                            + LiveRecordingSaver.folder() + "\nThis screen recording has no sound."));
+                    "LIVE ended or dropped. Recording saved to "
+                            + LiveRecordingSaver.folder() + "\nThis screen recording has no sound"));
             assertNotNull("the saved recording cannot be opened", find(root, "Open"));
             assertNotNull("the retained source has no recovery action", find(root, "Retry"));
         }

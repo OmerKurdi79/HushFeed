@@ -1,6 +1,8 @@
 {
   "patches": {
     "Advanced downloads": [
+      "DOWNLOAD_BUTTON",
+      "DOWNLOAD_BUTTON_POSITION",
       "DOWNLOAD_VIDEO_QUALITY",
       "DOWNLOAD_ASK_QUALITY",
       "DOWNLOAD_ORIGINAL_PHOTOS",
@@ -38,9 +40,6 @@
       "ALLOW_DUET_AND_STITCH",
       "ALLOW_ADD_TO_STORY"
     ],
-    "Allow photo comments": [
-      "PINEDRAMA_COMMENT_PHOTOS"
-    ],
     "Allow screenshots and Circle to Search": [
       "ALLOW_SCREEN_CAPTURE"
     ],
@@ -72,6 +71,7 @@
       "PAUSE_FIRST_VIDEO",
       "KEEP_PAUSED_ON_RETURN",
       "LEAVE_ON_REST_REMINDER",
+      "IDLE_LEAVE_MINUTES",
       "SESSION_BUDGET_VIDEOS",
       "SESSION_BUDGET_MINUTES",
       "SESSION_BUDGET_LOCK_MINUTES",
@@ -217,6 +217,7 @@
       "BLOCKED_CREATORS",
       "LOCAL_HIDDEN_CREATORS",
       "CREATOR_FILTER_EXCEPTIONS",
+      "LIVE_KEPT_CREATORS",
       "REGION_ONLY_FROM",
       "CAPTION_LANGUAGES",
       "REGION_NEVER_FROM",
@@ -432,6 +433,7 @@
       "LIVE_UNDER_STATUS_BAR",
       "TOUCH_TARGET_SCALE",
       "HIDE_OPENED_VIDEO_SEARCH",
+      "HIDE_OPENED_VIDEO_BACK",
       "HIDE_PROFILE_VIEWS_BUTTON",
       "HIDE_PROFILE_ADD_FRIENDS",
       "HIDE_VISUAL_SEARCH",
@@ -447,6 +449,9 @@
     "In-app browser privacy guard": [
       "BLOCK_WEBVIEW_JS_INTERFACES"
     ],
+    "Hide read receipts": [
+      "HIDE_READ_RECEIPTS"
+    ],
     "Keep a streak going": [
       "AUTO_STREAK",
       "AUTO_STREAK_RECIPIENT",
@@ -455,6 +460,7 @@
     ],
     "Keep playing in the background": [
       "BACKGROUND_PLAY",
+      "BACKGROUND_PLAY_MENU",
       "BACKGROUND_REPLAY"
     ],
     "Keep pulled sounds": [
@@ -481,6 +487,7 @@
     ],
     "LIVE controls": [
       "STOP_LIVE_AUTO_ENTER",
+      "HIDE_LIVE_SERVICE_PLUS",
       "SHOW_EXACT_LIVE_VIEWERS",
       "OFFER_LIVE_QUALITY",
       "REMEMBER_LIVE_QUALITY",
@@ -512,7 +519,8 @@
     "Mute feed videos": [
       "FEED_MUTED",
       "FEED_MUTE_BUTTON",
-      "FEED_MUTE_BUTTON_POSITION"
+      "FEED_MUTE_BUTTON_POSITION",
+      "FOCUS_WAITS_FOR_VIDEO"
     ],
     "Network proxy": [
       "NETWORK_PROXY",
@@ -525,6 +533,10 @@
     "Not interested button": [
       "NOT_INTERESTED_BUTTON",
       "NOT_INTERESTED_BUTTON_POSITION"
+    ],
+    "Keep unsent messages": [
+      "KEEP_UNSENT_MESSAGES",
+      "MARK_KEPT_UNSENT_MESSAGES"
     ],
     "Notification controls": [
       "HIDE_FOLLOWER_NOTIFICATIONS",
@@ -633,6 +645,7 @@
     ],
     "Show follow status": [
       "SHOW_FOLLOW_STATUS",
+      "SHOW_JOIN_DATE",
       "LOCAL_PROFILE_COUNTS",
       "LOCAL_PROFILE_VERIFIED_BADGE",
       "HIDE_OWN_PROFILE_RESTRICTION_NOTICE",
@@ -747,6 +760,7 @@
     "FEED_NAVIGATION_OBSERVED_TABS": "Runtime state or legacy migration data; not a configurable feature default.",
     "BOTTOM_NAVIGATION_OBSERVED_TABS": "Runtime state or legacy migration data; not a configurable feature default.",
     "COMMENT_TRANSLATE_BUTTON_TURNED_ON": "Runtime state or legacy migration data; not a configurable feature default.",
+    "COMMENT_TRANSLATION_TURNED_OFF": "Runtime state or legacy migration data; not a configurable feature default.",
     "DOWNLOAD_PATH": "Runtime state or legacy migration data; not a configurable feature default.",
     "DOWNLOAD_PATHS_MIGRATED": "Runtime state or legacy migration data; not a configurable feature default.",
     "SESSION_BUDGET_PENDING": "Runtime state or legacy migration data; not a configurable feature default.",

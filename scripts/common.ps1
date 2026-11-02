@@ -61,99 +61,6 @@ function Remove-GeneratedPath {
     }
 }
 
-$script:KeptRunMarker = '.hushfeed-kept-run'
-$script:KeptRunFiles = @('.hushfeed-kept-run', 'patched.apk', 'result.json', 'stamp.json')
-
-function Test-KeptRunDirectory {
-    <#
-    .SYNOPSIS
-        The folder a passing verify-all-patches.ps1 run is kept in, resolved, or a throw. Reads
-        only; nothing is deleted here.
-    .DESCRIPTION
-        -KeepIn gets emptied, so a mistyped value used to take whatever it named with a recursive
-        delete: a fixture folder, the repository, a drive root. A folder qualifies when it's
-        missing, empty, or one this claimed before (its marker names it) holding nothing but a
-        kept run. Roots, the profile, a repository, a folder holding any input, and any path
-        through a junction or symbolic link are refused. A relative path resolves from the
-        current location.
-    #>
-    param(
-        [Parameter(Mandatory = $true)][string]$Path,
-        [string[]]$Inputs = @(),
-        [string]$RepositoryRoot
-    )
-    $resolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
-    $absolute = [IO.Path]::GetFullPath($resolved).TrimEnd('\')
-    if ($absolute.StartsWith('\\?\') -or $absolute.StartsWith('\\.\')) {
-        throw "Refusing to keep runs in ${Path}: it's a device path."
-    }
-    $protected = @([IO.Path]::GetPathRoot($absolute), [Environment]::GetFolderPath('UserProfile'), $RepositoryRoot) + $Inputs
-    foreach ($entry in $protected) {
-        if (-not $entry) { continue }
-        $full = [IO.Path]::GetFullPath($ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($entry)).TrimEnd('\')
-        if ([string]::Equals($full, $absolute, [StringComparison]::OrdinalIgnoreCase) -or
-                $full.StartsWith($absolute + '\', [StringComparison]::OrdinalIgnoreCase)) {
-            throw "Refusing to keep runs in ${absolute}: emptying it would delete $full."
-        }
-    }
-    if (Test-Path -LiteralPath (Join-Path $absolute '.git')) {
-        throw "Refusing to keep runs in ${absolute}: it's a repository."
-    }
-    # GetFullPath is lexical, so every existing ancestor is checked for a link before it's trusted.
-    $cursor = $absolute
-    while ($cursor) {
-        if (Test-Path -LiteralPath $cursor) {
-            if ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
-                throw "Refusing to keep runs in ${absolute}: $cursor is a link."
-            }
-        }
-        $cursor = Split-Path -Parent $cursor
-    }
-    if (-not (Test-Path -LiteralPath $absolute)) { return $absolute }
-    if (-not (Test-Path -LiteralPath $absolute -PathType Container)) {
-        throw "Refusing to keep runs in ${absolute}: it's a file."
-    }
-    $children = @(Get-ChildItem -LiteralPath $absolute -Force)
-    if ($children.Count -eq 0) { return $absolute }
-    $marker = Join-Path $absolute $script:KeptRunMarker
-    $owned = (Test-Path -LiteralPath $marker -PathType Leaf) -and
-        [string]::Equals([IO.File]::ReadAllText($marker), "hushfeed-kept-run-v1`n$absolute", [StringComparison]::OrdinalIgnoreCase)
-    if (-not $owned) {
-        throw "Refusing to keep runs in ${absolute}: it holds files this script didn't put there. Choose an empty folder."
-    }
-    foreach ($child in $children) {
-        if (($child.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $child.PSIsContainer -or
-                -not ($script:KeptRunFiles -contains $child.Name)) {
-            throw "Refusing to keep runs in ${absolute}: $($child.Name) isn't part of a kept run."
-        }
-    }
-    return $absolute
-}
-
-function Initialize-KeptRunDirectory {
-    <#
-    .SYNOPSIS
-        Empty the kept-run folder Test-KeptRunDirectory accepted and claim it with a marker.
-        Returns its absolute path.
-    #>
-    param(
-        [Parameter(Mandatory = $true)][string]$Path,
-        [string[]]$Inputs = @(),
-        [string]$RepositoryRoot
-    )
-    $absolute = Test-KeptRunDirectory -Path $Path -Inputs $Inputs -RepositoryRoot $RepositoryRoot
-    if (Test-Path -LiteralPath $absolute) {
-        # Only the files a kept run holds are here, checked one level deep with no links.
-        foreach ($child in @(Get-ChildItem -LiteralPath $absolute -Force)) {
-            Remove-Item -LiteralPath $child.FullName -Force
-        }
-    } else {
-        New-Item -ItemType Directory -Path $absolute | Out-Null
-    }
-    [IO.File]::WriteAllText((Join-Path $absolute $script:KeptRunMarker), "hushfeed-kept-run-v1`n$absolute")
-    return $absolute
-}
-
 function Get-BundleVersion {
     <#
     .SYNOPSIS
@@ -299,58 +206,45 @@ function Resolve-DesktopCli {
     return $found
 }
 
-function Get-ManagerChangelogGroups {
+function Get-BundlePublicKey {
     <#
     .SYNOPSIS
-        The ### groups of one dated CHANGELOG.md section, as patches-bundle.json quotes them.
-    .DESCRIPTION
-        validate-release-facts.ps1 holds the index to this, and the script contracts build their
-        copied index from it, so the copy and the check can't disagree about what a group is.
+        The Base64 public key morphe-signing.pub publishes for the bundle signature.
     #>
-    param(
-        [string]$Text,
-        [string]$Version
-    )
+    param([Parameter(Mandatory = $true)][string]$Root)
 
-    $release = [regex]::Match($Text,
-        "(?ms)^## $([regex]::Escape($Version)) \([^\r\n)]+\)\r?\n(?<Body>.*?)(?=^## |\z)")
-    if (-not $release.Success) {
-        throw "CHANGELOG.md has no dated $Version section for the indexed Manager changelog."
-    }
+    $path = Join-Path $Root 'morphe-signing.pub'
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "There is no morphe-signing.pub at $path." }
+    $key = (Get-Content -LiteralPath $path -Raw).Trim()
+    if ($key -notmatch '^[A-Za-z0-9+/]{43}=$') { throw "morphe-signing.pub is not a Base64 Ed25519 public key: $key" }
+    return $key
+}
 
-    $output = New-Object System.Collections.Generic.List[string]
-    $seen = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
-    $heading = $null
-    $items = 0
-    foreach ($line in @($release.Groups['Body'].Value -split '\r?\n' | Where-Object { $_.Trim() })) {
-        if ($line -match '^### (.+)$') {
-            if ($null -ne $heading -and $items -eq 0) {
-                throw "CHANGELOG.md $Version has an empty ### $heading group."
+function Get-BundleSignature {
+    <#
+    .SYNOPSIS
+        The MorpheSig1 signature in a bundle's zip comment, or $null when it has none.
+    .DESCRIPTION
+        The comment is "MorpheSig1 <public key> <signature>", both Base64, written by the build
+        (patches/build.gradle.kts signBundle, the same bytes PatchBundleSignature.sign writes).
+        This reads the shape only. The build verifies its own signature before it keeps it, and
+        Morphe's patcher verifies it again when a Manager loads the bundle.
+    #>
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    $bytes = [IO.File]::ReadAllBytes($Path)
+    $last = $bytes.Length - 22
+    for ($at = $last; $at -ge [Math]::Max(0, $last - 0xFFFF); $at--) {
+        if ($bytes[$at] -eq 0x50 -and $bytes[$at + 1] -eq 0x4b -and $bytes[$at + 2] -eq 5 -and $bytes[$at + 3] -eq 6 -and
+            ($bytes[$at + 20] + 256 * $bytes[$at + 21]) -eq $bytes.Length - $at - 22) {
+            $size = $bytes.Length - $at - 22
+            if ($size -eq 0) { return $null }
+            $comment = [Text.Encoding]::ASCII.GetString($bytes, $at + 22, $size)
+            if ($comment -notmatch '^MorpheSig1 ([A-Za-z0-9+/]{43}=) ([A-Za-z0-9+/]{86}==)$') {
+                throw "$Path has a zip comment that is not a MorpheSig1 signature."
             }
-            $heading = $Matches[1].Trim()
-            if (-not $heading -or -not $seen.Add($heading)) {
-                throw "CHANGELOG.md $Version has an empty or duplicate ### group."
-            }
-            if ($output.Count -gt 0) { $output.Add('') }
-            $output.Add("### $heading")
-            $output.Add('')
-            $items = 0
-            continue
+            return [pscustomobject]@{ PublicKey = $Matches[1]; Signature = $Matches[2] }
         }
-        if ($line -notmatch '^\* \*\*TikTok:\*\* ') {
-            throw "CHANGELOG.md $Version has text outside a TikTok-scoped ### group: $line"
-        }
-        if ($null -eq $heading) {
-            throw "CHANGELOG.md $Version has a loose bullet before its first ### group."
-        }
-        $output.Add($line)
-        $items++
     }
-    if ($null -eq $heading) {
-        throw "CHANGELOG.md $Version has no ### groups for the indexed Manager changelog."
-    }
-    if ($items -eq 0) {
-        throw "CHANGELOG.md $Version has an empty ### $heading group."
-    }
-    return ($output -join "`n")
+    throw "$Path is not a zip archive."
 }

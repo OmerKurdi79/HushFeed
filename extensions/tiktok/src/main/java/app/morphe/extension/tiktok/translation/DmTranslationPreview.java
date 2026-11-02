@@ -104,7 +104,7 @@ public final class DmTranslationPreview {
     public static void inputReady(Object assem) {
         main(() -> {
             try {
-                Field cached = assem.getClass().getDeclaredField("LLJLLL");
+                Field cached = assem.getClass().getDeclaredField("LLJZ");
                 cached.setAccessible(true);
                 Object view = cached.get(assem);
                 for (Binding binding : INPUTS.values()) if (binding.editor.get() == view) {
@@ -338,7 +338,7 @@ public final class DmTranslationPreview {
         }
         void fail() {
             if (owner.pending != this) return;
-            if (current()) Utils.showToastShort(L10n.t(owner.editor().getContext(), "Couldn't translate this draft. Try again in a moment."));
+            if (current()) Utils.showToastShort(L10n.t(owner.editor().getContext(), "Couldn't translate this draft. Try again."));
             owner.cancel();
         }
         void apply() {
@@ -361,7 +361,7 @@ public final class DmTranslationPreview {
                             editable.replace(0, editable.length(), source);
                         } finally { editable.setFilters(retained); }
                         Selection.setSelection(editable, Math.max(0, Math.min(start, editable.length())), Math.max(0, Math.min(end, editable.length())));
-                        Utils.showToastShort(L10n.t(editor.getContext(), "Couldn't translate this draft. Try again in a moment."));
+                        Utils.showToastShort(L10n.t(editor.getContext(), "Couldn't translate this draft. Try again."));
                     }
                     fail();
                     return;
@@ -430,14 +430,14 @@ public final class DmTranslationPreview {
                 || !vm.getClass().getName().equals("com.ss.android.ugc.aweme.im.sdk.chat.viewmodel.SingleChatInputViewModel")
                 || !input.getClass().getName().equals("com.ss.android.ugc.aweme.im.chatroom.input.components.inputfield.InputFieldVM")
                 || !assem.getClass().getName().equals("com.ss.android.ugc.aweme.im.chatroom.input.components.inputfield.InputFieldAssem")
-                || !session.getClass().getName().equals("X.14N8")) return null;
+                || !session.getClass().getName().equals("X.0pdx")) return null;
         ClassLoader loader = vm.getClass().getClassLoader();
-        if (NativeDmTranslation.field(vm.getClass(), "LLJJJ", NativeDmTranslation.type(loader,
+        if (NativeDmTranslation.field(vm.getClass(), "LLJJJIL", NativeDmTranslation.type(loader,
                 "com.ss.android.ugc.aweme.im.chatroom.input.components.inputfield.IInputFieldAbility")).get(vm) != input
-                || NativeDmTranslation.field(vm.getClass(), "LLJJJJLIIL", NativeDmTranslation.type(loader,
+                || NativeDmTranslation.field(vm.getClass(), "LLJJL", NativeDmTranslation.type(loader,
                 "com.ss.android.ugc.aweme.im.chatroom.api.model.SessionInfo")).get(vm) != session
-                || NativeDmTranslation.field(input.getClass(), "LLJJIII", EditText.class).get(input) != editor
-                || NativeDmTranslation.field(assem.getClass(), "LLJLLL", NativeDmTranslation.type(loader, "X.0FBJ")).get(assem) != editor
+                || NativeDmTranslation.field(input.getClass(), "LLJJIJI", EditText.class).get(input) != editor
+                || NativeDmTranslation.field(assem.getClass(), "LLJZ", NativeDmTranslation.type(loader, "X.0FAy")).get(assem) != editor
                 || !Boolean.TRUE.equals(session.getClass().getMethod("isSingleChat").invoke(session))
                 || Boolean.TRUE.equals(session.getClass().getMethod("isPreviewMode").invoke(session))
                 || Boolean.TRUE.equals(session.getClass().getMethod("isReportPage").invoke(session))) return null;

@@ -1,8 +1,7 @@
 {
   "version": "v0.80.0",
   "appNames": {
-    "com.zhiliaoapp.musically": "TikTok",
-    "com.ss.android.ttmd.video": "PineDrama"
+    "com.zhiliaoapp.musically": "TikTok"
   },
   "patches": [
     {
@@ -16,7 +15,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -30,13 +29,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -69,7 +68,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -83,13 +82,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -125,20 +124,18 @@
     },
     {
       "name": "Advanced downloads",
-      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, save a story or a video's cover from the share sheet, and pick videos on a profile grid to save in one run. Starts off. Turn it on in Hushfeed settings > Downloads.",
+      "description": "Adds more ways to save: pick the video quality, save full-size photos, the sound on its own or a photo post as one video, hold a profile picture or story to save it, save a story or a video's cover from the share sheet, put a save button on the video, and pick videos on a profile grid to save in one run. Starts off. Turn it on in Hushfeed settings > Downloads.",
       "category": "Downloads",
       "use": true,
       "dependencies": [
+        "Block author button",
         "BytecodePatch",
         "RawResourcePatch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -152,40 +149,37 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
         }
       ],
       "options": [
+        {
+          "key": "download_button",
+          "title": "Default: download button",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "download_button_position",
+          "title": "Default: download button position",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
         {
           "key": "download_video_quality",
           "title": "Default: download video quality",
@@ -488,10 +482,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -505,34 +496,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -560,57 +530,6 @@
       ]
     },
     {
-      "name": "Allow photo comments",
-      "description": "Lets PineDrama's comment box ask TikTok's server about photo comments, like TikTok does. TikTok's server still decides whether your account can post one. Starts off. Turn it on in Hushfeed settings > Comments.",
-      "category": "Comments",
-      "use": true,
-      "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
-        "ResourcePatch",
-        "Settings"
-      ],
-      "compatiblePackages": {
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
-        ]
-      },
-      "compatibility": [
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "pinedrama_comment_photos",
-          "title": "Default: pinedrama comment photos",
-          "description": null,
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Allow screenshots and Circle to Search",
       "description": "Lets screenshots, screen recordings and Circle to Search work on TikTok screens that would otherwise come out black. Starts off. Turn it on in Hushfeed settings > App, then restart TikTok.",
       "category": "Downloads",
@@ -622,10 +541,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -639,34 +555,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -696,10 +591,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -713,34 +605,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -833,7 +704,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -847,13 +718,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -883,7 +754,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -897,13 +768,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -942,10 +813,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -959,34 +827,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1041,10 +888,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1058,34 +902,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1105,7 +928,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1119,13 +942,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1166,6 +989,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": false,
+          "values": null
+        },
+        {
+          "key": "idle_leave_minutes",
+          "title": "Default: idle leave minutes",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Int",
+          "default": 0,
           "values": null
         },
         {
@@ -1362,10 +1194,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1379,34 +1208,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1436,10 +1244,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1453,34 +1258,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1510,7 +1294,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1524,13 +1308,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1578,10 +1362,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1595,34 +1376,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1652,10 +1412,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1669,34 +1426,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1724,10 +1460,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1741,34 +1474,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1796,10 +1508,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1813,34 +1522,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1859,10 +1547,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1876,34 +1561,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1923,10 +1587,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -1940,34 +1601,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -1998,7 +1638,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2012,13 +1652,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2238,7 +1878,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2252,13 +1892,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2314,7 +1954,7 @@
     },
     {
       "name": "Copy bio and IDs",
-      "description": "Lets you long-press a bio to copy it, makes the @names in a bio open those profiles on a tap, and adds share sheet buttons that copy a username, user ID or video ID. On by default. Turn it off in Hushfeed settings > App.",
+      "description": "Lets you long-press a bio to copy it, makes the @names in a bio open those profiles on a tap, and adds share sheet buttons that copy a display name, username, user ID or video ID. On a profile card inside a LIVE room, long-press the bio or the name to copy it, long-press the username for the user ID, or tap the copy mark by the username. On by default. Turn it off in Hushfeed settings > App.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -2324,7 +1964,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2338,13 +1978,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2392,10 +2032,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2409,34 +2046,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2455,16 +2071,16 @@
       ]
     },
     {
-      "name": "Custom launcher icon",
-      "description": "Gives TikTok's home screen icon a themed version that takes your wallpaper's color on Android 13 and up. The options can also make it black, plain or your own picture. Only patching again without it puts the old icon back.",
-      "category": "Interface",
-      "use": false,
+      "name": "Create stickers",
+      "description": "Adds a Create button to the Saved page of the comment sticker panel. Pick a photo and it turns into one of your saved stickers. Make sticker in a video's share sheet does the same with its cover. Works as soon as you patch it in, with no switch.",
+      "category": "Comments",
+      "use": true,
       "dependencies": [
-        "RawResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2478,13 +2094,51 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
+              }
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Custom launcher icon",
+      "description": "Gives TikTok's home screen icon a themed version that takes your wallpaper's color on Android 13 and up. The options can also make it black, plain, Material You, any background color or your own picture, and put Hushfeed's H in the status bar. Only patching again without it puts the old icons back.",
+      "category": "Interface",
+      "use": false,
+      "dependencies": [
+        "RawResourcePatch"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.6.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.6.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2494,7 +2148,7 @@
         {
           "key": "iconStyle",
           "title": "Icon style",
-          "description": "TikTok colors keeps the icon as it is. Black background puts TikTok's note on pure black, and the two plain styles draw only the note in one color. Every style gets the themed icon.",
+          "description": "TikTok colors keeps the icon as it is. Black background puts TikTok's note on pure black, and the two plain styles draw only the note in one color. Material You colors the note and its background from your wallpaper on Android 12 and up, light or dark with the system, even with themed icons off, and is white on black before that. Every style gets the themed icon.",
           "required": true,
           "type": "kotlin.String",
           "default": "tiktok",
@@ -2502,8 +2156,18 @@
             "TikTok colors": "tiktok",
             "Black background": "black",
             "White on black": "white-on-black",
-            "Black on white": "black-on-white"
+            "Black on white": "black-on-white",
+            "Material You": "material-you"
           }
+        },
+        {
+          "key": "iconBackground",
+          "title": "Icon background color",
+          "description": "A color like #1E88E5 to put behind the note, or behind your picture, instead of the style's own. Leave it empty to keep the style's.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": null,
+          "values": null
         },
         {
           "key": "iconPicture",
@@ -2513,6 +2177,18 @@
           "type": "kotlin.String",
           "default": null,
           "values": null
+        },
+        {
+          "key": "notificationIcon",
+          "title": "Notification icon",
+          "description": "The small icon TikTok's notifications show in the status bar. TikTok's note keeps it as it is. Hushfeed's H swaps it for a sharp H on every screen.",
+          "required": false,
+          "type": "kotlin.String",
+          "default": "tiktok",
+          "values": {
+            "TikTok's note": "tiktok",
+            "Hushfeed's H": "hushfeed"
+          }
         }
       ]
     },
@@ -2528,10 +2204,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2545,34 +2218,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2620,10 +2272,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2637,34 +2286,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2721,10 +2349,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2738,34 +2363,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2829,10 +2433,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2846,34 +2447,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2891,10 +2471,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2908,34 +2485,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -2955,7 +2511,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -2969,13 +2525,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3005,10 +2561,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3022,34 +2575,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3079,10 +2611,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3096,34 +2625,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3154,7 +2662,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3168,13 +2676,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3249,10 +2757,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3266,34 +2771,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3431,10 +2915,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3448,34 +2929,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3505,10 +2965,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3522,34 +2979,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3579,10 +3015,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3596,34 +3029,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3651,10 +3063,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3668,34 +3077,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3714,10 +3102,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3731,34 +3116,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3778,7 +3142,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -3792,13 +3156,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -3844,6 +3208,15 @@
         {
           "key": "creator_filter_exceptions",
           "title": "Default: creator filter exceptions",
+          "description": null,
+          "required": false,
+          "type": "kotlin.String",
+          "default": "",
+          "values": null
+        },
+        {
+          "key": "live_kept_creators",
+          "title": "Default: live kept creators",
           "description": null,
           "required": false,
           "type": "kotlin.String",
@@ -4341,7 +3714,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4355,13 +3728,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4580,7 +3953,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4594,13 +3967,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4639,10 +4012,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4656,34 +4026,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4720,10 +4069,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4737,34 +4083,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4784,7 +4109,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4798,13 +4123,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4841,7 +4166,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4855,13 +4180,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4881,10 +4206,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4898,34 +4220,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -4964,7 +4265,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -4978,13 +4279,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5012,10 +4313,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5029,34 +4327,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5077,7 +4354,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5091,13 +4368,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5145,10 +4422,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5162,34 +4436,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5219,10 +4472,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5236,34 +4486,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5293,7 +4522,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5307,13 +4536,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5361,10 +4590,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5378,34 +4604,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5435,10 +4640,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5452,34 +4654,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5509,10 +4690,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5526,34 +4704,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5583,10 +4740,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5600,34 +4754,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5666,10 +4799,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5683,34 +4813,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5920,10 +5029,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -5937,34 +5043,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -5994,10 +5079,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6011,34 +5093,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6102,9 +5163,9 @@
       ]
     },
     {
-      "name": "Hide search suggestions",
-      "description": "Hides the searches TikTok suggests before you type, and can hide the search rewards banner. Your own search history stays. Starts off. Turn it on in Hushfeed settings > App.",
-      "category": "Search",
+      "name": "Hide read receipts",
+      "description": "Stops TikTok telling people you've read their messages. Your own unread badges still clear as usual. Starts off. Turn it on in Hushfeed settings > Inbox.",
+      "category": "Inbox",
       "use": true,
       "dependencies": [
         "BytecodePatch",
@@ -6113,10 +5174,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6130,34 +5188,63 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
-        },
+        }
+      ],
+      "options": [
         {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
+          "key": "hide_read_receipts",
+          "title": "Default: hide read receipts",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "Hide search suggestions",
+      "description": "Hides the searches TikTok suggests before you type, and can hide the search rewards banner. Your own search history stays. Starts off. Turn it on in Hushfeed settings > App.",
+      "category": "Search",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.6.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
           "description": null,
           "appIconColor": 16657493,
           "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6196,10 +5283,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6213,34 +5297,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6270,10 +5333,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6287,34 +5347,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6343,7 +5382,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6357,13 +5396,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6383,7 +5422,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6397,13 +5436,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6807,6 +5846,15 @@
           "values": null
         },
         {
+          "key": "hide_opened_video_back",
+          "title": "Default: hide opened video back",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
           "key": "hide_profile_views_button",
           "title": "Default: hide profile views button",
           "description": null,
@@ -6892,10 +5940,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6909,34 +5954,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -6966,10 +5990,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -6983,34 +6004,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7041,10 +6041,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7058,34 +6055,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7132,7 +6108,7 @@
     },
     {
       "name": "Keep playing in the background",
-      "description": "Keeps the video playing when you leave TikTok or turn the screen off, with a notification to pause it. It can also start the video over when it ends. Handy for music and talks. Starts off. Turn it on in Hushfeed settings > Playback, then restart TikTok.",
+      "description": "Keeps the video playing when you leave TikTok or turn the screen off, with a notification to pause it. It can also start the video over when it ends. Handy for music and talks. If you only want it on some videos, a second switch adds TikTok's own row to the long-press menu. Starts off. Turn it on in Hushfeed settings > Playback, then restart TikTok.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -7142,10 +6118,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7159,34 +6132,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7196,6 +6148,15 @@
         {
           "key": "background_play",
           "title": "Default: background play",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "background_play_menu",
+          "title": "Default: background play menu",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -7225,10 +6186,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7242,34 +6200,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7288,21 +6225,16 @@
       ]
     },
     {
-      "name": "Keep the Favorites tab",
-      "description": "Keeps the Favorites tab and your saved videos on your profile when TikTok tries out a version of the app that hides them, and makes the collections popup you get by holding the Favorites button dark when TikTok is. Both are on by default. Turn them off in Hushfeed settings > App.",
-      "category": "Settings",
+      "name": "Keep recent stickers",
+      "description": "Adds Recently used above Saved in the comment sticker panel, with the last stickers you sent, and keeps it when you close and reopen the app. Works as soon as you patch it in, with no switch.",
+      "category": "Comments",
       "use": true,
       "dependencies": [
-        "BytecodePatch",
-        "RawResourcePatch",
-        "Settings"
+        "BytecodePatch"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7316,34 +6248,53 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
-        },
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep the Favorites tab",
+      "description": "Keeps the Favorites tab and your saved videos on your profile when TikTok tries out a version of the app that hides them, and makes the collections popup you get by holding the Favorites button dark when TikTok is. Both are on by default. Turn them off in Hushfeed settings > App.",
+      "category": "Settings",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.6.3"
+        ]
+      },
+      "compatibility": [
         {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
           "description": null,
           "appIconColor": 16657493,
           "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7382,10 +6333,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7399,34 +6347,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7456,7 +6383,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7470,13 +6397,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7506,10 +6433,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7523,34 +6447,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7569,19 +6472,18 @@
       ]
     },
     {
-      "name": "LIVE controls",
-      "description": "Stops a LIVE in the feed from opening by itself after a countdown. It can show a LIVE's exact viewer count instead of a rounded one, offer a quality choice and clear screen in more LIVE rooms, and keep your quality pick after TikTok restarts. Starts off. Turn it on in Hushfeed settings > Playback. It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it, and can add a Record button to a LIVE room that saves what you watch from when you tap it.",
-      "category": "Playback",
+      "name": "Keep unsent messages",
+      "description": "Keeps a message in your chat when the other person unsends it, instead of removing it, and can mark it as unsent. A button removes the kept messages. Messages you unsend yourself are still removed. Starts off. Turn it on in Hushfeed settings > Inbox.",
+      "category": "Inbox",
       "use": true,
       "dependencies": [
         "BytecodePatch",
         "RawResourcePatch",
-        "ResourcePatch",
         "Settings"
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7595,13 +6497,73 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
+              }
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "keep_unsent_messages",
+          "title": "Default: keep unsent messages",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "mark_kept_unsent_messages",
+          "title": "Default: mark kept unsent messages",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": true,
+          "values": null
+        }
+      ]
+    },
+    {
+      "name": "LIVE controls",
+      "description": "Stops a LIVE in the feed from opening by itself after a countdown. It can show a LIVE's exact viewer count instead of a rounded one, offer a quality choice and clear screen in more LIVE rooms, and keep your quality pick after TikTok restarts. Starts off. Turn it on in Hushfeed settings > Playback. It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it (or hides that row altogether), and can add a Record button to a LIVE room that saves what you watch from when you tap it.",
+      "category": "Playback",
+      "use": true,
+      "dependencies": [
+        "BytecodePatch",
+        "RawResourcePatch",
+        "ResourcePatch",
+        "Settings"
+      ],
+      "compatiblePackages": {
+        "com.zhiliaoapp.musically": [
+          "47.6.3"
+        ]
+      },
+      "compatibility": [
+        {
+          "name": "TikTok",
+          "packageName": "com.zhiliaoapp.musically",
+          "description": null,
+          "appIconColor": 16657493,
+          "signatures": [
+            "9041803e91bcb814b4b4399fb5c85a91640b755e5e8ba76813814bf4cf2ab5ba"
+          ],
+          "targets": [
+            {
+              "version": "47.6.3",
+              "experimental": false,
+              "versionCodes": {
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7611,6 +6573,15 @@
         {
           "key": "stop_live_auto_enter",
           "title": "Default: stop live auto enter",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
+        },
+        {
+          "key": "hide_live_service_plus",
+          "title": "Default: hide live service plus",
           "description": null,
           "required": false,
           "type": "kotlin.Boolean",
@@ -7712,7 +6683,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7726,13 +6697,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7762,10 +6733,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7779,34 +6747,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7835,7 +6782,7 @@
     },
     {
       "name": "Load all saved stickers",
-      "description": "Loads every sticker you saved when you open the sticker panel. PineDrama otherwise shows only the first 100 and never loads the rest. Works as soon as you patch it in, with no switch.",
+      "description": "Loads every sticker you saved in one go when you open the sticker panel, instead of the first 100. Works as soon as you patch it in, with no switch.",
       "category": "Comments",
       "use": true,
       "dependencies": [
@@ -7843,10 +6790,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7860,34 +6804,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7907,10 +6830,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7924,34 +6844,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -7982,7 +6881,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -7996,13 +6895,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8104,10 +7003,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8121,34 +7017,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8177,7 +7052,7 @@
     },
     {
       "name": "Mute feed videos",
-      "description": "Mutes feed videos without changing your phone's volume, so music from another app keeps playing. You can also add a mute button on videos. Starts off. Turn it on in Hushfeed settings > Playback.",
+      "description": "Mutes feed videos without changing your phone's volume, so music from another app keeps playing. You can also add a mute button on videos, or keep the sound and let other apps play until a video starts and after you leave it. Starts off. Turn it on in Hushfeed settings > Playback.",
       "category": "Playback",
       "use": true,
       "dependencies": [
@@ -8188,7 +7063,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8202,13 +7077,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8241,12 +7116,21 @@
           "type": "kotlin.String",
           "default": "",
           "values": null
+        },
+        {
+          "key": "focus_waits_for_video",
+          "title": "Default: focus waits for video",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
+          "values": null
         }
       ]
     },
     {
       "name": "Network proxy",
-      "description": "Sends TikTok's feed, search and comments through a proxy server you set up. Videos and LIVEs still load directly, and so do Hushfeed's own saves and short-link lookups. Other apps aren't affected. Starts off. Turn it on in Hushfeed settings > Region, then restart TikTok.",
+      "description": "Sends TikTok's feed, search and comments through a proxy server you set up. Videos and LIVEs still load directly, and so do Hushfeed's own saves and short-link lookups. HTTP and SOCKS5 both work, with or without a password. Other apps aren't affected. Starts off. Turn it on in Hushfeed settings > Region, then restart TikTok.",
       "category": "Settings",
       "use": true,
       "dependencies": [
@@ -8256,10 +7140,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8273,34 +7154,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8373,10 +7233,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8390,34 +7247,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8438,7 +7274,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8452,13 +7288,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8497,10 +7333,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8514,34 +7347,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8589,10 +7401,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8606,34 +7415,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8663,10 +7451,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8680,34 +7465,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8738,7 +7502,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8752,13 +7516,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8788,10 +7552,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8805,34 +7566,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8862,10 +7602,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8879,34 +7616,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -8945,10 +7661,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -8962,34 +7675,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9073,10 +7765,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9090,34 +7779,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9147,10 +7815,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9164,34 +7829,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9221,10 +7865,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9238,34 +7879,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9358,10 +7978,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9375,34 +7992,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9458,7 +8054,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9472,13 +8068,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9498,7 +8094,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9512,13 +8108,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9565,7 +8161,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9579,13 +8175,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9603,7 +8199,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9617,13 +8213,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9641,10 +8237,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9658,34 +8251,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9714,7 +8286,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9728,13 +8300,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9754,7 +8326,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9768,13 +8340,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9803,7 +8375,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9817,13 +8389,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9843,10 +8415,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9860,34 +8429,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9926,10 +8474,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -9943,34 +8488,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -9998,7 +8522,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10012,13 +8536,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10038,10 +8562,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10055,34 +8576,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10148,10 +8648,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10165,34 +8662,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10239,10 +8715,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10256,34 +8729,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10408,7 +8860,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10422,13 +8874,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10529,10 +8981,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10546,34 +8995,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10603,7 +9031,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10617,13 +9045,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10671,10 +9099,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10688,34 +9113,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10772,7 +9176,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10786,13 +9190,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10822,7 +9226,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10836,13 +9240,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10862,7 +9266,7 @@
     },
     {
       "name": "Show follow status",
-      "description": "Shows on a profile whether that person follows you back, and marks accounts in your follow lists that don't. On by default. Turn it off in Hushfeed settings > App. Optional local counts and appearance controls apply to your own profile.",
+      "description": "Shows on a profile whether that person follows you back, and marks accounts in your follow lists that don't. On by default. Turn it off in Hushfeed settings > App. A separate switch adds the month an account was made. Optional local counts and appearance controls apply to your own profile.",
       "category": "Interaction",
       "use": true,
       "dependencies": [
@@ -10872,7 +9276,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10886,13 +9290,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -10906,6 +9310,15 @@
           "required": false,
           "type": "kotlin.Boolean",
           "default": true,
+          "values": null
+        },
+        {
+          "key": "show_join_date",
+          "title": "Default: show join date",
+          "description": null,
+          "required": false,
+          "type": "kotlin.Boolean",
+          "default": false,
           "values": null
         },
         {
@@ -10958,10 +9371,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -10975,34 +9385,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11085,10 +9474,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11102,34 +9488,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11159,10 +9524,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11176,34 +9538,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11251,10 +9592,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11268,34 +9606,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11325,10 +9642,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11342,34 +9656,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11399,10 +9692,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11416,34 +9706,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11473,10 +9742,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11490,34 +9756,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11547,10 +9792,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11564,34 +9806,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11621,10 +9842,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11638,34 +9856,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11695,10 +9892,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11712,34 +9906,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11769,10 +9942,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11786,34 +9956,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11843,10 +9992,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11860,34 +10006,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11917,7 +10042,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11931,13 +10056,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -11967,7 +10092,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -11981,13 +10106,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12028,7 +10153,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12042,13 +10167,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12161,7 +10286,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12175,13 +10300,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12211,10 +10336,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12228,34 +10350,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12346,10 +10447,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12363,34 +10461,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12410,10 +10487,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12427,34 +10501,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12484,10 +10537,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12501,34 +10551,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12558,10 +10587,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12575,34 +10601,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]
@@ -12632,10 +10637,7 @@
       ],
       "compatiblePackages": {
         "com.zhiliaoapp.musically": [
-          "47.5.3"
-        ],
-        "com.ss.android.ttmd.video": [
-          "47.5.3"
+          "47.6.3"
         ]
       },
       "compatibility": [
@@ -12649,34 +10651,13 @@
           ],
           "targets": [
             {
-              "version": "47.5.3",
+              "version": "47.6.3",
               "experimental": false,
               "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
-              }
-            }
-          ]
-        },
-        {
-          "name": "PineDrama",
-          "packageName": "com.ss.android.ttmd.video",
-          "description": null,
-          "appIconColor": 16657493,
-          "signatures": [
-            "e97ca0c8835c5a9e4f7702a0382b103ede9c5d51e5194c8db54f4c8833f54e18"
-          ],
-          "targets": [
-            {
-              "version": "47.5.3",
-              "experimental": false,
-              "versionCodes": {
-                "ARM64_V8A": 2024705030,
-                "ARMEABI_V7A": 2024705030,
-                "X86": 2024705030,
-                "X86_64": 2024705030
+                "ARM64_V8A": 2024706030,
+                "ARMEABI_V7A": 2024706030,
+                "X86": 2024706030,
+                "X86_64": 2024706030
               }
             }
           ]

@@ -449,7 +449,7 @@ public final class GestureActions {
             return true;
         } catch (RuntimeException failure) {
             Logger.printException(() -> "Could not open the search page", failure);
-            Utils.showToastShort(L10n.t("TikTok's search page couldn't be opened. Restart TikTok and try again."));
+            Utils.showToastShort(L10n.t("Search didn't open. Restart TikTok and try again."));
             return false;
         }
     }
@@ -692,7 +692,7 @@ public final class GestureActions {
      * ad). Anywhere else, or with no button registered in front at all, which a build that
      * moved the button would look like, it's the playing post as before.
      */
-    static Object onScreenAweme() {
+    public static Object onScreenAweme() {
         Object playing = CurrentVideoAuthor.getAweme();
         String playingId = Reflect.string(playing, "getAid", "aid");
         OnScreen screen = onScreen(playingId);

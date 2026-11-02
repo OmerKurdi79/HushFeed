@@ -293,6 +293,129 @@ public class CopyIdsTest {
         return panel;
     }
 
+    /** The LIVE card's user, with the members the extension reads by name. */
+    public static final class LiveUser {
+        public String username = "nasa_fan";
+        public String nickName = "Space Fan";
+        public String idStr = "6812345678901234567";
+
+        public String getUsername() { return username; }
+        public String getNickName() { return nickName; }
+        public String getIdStr() { return idStr; }
+    }
+
+    private TextView liveLine(String text) {
+        TextView line = new TextView(activity);
+        line.setText(text);
+        line.setWidth(600);
+        line.measure(View.MeasureSpec.makeMeasureSpec(600, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.AT_MOST));
+        line.layout(0, 0, 600, 80);
+        return line;
+    }
+
+    @Test public void theLiveCardCopiesItsBioItsNameAndTheUserIdOnALongPress() {
+        TextView bio = liveLine("hello");
+        TextView name = liveLine("Space Fan");
+        TextView handle = liveLine("nasa_fan");
+
+        CopyIds.onLiveUser(new LiveUser());
+        CopyIds.onLiveBio(bio, (char) 0x200e + "I love space" + (char) 0x200f);
+        CopyIds.onLiveText(name, "Space Fan");
+        CopyIds.onLiveText(handle, "nasa_fan");
+
+        assertTrue(bio.performLongClick());
+        assertEquals("I love space", clip());
+        assertEquals("Bio copied", ShadowToast.getTextOfLatestToast());
+        assertTrue(name.performLongClick());
+        assertEquals("Space Fan", clip());
+        assertEquals("Name copied", ShadowToast.getTextOfLatestToast());
+        assertTrue(handle.performLongClick());
+        assertEquals("6812345678901234567", clip());
+        assertEquals("User ID copied", ShadowToast.getTextOfLatestToast());
+    }
+
+    @Test public void theCopyMarkByTheUsernameCopiesItAndATapElsewhereGoesToTikTok() {
+        TextView handle = liveLine("nasa_fan");
+        CopyIds.onLiveUser(new LiveUser());
+        CopyIds.onLiveText(handle, "nasa_fan");
+        assertNotNull(handle.getCompoundDrawablesRelative()[2]);
+
+        long now = android.os.SystemClock.uptimeMillis();
+        android.view.MotionEvent middleDown = android.view.MotionEvent.obtain(now, now, android.view.MotionEvent.ACTION_DOWN, 100f, 40f, 0);
+        assertFalse("a tap on the text isn't taken", CopyIds.markHit(handle, middleDown));
+        middleDown.recycle();
+
+        android.view.MotionEvent down = android.view.MotionEvent.obtain(now, now, android.view.MotionEvent.ACTION_DOWN, 590f, 40f, 0);
+        android.view.MotionEvent up = android.view.MotionEvent.obtain(now, now + 40, android.view.MotionEvent.ACTION_UP, 590f, 40f, 0);
+        assertTrue(handle.dispatchTouchEvent(down));
+        assertTrue(handle.dispatchTouchEvent(up));
+        down.recycle();
+        up.recycle();
+        assertEquals("nasa_fan", clip());
+        assertEquals("Username copied", ShadowToast.getTextOfLatestToast());
+    }
+
+    @Test public void theLiveCardIsLeftAloneWhenOffOrForTextThatIsNotTheUsers() {
+        TextView other = liveLine("Join");
+        TextView bio = liveLine("hello");
+        CopyIds.onLiveUser(new LiveUser());
+        CopyIds.onLiveText(other, "Join");
+        assertFalse(other.isLongClickable());
+        assertNull(other.getCompoundDrawablesRelative()[2]);
+        CopyIds.onLiveBio(bio, "   ");
+        assertFalse(bio.isLongClickable());
+
+        Settings.COPY_IDS.save(false);
+        TextView name = liveLine("Space Fan");
+        CopyIds.onLiveText(name, "Space Fan");
+        CopyIds.onLiveBio(bio, "A bio");
+        assertFalse(name.isLongClickable());
+        assertFalse(bio.isLongClickable());
+    }
+
+    @Test public void aProfileSheetCopiesTheDisplayNameToo() {
+        ProfilePackage sharePackage = profile("6812345678901234567", "fang_yuan01010");
+        sharePackage.user.nickname = "Fang Yuan";
+
+        List<CopyIds.Target> targets = CopyIds.targetsOf(sharePackage);
+
+        assertEquals(3, targets.size());
+        assertEquals(CopyIds.COPY_NAME, targets.get(0).label);
+        assertEquals("Fang Yuan", targets.get(0).text);
+        assertEquals(CopyIds.NAME_COPIED, targets.get(0).toast);
+        assertEquals(CopyIds.COPY_USERNAME, targets.get(1).label);
+        assertEquals("fang_yuan01010", targets.get(1).text);
+    }
+
+    @Test public void buttonsThatDoNotFitMoveToANewLineInsteadOfOffTheSheet() {
+        FrameLayout panel = new FrameLayout(activity);
+        ProfilePackage sharePackage = profile("6812345678901234567", "fang_yuan01010");
+        sharePackage.user.nickname = "Fang Yuan";
+        CopyIds.showRow(panel, CopyIds.targetsOf(sharePackage));
+        LinearLayout row = (LinearLayout) panel.getChildAt(0);
+        int oneLine = fit(row, 4000);
+
+        int narrow = row.getChildAt(0).getMeasuredWidth() + row.getChildAt(1).getMeasuredWidth();
+        int wrapped = fit(row, narrow);
+
+        assertTrue("a narrow row takes more lines than a wide one", wrapped > oneLine);
+        for (int index = 0; index < row.getChildCount(); index++) {
+            View button = row.getChildAt(index);
+            assertTrue("button " + index + " stays inside the row", button.getRight() <= narrow);
+            assertTrue("button " + index + " stays inside the row", button.getBottom() <= wrapped);
+        }
+        assertTrue("the last button went below the first",
+                row.getChildAt(2).getTop() >= row.getChildAt(0).getBottom());
+    }
+
+    private static int fit(LinearLayout row, int width) {
+        row.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        row.layout(0, 0, width, row.getMeasuredHeight());
+        return row.getMeasuredHeight();
+    }
+
     private static ProfilePackage profile(String uid, String handle) {
         ProfilePackage sharePackage = new ProfilePackage();
         sharePackage.user = new User();

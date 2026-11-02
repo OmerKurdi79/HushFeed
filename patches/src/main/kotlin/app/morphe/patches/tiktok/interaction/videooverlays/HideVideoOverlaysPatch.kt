@@ -17,7 +17,6 @@ import app.morphe.patches.tiktok.misc.extension.sharedExtensionPatch
 import app.morphe.patches.tiktok.misc.inbox.MainActivityOnCreateFingerprint
 import app.morphe.patches.tiktok.misc.settings.SettingsStatusLoadFingerprint
 import app.morphe.patches.tiktok.misc.settings.settingsPatch
-import app.morphe.patches.tiktok.misc.theme.buildName
 import app.morphe.patches.tiktok.misc.theme.declaredVersions
 import app.morphe.patches.tiktok.shared.guardAtEntry
 import app.morphe.patches.tiktok.shared.requireLocals
@@ -80,8 +79,8 @@ val hideVideoOverlaysPatch = bytecodePatch(
         val footnoteGate = try {
             FootnoteBannerGateFingerprint.method.also { it.requireLocals(PATCH_NAME, 1) }
         } catch (problem: Exception) {
-            if (packageMetadata.buildName in declaredVersions()) throw problem
-            println("[$PATCH_NAME] Left out Hide Footnotes on ${packageMetadata.buildName}: ${problem.message}")
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[$PATCH_NAME] Left out Hide Footnotes on ${packageMetadata.versionName}: ${problem.message}")
             null
         }
         // The Following tab's LIVE and stories row (#262), the same way: required where
@@ -89,8 +88,21 @@ val hideVideoOverlaysPatch = bytecodePatch(
         val skylightToggle = try {
             FollowingSkylightToggleFingerprint.method
         } catch (problem: Exception) {
-            if (packageMetadata.buildName in declaredVersions()) throw problem
-            println("[$PATCH_NAME] Left out the Following LIVE row on ${packageMetadata.buildName}: ${problem.message}")
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[$PATCH_NAME] Left out the Following LIVE row on ${packageMetadata.versionName}: ${problem.message}")
+            null
+        }
+        // The Not interested and Interested buttons (#293), the same way: required where
+        // InterestButtonsAnchorsTest holds the factory's check, left out with a note anywhere else.
+        val interestButtons = try {
+            InterestButtonGroupFingerprint.method.also {
+                if (interestGroupBranch(it.implementation!!.instructions.toList()) < 0) {
+                    throw PatchException("$PATCH_NAME: ${it.definingClass} no longer checks $INTEREST_BUTTON_GROUP the way it did.")
+                }
+            }
+        } catch (problem: Exception) {
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[$PATCH_NAME] Left out the interest buttons on ${packageMetadata.versionName}: ${problem.message}")
             null
         }
         // The music disc's two switches (#68), the same way: required where MusicDiscSpinAnchorsTest
@@ -114,8 +126,8 @@ val hideVideoOverlaysPatch = bytecodePatch(
                 },
             )
         } catch (problem: Exception) {
-            if (packageMetadata.buildName in declaredVersions()) throw problem
-            println("[$PATCH_NAME] Left out the music disc switches on ${packageMetadata.buildName}: ${problem.message}")
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[$PATCH_NAME] Left out the music disc switches on ${packageMetadata.versionName}: ${problem.message}")
             null
         }
         // A missing new control must not leave an otherwise failed patch partly applied.
@@ -149,6 +161,8 @@ val hideVideoOverlaysPatch = bytecodePatch(
                 "invoke-static {}, Lapp/morphe/extension/tiktok/settings/SettingsStatus;->enableFollowingSkylight()V",
             )
         }
+        // The interest buttons go with Hide surveys; the switch decides in the extension.
+        interestButtons?.dropInterestButtons(PATCH_NAME)
         // The music disc. 47.1.4 ships music_animation_close_exp at 3, which keeps the disc from
         // turning; each lazy read hands its value to MusicDiscSpin before boxing it. The holds
         // past it (anim_opt, the high frame rate hold, the play animation's load downgrade and

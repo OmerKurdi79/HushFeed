@@ -10,7 +10,6 @@ import app.morphe.util.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patches.tiktok.misc.theme.buildName
 import app.morphe.patches.tiktok.misc.theme.declaredVersions
 import app.morphe.patches.tiktok.misc.extension.sharedExtensionPatch
 import app.morphe.patches.tiktok.misc.settings.settingsPatch
@@ -110,7 +109,7 @@ val playbackSpeedPatch = bytecodePatch(
     category("Playback")
     dependsOn(settingsPatch, sharedExtensionPatch)
 
-    compatibleWith(*AppCompatibilities.tiktokAndPineDrama())
+    compatibleWith(*AppCompatibilities.tiktok())
 
     execute {
         // The live speed gesture's hook and bridges are resolved before the first write below, so
@@ -145,8 +144,8 @@ val playbackSpeedPatch = bytecodePatch(
             ) { "Playback speed: the extension's nativeAweme stub is not static (Object)Aweme." }
             LiveSpeedSites(progress, liveSetter, liveAweme)
         } catch (problem: Exception) {
-            if (packageMetadata.buildName in declaredVersions()) throw problem
-            println("[Playback speed] Left out the live speed change on ${packageMetadata.buildName}: ${problem.message}")
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[Playback speed] Left out the live speed change on ${packageMetadata.versionName}: ${problem.message}")
             null
         }
 
@@ -378,7 +377,17 @@ val playbackSpeedPatch = bytecodePatch(
         press.routeThroughHoldSpeed(press.holdSpeedLiterals("the hold gesture's press method"))
         release.routeThroughHoldSpeed(release.holdSpeedLiterals("the hold gesture's release method"))
         rewordHoldSpeedToasts(release)
-        rewordHoldSpeedBanners(HoldBannerReceiverFingerprint.method)
+        val lockShow = rewordHoldSpeedBanners(HoldBannerReceiverFingerprint.method)
+
+        // Undoing the lock plays a literal 1x, "Back to normal speed"; with a default speed on,
+        // normal is the default (#248). An add-on like the live change, so only a declared build
+        // has to have it.
+        try {
+            release.routeThroughUnlockSpeed(release.unlockSpeedLiteral())
+        } catch (problem: PatchException) {
+            if (packageMetadata.versionName in declaredVersions()) throw problem
+            println("[Playback speed] Left out the default speed on unlock on ${packageMetadata.versionName}: ${problem.message}")
+        }
 
         press.addInstruction(
             0,

@@ -1,17 +1,16 @@
 <#
 .SYNOPSIS
-    Walks the whole patched TikTok or PineDrama on a release phone or an emulator and writes the
-    walk-receipt.json that release.ps1's publish stage needs, one per app the bundle declares.
+    Walks the whole patched TikTok on a release phone or an emulator and writes the
+    walk-receipt.json release.ps1 reads.
 
 .DESCRIPTION
     Patches -Package's app from the bundle being released with patch-for-device.ps1 and installs
     it (or, with -AuditBuild, walks the build already installed from that receipt), then opens
-    every screen the patches reach. On TikTok that's For You and Following with swipes, the
-    comment and share sheets, search, the Friends, Inbox and Profile tabs and Inbox's Activity
-    page. On PineDrama it's Short Video, Following and Drama, the same sheets and search, and the
-    Discover, Rewards, Inbox and Profile tabs. Both then expand every Hushfeed settings section,
-    scroll it to its end and collapse it, plus Search settings. Hushfeed opens from Profile's
-    menu, or from a long press on Home when an app's menu has no Hushfeed row. After each step
+    every screen the patches reach: For You and Following with swipes, the comment and share
+    sheets, search, the Friends, Inbox and Profile tabs and Inbox's Activity page. It then expands
+    every Hushfeed settings section, scrolls it to its end and collapses it, plus Search settings.
+    Hushfeed opens from Profile's menu, or from a long press on Home when that route has no
+    Hushfeed row. After each step
     the app has to still be the foreground app on the same process. Logcat's crash lines for it
     decide the rest.
 
@@ -22,29 +21,27 @@
     dumpsys) and dumps again.
 
     TikTok shows the language picked in its own settings whatever the phone or per-app locale
-    says, so the walk finds the app's screens through its profile's labels (walk-app-core.ps1;
-    TikTok's in English and Italian, PineDrama's in English) and Hushfeed's through its own
-    translation tables.
+    says, so the walk finds the app's screens through its profile's labels (walk-app-core.ps1, in
+    English and Italian) and Hushfeed's through its own translation tables.
 
     The receipt is PASS only when every planned screen was reached, the app never crashed, died
     or left the foreground, and the installed APK is the one patched from -Bundle.
 
-.EXAMPLE
-    ./scripts/walk-app.ps1 -Serial $env:HUSHFEED_DEVICE_SERIAL -Bundle build/release-assets/0.78.0/patches-0.78.0.mpp `
-        -PatchArgs @{ Apk = 'C:/fixtures/tiktok.apk'; Keystore = 'C:/keys/device.keystore'; KeyAlias = 'Morphe' }
+    One device lease covers the install, the walk and, with -VerifyCleanApk, ART's verifier
+    (verify-injected-registers.ps1) after a PASS. Taking a fresh lease for each step let another
+    task take the phone in the seconds between them, twice in one release.
 
 .EXAMPLE
-    ./scripts/walk-app.ps1 -Serial $env:HUSHFEED_DEVICE_SERIAL -Package com.ss.android.ttmd.video `
-        -Bundle build/release-assets/0.80.0/patches-0.80.0.mpp -Out build/walk-pinedrama/walk-receipt.json `
-        -PatchArgs @{ Apk = 'C:/fixtures/pinedrama.apk'; Keystore = 'C:/keys/device.keystore'; KeyAlias = 'Morphe' }
+    ./scripts/walk-app.ps1 -Serial $env:HUSHFEED_DEVICE_SERIAL -Bundle patches/build/release/patches-0.78.0.mpp `
+        -PatchArgs @{ Apk = 'C:/fixtures/tiktok.apk'; Keystore = 'C:/keys/device.keystore'; KeyAlias = 'Morphe' }
+
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)][string]$Serial,
     # The app to walk, one of the packages in walk-app-core.ps1's $WalkProfiles.
     [string]$Package = 'com.zhiliaoapp.musically',
-    # The bundle the receipt vouches for. Publish holds the receipt to the staged copy in
-    # build/release-assets, so pass that one when walking a release.
+    # The bundle the receipt vouches for.
     [string]$Bundle,
     # Walk the build already installed, described by the .audit-build.json patch-for-device.ps1
     # left beside its APK, instead of patching and installing a new one.
@@ -57,7 +54,10 @@ param(
     [string]$Query = 'cats',
     # Passed to patch-for-device.ps1 as they are: Apk, DesktopJar, Java, Keystore, KeyAlias,
     # KeystoreType, KeystorePassword, KeyPassword, Exclude, Option, OutDir.
-    [hashtable]$PatchArgs = @{}
+    [hashtable]$PatchArgs = @{},
+    # The clean vendor APK. After a PASS, verify-injected-registers.ps1 compares it with the
+    # walked APK and runs ART's verifier on -Serial under the walk's own lease.
+    [string]$VerifyCleanApk
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 3.0
@@ -106,10 +106,16 @@ if ((Get-FileHash -LiteralPath $releaseBundle -Algorithm SHA256).Hash.ToLowerInv
 $adb = (Get-Command adb -ErrorAction SilentlyContinue).Source
 if (-not $adb) { $adb = Get-ChildItem "$env:LOCALAPPDATA\Microsoft\WinGet\Packages" -Recurse -Filter adb.exe -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName }
 if (-not $adb) { throw 'No adb found. Put it on the PATH or install the platform tools.' }
+if ($VerifyCleanApk -and -not (Test-Path -LiteralPath $VerifyCleanApk -PathType Leaf)) { throw "There's no clean APK at $VerifyCleanApk." }
+
+$script:lease = New-DeviceLease -LeaseDir $LeaseDir -Serial $Serial -Project 'hushfeed' -ChatIdentity $ChatIdentity `
+    -Purpose 'whole-app walk' -LeaseMinutes 30
+$walkExit = 1
+try {
 
 if (-not $AuditBuild) {
     $patch = @{} + $PatchArgs
-    $patch.Serial = $Serial; $patch.LeaseDir = $LeaseDir; $patch.ChatIdentity = $ChatIdentity; $patch.Package = $WalkPackage
+    $patch.Serial = $Serial; $patch.LeaseDir = $LeaseDir; $patch.ChatIdentity = $ChatIdentity; $patch.Lease = $script:lease
     if (-not $patch.ContainsKey('OutDir')) { $patch.OutDir = Join-Path $work 'apk' }
     Write-WalkLog "patching and installing from $releaseBundle"
     & (Join-Path $PSScriptRoot 'patch-for-device.ps1') @patch
@@ -136,7 +142,6 @@ $planned = [Collections.Generic.List[string]]::new()
 $reached = [Collections.Generic.List[string]]::new()
 $faults = [Collections.Generic.List[string]]::new()
 $script:dumpCount = 0
-$script:lease = $null
 $translations = Get-HushfeedTranslations -Root $root
 $remoteDump = '/sdcard/hushfeed-walk.xml'
 
@@ -191,9 +196,20 @@ function Suspend-WalkVideo {
         $m = [regex]::Match($_, ' 0,0-(\d+),(\d+) ')
         if ($m.Success -and [int]$m.Groups[1].Value -gt 400) { [pscustomobject]@{ W = [int]$m.Groups[1].Value; H = [int]$m.Groups[2].Value } }
     } | Select-Object -First 1
-    if (-not $layout -or -not (Get-WalkForeground).StartsWith("$WalkPackage/", [StringComparison]::Ordinal)) { return $false }
+    $before = Get-WalkForeground
+    if (-not $layout -or -not $before.StartsWith("$WalkPackage/", [StringComparison]::Ordinal)) { return $false }
     Invoke-WalkAdb shell input tap ([int]($layout.W / 2)) ([int]($layout.H / 2)) | Out-Null
-    Start-Sleep -Milliseconds 1200
+    Start-Sleep -Milliseconds 1500
+    # On a LIVE preview the same tap opens the LIVE room, which never stops drawing.
+    $after = Get-WalkForeground
+    if ($after -and $after -ne $before) { Invoke-WalkBack 'the page the pause tap opened'; return $false }
+    # uiautomator can't idle while TikTok still draws, and a freshly booted emulator kept drawing
+    # after the pause: every dump failed for seven minutes after search in the 0.80.0 release walk.
+    for ($i = 0; $i -lt 6; $i++) {
+        Invoke-WalkAdb shell dumpsys gfxinfo $WalkPackage reset | Out-Null
+        Start-Sleep -Seconds 2
+        if (((Invoke-WalkAdb shell dumpsys gfxinfo $WalkPackage) -join ' ') -match 'Total frames rendered: 0\b') { break }
+    }
     return $true
 }
 
@@ -278,6 +294,26 @@ function Find-WalkVideoButton([string]$Label, [string]$What, [int]$Width, [int]$
     return $null
 }
 
+# A button in the feed's top bar (Search, another feed's tab). Some feed items never stop drawing
+# (a LIVE preview), so uiautomator can't read the screen over them: swipe on to the next video.
+# The 0.80.0 release walk lost search when three dumps in a row failed over For You.
+function Find-WalkTopNode([string]$Label, [string]$What, [int]$Width, [int]$Height) {
+    for ($i = 0; $i -lt 4; $i++) {
+        $nodes = Get-WalkScreen "before $What" -AllowPause
+        $node = @(Find-UiNode -Nodes $nodes -Label $Label | Where-Object { $_.Top -lt $Height * 0.15 }) | Select-Object -First 1
+        if ($node) { return $node }
+        if ($nodes -and -not (Find-WalkNav $nodes $WalkLabels.Home $Height)) {
+            Write-WalkLog "off the feed before $What"
+            if (-not (Restore-WalkTabs $What $Height)) { return $null }
+            continue
+        }
+        Write-WalkLog "swipe on before $What"
+        Invoke-WalkSwipe $Width $Height
+        if (-not (Test-WalkAlive "$What swipe")) { return $null }
+    }
+    return $null
+}
+
 function Complete-WalkScreen([string]$Name) {
     if (Test-WalkAlive $Name) {
         $reached.Add($Name)
@@ -295,19 +331,32 @@ function Restore-WalkTabs([string]$From, [int]$Height) {
         Close-WalkKeyboard
         $nodes = Get-WalkScreen "restore-$From" -AllowPause
         if (Find-WalkNav $nodes $WalkLabels.Home $Height) { return $nodes }
-        if (-not (Get-WalkForeground).StartsWith("$WalkPackage/", [StringComparison]::Ordinal)) { return @() }
+        # The comma keeps the empty list a list: a bare @() reaches the caller as $null, and
+        # Find-UiNode then stopped the whole walk on $null.Text instead of logging "no Friends tab".
+        if (-not (Get-WalkForeground).StartsWith("$WalkPackage/", [StringComparison]::Ordinal)) { return , @() }
         Invoke-WalkBack $From
     }
-    return @()
+    return , @()
+}
+
+function Select-WalkRow($Nodes, [string]$Label, [string]$Id, [int]$Height) {
+    # The band starts under the toolbar, which ends at 0.095 of the height on the S22, where the
+    # first row's title (Search settings) sits at 0.117: a 0.12 cutoff never saw it.
+    return @(Find-UiNode -Nodes $Nodes -Label $Label -Id $Id |
+            Where-Object { $_.Top -gt $Height * 0.10 -and $_.Bottom -lt $Height * 0.95 }) | Select-Object -First 1
 }
 
 function Find-WalkRow([string]$Label, [int]$Width, [int]$Height, [string]$Name, [string]$Id) {
-    # Settings rows: scroll the page to its top, then down until the row shows. Hushfeed's page
-    # rows carry the id "title", which keeps the walk off Hushfeed home's quick setup buttons
-    # (one of them is "Privacy", like the page).
+    # Settings rows: scroll the page up until the row shows or the top stops moving, then down
+    # until it shows. Hushfeed's page rows carry the id "title", which keeps the walk off
+    # Hushfeed home's quick setup buttons (one of them is "Privacy", like the page). The way up
+    # reads every screen: a header being collapsed sits above its controls, and an expanded Feed
+    # filter runs about twelve screens, so eight blind swipes up left the walk under the header.
     $before = ''
-    for ($i = 0; $i -lt 8; $i++) {
+    for ($i = 0; $i -lt 30; $i++) {
         $nodes = Get-WalkScreen "$Name-top"
+        $row = Select-WalkRow $nodes $Label $Id $Height
+        if ($row) { return $row }
         $print = Get-UiFingerprint $nodes
         if ($print -ceq $before) { break }
         $before = $print
@@ -316,8 +365,7 @@ function Find-WalkRow([string]$Label, [int]$Width, [int]$Height, [string]$Name, 
     $before = ''
     for ($i = 0; $i -lt 12; $i++) {
         $nodes = Get-WalkScreen $Name
-        $row = @(Find-UiNode -Nodes $nodes -Label $Label -Id $Id |
-                Where-Object { $_.Top -gt $Height * 0.12 -and $_.Bottom -lt $Height * 0.95 }) | Select-Object -First 1
+        $row = Select-WalkRow $nodes $Label $Id $Height
         if ($row) { return $row }
         $print = Get-UiFingerprint $nodes
         if ($print -ceq $before) { return $null }
@@ -331,15 +379,15 @@ function Get-WalkSectionView([string]$Label, [int]$Width, [int]$Height, [string]
     $row = Find-WalkRow $Label $Width $Height $Name 'title'
     if (-not $row) { return $null }
     if ($row.Top -gt $Height * 0.4) {
-        # Leave room below the header. Refresh the dump before the next tap.
+        # Leave room below the header. Refresh the dump before the next tap. The swipe is slow
+        # because a fast one flings on, 1107 px for 711 asked, and carries the row off the top.
         $distance = [int][Math]::Min($row.Top - $Height * 0.25, $Height * 0.45)
         Invoke-WalkAdb shell input swipe ([int]($Width / 2)) ([int]($Height * 0.7)) `
-            ([int]($Width / 2)) ([int]($Height * 0.7) - $distance) 450 | Out-Null
+            ([int]($Width / 2)) ([int]($Height * 0.7) - $distance) ($distance * 4) | Out-Null
         Start-Sleep -Milliseconds 1300
     }
     $nodes = Get-WalkScreen $Name
-    $row = @(Find-UiNode -Nodes $nodes -Label $Label -Id 'title' |
-            Where-Object { $_.Top -gt $Height * 0.12 -and $_.Bottom -lt $Height * 0.95 }) | Select-Object -First 1
+    $row = Select-WalkRow $nodes $Label 'title' $Height
     if (-not $row) { return $null }
     $next = @($nodes | Where-Object { $_.Id -ceq 'title' -and $_.Top -ge $row.Bottom -and
             $_.Bottom -lt $Height * 0.95 -and $_.Text } | Sort-Object Top) | Select-Object -First 1
@@ -413,8 +461,8 @@ foreach ($screen in Get-WalkPlannedScreens -AppProfile $appProfile -HushfeedPage
 $started = [DateTimeOffset]::UtcNow
 $device = ''; $appVersion = ''; $installedSha256 = ''; $installedPackage = ''; $installedVersionCode = ''
 $crashes = @()
-$script:lease = New-DeviceLease -LeaseDir $LeaseDir -Serial $Serial -Project 'hushfeed' -ChatIdentity $ChatIdentity `
-    -Purpose 'whole-app walk' -LeaseMinutes 30
+$savedScales = @{}
+Update-DeviceLease -Lease $script:lease -LeaseMinutes 30
 try {
     Invoke-WalkAdb shell input keyevent KEYCODE_WAKEUP | Out-Null
     $device = ((Invoke-WalkAdb shell getprop ro.product.model) -join '').Trim()
@@ -427,6 +475,15 @@ try {
         }
     }
     Write-WalkLog "$device, $appName $appVersion, APK $installedSha256"
+    if ($Serial -like 'emulator-*') {
+        # A creator's animated avatar ring kept sending accessibility events over a paused feed, so
+        # uiautomator never idled and the 0.80.0 release walk on Login2 lost 22 screens. Zero
+        # animation scales stop the ring. Phones keep theirs: a killed walk can't restore them.
+        foreach ($key in 'window_animation_scale', 'transition_animation_scale', 'animator_duration_scale') {
+            $savedScales[$key] = ((Invoke-WalkAdb shell settings get global $key) -join '').Trim()
+            Invoke-WalkAdb shell settings put global $key 0 | Out-Null
+        }
+    }
 
     Invoke-WalkAdb shell am force-stop $WalkPackage | Out-Null
     # Other sessions read this phone's logs too, so the walk reads only what follows its start
@@ -485,10 +542,9 @@ try {
         $null = Restore-WalkTabs $sheet.Name $H
     }
 
-    # The other top feeds (Following, and PineDrama's Drama), each then back to the main feed.
+    # The other top feeds, each then back to the main feed.
     foreach ($other in $appProfile.OtherFeeds) {
-        $nodes = Get-WalkScreen "before $other" -AllowPause
-        $tabNode = @(Find-UiNode -Nodes $nodes -Label $WalkLabels[$other] | Where-Object { $_.Top -lt $H * 0.15 }) | Select-Object -First 1
+        $tabNode = Find-WalkTopNode $WalkLabels[$other] $other $W $H
         if (-not $tabNode) { Write-WalkLog "no $other feed tab"; continue }
         Invoke-WalkTap $tabNode $other 3000
         $alive = Test-WalkAlive $other
@@ -500,8 +556,7 @@ try {
     }
 
     # Search with a harmless query.
-    $nodes = Get-WalkScreen 'before search' -AllowPause
-    $search = @(Find-UiNode -Nodes $nodes -Label $WalkLabels.Search | Where-Object { $_.Top -lt $H * 0.15 }) | Select-Object -First 1
+    $search = Find-WalkTopNode $WalkLabels.Search 'search' $W $H
     if ($search) {
         Invoke-WalkTap $search 'Search' 2500
         $page = Get-WalkScreen 'search page'
@@ -515,7 +570,7 @@ try {
         $null = Restore-WalkTabs 'search' $H
     }
 
-    # The other tabs, TikTok Inbox's Activity page, and Profile.
+    # The other tabs, Inbox's Activity page, and Profile.
     foreach ($tab in $appProfile.Tabs) {
         $nodes = Restore-WalkTabs "before $tab" $H
         $nav = Find-WalkNav $nodes $WalkLabels[$tab] $H
@@ -600,8 +655,11 @@ try {
 } finally {
     try {
         Invoke-WalkAdb shell "rm -f $remoteDump /sdcard/hushfeed-walk.png" | Out-Null
+        foreach ($key in @($savedScales.Keys)) {
+            if ($savedScales[$key] -match '^\d+(\.\d+)?$') { Invoke-WalkAdb shell settings put global $key $savedScales[$key] | Out-Null }
+            else { Invoke-WalkAdb shell settings delete global $key | Out-Null }
+        }
     } catch { Write-Warning $_.Exception.Message }
-    Remove-DeviceLease -Lease $script:lease -WarnOnFailure
 }
 
 $verdict = Get-WalkVerdict -Planned $planned -Reached $reached -Crashes $crashes -Faults $faults
@@ -614,4 +672,19 @@ $receipt = New-WalkReceipt -WalkProfile $receiptProfile -Result $verdict.Result 
 foreach ($problem in $verdict.Problems) { Write-WalkLog "problem: $problem" }
 Write-WalkLog "$($reached.Count) of $($planned.Count) screens, $($crashes.Count) crashes. Receipt: $Out"
 Write-WalkLog $verdict.Result
-if ($verdict.Result -ne 'PASS') { exit 1 }
+
+if ($verdict.Result -eq 'PASS') {
+    $walkExit = 0
+    if ($VerifyCleanApk) {
+        # ART's verifier reads every class, so it sees a bad hook on a screen the walk never opened.
+        Update-DeviceLease -Lease $script:lease -LeaseMinutes 30
+        & (Join-Path $PSScriptRoot 'verify-injected-registers.ps1') -CleanApk $VerifyCleanApk -PatchedApk $PatchedApk `
+            -Serial $Serial -Lease $script:lease
+        $walkExit = $LASTEXITCODE
+    }
+}
+
+} finally {
+    Remove-DeviceLease -Lease $script:lease -WarnOnFailure
+}
+exit $walkExit

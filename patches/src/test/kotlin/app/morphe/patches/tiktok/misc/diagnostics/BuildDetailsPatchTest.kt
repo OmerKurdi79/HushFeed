@@ -27,7 +27,7 @@ import org.junit.rules.TemporaryFolder
 
 class BuildDetailsPatchTest {
     @get:Rule val temporary = TemporaryFolder()
-    private val target = packageMetadata("com.zhiliaoapp.musically", "47.5.3", "2024705030")
+    private val target = packageMetadata("com.zhiliaoapp.musically", "47.6.3", "2024706030")
     private val fingerprint = "A1234567890123456789B" + "c".repeat(43)
 
     @Test fun `bundle manifest paths preserve plus spaces percent and unicode and release the jar`() {
@@ -157,7 +157,7 @@ class BuildDetailsPatchTest {
     }
 
     @Test fun `target facts match all declared builds and never capture unreviewed package names`() {
-        AppCompatibilities.tiktokAndPineDrama().forEach { compatibility ->
+        AppCompatibilities.tiktok().forEach { compatibility ->
             compatibility.targets.forEach { app ->
                 assertFalse(app.versionCodes.isNullOrEmpty())
                 app.versionCodes.orEmpty().values.distinct().forEach { code ->
@@ -181,7 +181,7 @@ class BuildDetailsPatchTest {
 
     /** The extension validates targets from its own copy. This fixture ties that copy to the catalog. */
     @Test fun `runtime target fixture is exactly the declared builds`() {
-        val declared = AppCompatibilities.tiktokAndPineDrama().flatMap { compatibility ->
+        val declared = AppCompatibilities.tiktok().flatMap { compatibility ->
             compatibility.targets.flatMap { app ->
                 app.versionCodes.orEmpty().values.distinct().map { "${compatibility.packageName}/${app.version}=$it" }
             }
@@ -252,12 +252,13 @@ class BuildDetailsPatchTest {
         assertTrue("Accent color lost the Lynx text hooks", sharedExtensionPatch in accent)
         // AMOLED repaints one Compose palette builder in place (#152), and since #171 it also paints
         // the see-through comment bar under an opened post, which goes through the extension. Since
-        // #263 it also hands its color to the activity center's web pages.
+        // #263 it also hands its color to the activity center's web pages, and since #267 it lights
+        // the text box of a LIVE room's comment panel.
         val amoled = dependencies(amoledThemePatch)
         assertTrue("AMOLED has no metadata dependency", buildDetailsPatch in amoled)
         assertTrue("AMOLED lost the comment bar hook", sharedExtensionPatch in amoled)
         val amoledOwn = amoled.filterIsInstance<BytecodePatch>().filter { it !in dependencies(sharedExtensionPatch) }
-        assertEquals("AMOLED's own bytecode is the palette repaint, the comment bar and the web pages", 3, amoledOwn.size)
+        assertEquals("AMOLED's own bytecode is the palette repaint, the comment bar, the web pages and the LIVE comment box", 4, amoledOwn.size)
         assertTrue(amoledOwn.all { it.name == null })
         // The core asset strip returns out of the content credential service's start before it
         // loads the emptied library (#211). Bytecode too, and just as free of Hushfeed's own code.

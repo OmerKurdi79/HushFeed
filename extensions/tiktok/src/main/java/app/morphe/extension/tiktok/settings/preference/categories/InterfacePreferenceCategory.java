@@ -205,7 +205,7 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
      */
     private void addButtonsOnVideos(Context context) {
         boolean any = SettingsStatus.blockAuthorEnabled || SettingsStatus.notInterestedEnabled
-                || SettingsStatus.feedMuteEnabled;
+                || SettingsStatus.feedMuteEnabled || SettingsStatus.advancedDownloadsEnabled;
         if (!any) return;
         addPreference(new SectionHeadingPreference(context, "Buttons on videos"));
         if (SettingsStatus.blockAuthorEnabled) {
@@ -242,6 +242,11 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
             addPreference(new TogglePreference(context, "Show the mute button on videos",
                     "Add a button beside the block control that turns the feed's sound off and on.",
                     Settings.FEED_MUTE_BUTTON));
+        }
+        if (SettingsStatus.advancedDownloadsEnabled) {
+            addPreference(new TogglePreference(context, "Show the save button on videos",
+                    "Add a button beside the block control that saves the video on screen in one tap. Drag it wherever you like.",
+                    Settings.DOWNLOAD_BUTTON));
         }
     }
 
@@ -423,6 +428,12 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
                         "Hide the search bar at the top of videos you open from search, a profile or your watch history. The Back button stays.",
                         Settings.HIDE_OPENED_VIDEO_SEARCH
                 ));
+                addPreference(new TogglePreference(
+                        context,
+                        "Hide the Back button there too",
+                        "Hide the Back button beside that search bar as well. Your phone's back gesture or button still takes you back.",
+                        Settings.HIDE_OPENED_VIDEO_BACK
+                ));
             }
         }
         if (SettingsStatus.videoOverlaysEnabled) {
@@ -453,7 +464,7 @@ public final class InterfacePreferenceCategory extends ConditionalPreferenceCate
             addPreference(new TogglePreference(
                     context,
                     "Hide surveys",
-                    "Hide the question cards TikTok slides over a video near its end.",
+                    "Hide the question cards TikTok slides over a video near its end, and the buttons that ask if you're interested in it.",
                     Settings.HIDE_FEED_SURVEYS
             ));
             if (SettingsStatus.footnotesEnabled) {

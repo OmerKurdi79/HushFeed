@@ -242,11 +242,11 @@ public final class CommentTools {
     }
 
     private static final String POLL_HOOK_FAMILY = "comment polls";
-    private static final String[] DISLIKE_BUTTON_IDS = {"47.5.3:k1q"};
+    private static final String[] DISLIKE_BUTTON_IDS = {"47.6.3:k1e"};
 
     /** One log line for a cell with no thumbs down, not a verdict on the build. */
     private static boolean warnedNoDislikeControl;
-    private static final String[] DISLIKE_ICON_IDS = {"47.5.3:mo2"};
+    private static final String[] DISLIKE_ICON_IDS = {"47.6.3:mn5"};
     /**
      * Faded enough to read as blocked, still readable. At 0.35 the comment text dropped to about
      * 3:1 on the sheet, which is below the floor for text of that size.
@@ -760,7 +760,7 @@ public final class CommentTools {
         try {
             View cell = cellOf(touched);
             if (cell == null) {
-                Utils.showToastShort(L10n.t("Couldn't read who posted this comment. Open their profile and block them there."));
+                Utils.showToastShort(L10n.t("Can't tell who wrote this. Block them on their profile."));
                 return;
             }
             toggleBlock(cell);
@@ -938,7 +938,7 @@ public final class CommentTools {
         }
         Object user = comment == null ? null : Reflect.property(comment, "getUser", "user");
         if (user == null) {
-            Utils.showToastShort(L10n.t("Couldn't read who posted this comment. Open their profile and block them there."));
+            Utils.showToastShort(L10n.t("Can't tell who wrote this. Block them on their profile."));
             return;
         }
 
@@ -950,7 +950,7 @@ public final class CommentTools {
                         Reflect.string(user, "getNickname", "nickname")),
                 Reflect.string(comment, "getCid", "cid"));
         if (!author.isUsable()) {
-            Utils.showToastShort(L10n.t("Couldn't read who posted this comment. Open their profile and block them there."));
+            Utils.showToastShort(L10n.t("Can't tell who wrote this. Block them on their profile."));
             return;
         }
 

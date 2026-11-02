@@ -72,7 +72,7 @@ public class FeedFilterPreferenceCategory extends ConditionalPreferenceCategory 
         addPreference(new SectionHeadingPreference(context, "Kinds of post"));
         addPreference(new TogglePreference(
                 context,
-                "Hide TikTok Shop", "Hide TikTok Shop posts from the feed.",
+                "Hide TikTok Shop", "Hide TikTok Shop posts from the feed, and the shop buttons under captions.",
                 Settings.HIDE_SHOP
         ));
         addPreference(new TogglePreference(
@@ -85,6 +85,13 @@ public class FeedFilterPreferenceCategory extends ConditionalPreferenceCategory 
                 "Hide LIVE videos", "Hide LIVE videos from the feed.",
                 Settings.HIDE_LIVE
         ));
+        addPreference(new InputTextPreference(context, "Keep LIVEs from these creators",
+                "With Hide LIVE videos on, these creators' LIVEs stay when TikTok sends them. "
+                        + "Separate handles or user IDs with commas.",
+                Settings.LIVE_KEPT_CREATORS)
+                .withCheck(CreatorExceptions::entryProblem)
+                .withNote(CreatorExceptions::conflictNote)
+                .withNameKeyboard());
         addPreference(new TogglePreference(context, "Hide LIVE replays", "Hide recorded LIVE broadcasts from the feed.", Settings.HIDE_LIVE_REPLAYS));
         addPreference(new TogglePreference(
                 context,

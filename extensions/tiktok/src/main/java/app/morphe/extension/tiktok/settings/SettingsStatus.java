@@ -127,8 +127,10 @@ public class SettingsStatus {
     public static boolean firstLaunchSetupEnabled = false;
     public static boolean duetStitchEnabled = false;
     public static boolean notificationControlsEnabled = false;
+    public static boolean keepUnsentEnabled = false;
     public static boolean suggestedVideoPushBlockEnabled = false;
     public static boolean autoStreakEnabled = false;
+    public static boolean hideReadReceiptsEnabled = false;
     public static boolean hideSuggestedAccountsEnabled = false;
     public static boolean hideInboxStoriesEnabled = false;
     public static boolean chatDeclutterEnabled = false;
@@ -539,12 +541,20 @@ public class SettingsStatus {
         notificationControlsEnabled = true;
     }
 
+    public static void enableKeepUnsent() {
+        keepUnsentEnabled = true;
+    }
+
     public static void enableSuggestedVideoPushBlock() {
         suggestedVideoPushBlockEnabled = true;
     }
 
     public static void enableAutoStreak() {
         autoStreakEnabled = true;
+    }
+
+    public static void enableHideReadReceipts() {
+        hideReadReceiptsEnabled = true;
     }
 
     public static void enableInboxFilter() {
@@ -771,13 +781,6 @@ public class SettingsStatus {
         voiceCommentsEnabled = true;
     }
 
-    /** Allow photo comments put its switch in front of PineDrama's comment gallery check (#156). */
-    public static boolean commentPhotosEnabled = false;
-
-    public static void enableCommentPhotos() {
-        commentPhotosEnabled = true;
-    }
-
     /** Skip passkey sign-in put its switch in front of TikTok's passkey support check. */
     public static boolean passkeySignInEnabled = false;
 
@@ -824,6 +827,10 @@ public class SettingsStatus {
     public static void enableCommentSendFix() { commentSendFixEnabled = true; }
     public static boolean savedStickersEnabled = false;
     public static void enableSavedStickers() { savedStickersEnabled = true; }
+    public static boolean stickerCreatorEnabled = false;
+    public static void enableStickerCreator() { stickerCreatorEnabled = true; }
+    public static boolean stickerRecentsEnabled = false;
+    public static void enableStickerRecents() { stickerRecentsEnabled = true; }
     public static boolean followDiagnosticsEnabled = false;
     public static void enableFollowDiagnostics() { followDiagnosticsEnabled = true; }
     public static boolean repostDiagnosticsEnabled = false;

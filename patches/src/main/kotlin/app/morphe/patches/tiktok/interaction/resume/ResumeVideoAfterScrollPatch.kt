@@ -20,7 +20,6 @@ import app.morphe.util.RegisterLiveness
 import app.morphe.util.getReference
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
-import app.morphe.util.numberOfParameterRegisters
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -45,7 +44,7 @@ val resumeVideoAfterScrollPatch = bytecodePatch(
     category("Interaction")
     dependsOn(settingsPatch, sharedExtensionPatch)
 
-    compatibleWith(*AppCompatibilities.tiktokAndPineDrama())
+    compatibleWith(*AppCompatibilities.tiktok())
 
     execute {
         // Everything the writes below need is read off the host and checked before the first of

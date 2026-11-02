@@ -1,6 +1,7 @@
 /*
  * Forked from:
- * https://gitlab.com/ReVanced/revanced-patches/-/blob/main/patches/src/main/kotlin/app/revanced/patches/tiktok/misc/settings/EnableOpenDebugPatch.kt
+ * https://gitlab.com/ReVanced/revanced-patches/-/blob/377d4e15016296b45d809697f7f69bce74badd3a/patches/src/main/kotlin/app/revanced/patches/tiktok/misc/settings/EnableOpenDebugPatch.kt
+ * (the revision De-Vanced cites; ReVanced's main has since dropped the file)
  */
 package app.morphe.patches.tiktok.misc.settings
 
@@ -134,7 +135,7 @@ internal data class OpenDebugClickWrapper(val className: String, val invokeName:
  * The click wrapper the OpenDebug row's compose method builds: the constructor taking the row's
  * state, a Context and the int that picks which `invoke$N` runs. It's found by those parameters
  * alone. The wrapper's obfuscated class name is TikTok's own (`Lkotlin/jvm/internal/AwS...` in
- * 47.1.4) and another app built from the same code, PineDrama, names it differently.
+ * 47.1.4) and changes from build to build.
  */
 internal fun openDebugClickWrapper(compose: SmaliMethod, stateClass: String): OpenDebugClickWrapper {
     val instructions = compose.implementationOrPatchException("Enable Open Debug").instructions.toList()
@@ -355,7 +356,7 @@ val settingsPatch = bytecodePatch(
     category("Settings")
     dependsOn(sharedExtensionPatch)
 
-    compatibleWith(*AppCompatibilities.tiktokAndPineDrama())
+    compatibleWith(*AppCompatibilities.tiktok())
 
     execute {
         // First, before any other write: TikTok's own crash recovery would delete what this

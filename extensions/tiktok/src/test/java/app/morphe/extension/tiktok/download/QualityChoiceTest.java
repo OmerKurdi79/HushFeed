@@ -219,16 +219,59 @@ public class QualityChoiceTest {
             VideoPost post = new VideoPost("6", FULL, MID);
             post.video.dash = true;
             assertTrue(VideoDownloads.startPicked(post, activity, MID));
-            assertEquals("This video isn't available as a complete file. Try again later.",
+            assertEquals("No full file for this video. Try again later.",
                     ShadowToast.getTextOfLatestToast());
             assertFalse(ShadowToast.showedToast(
-                    "This quality isn't available as a complete file, so TikTok's own save runs instead"));
+                    "No full file at this quality, so TikTok saves it"));
             assertFalse("nothing holds the video afterwards", VideoDownloads.saving("6"));
         } finally {
             Settings.DOWNLOAD_DETAILS.save(details);
             Settings.CHECK_SAVED_VIDEOS.save(check);
             Settings.DOWNLOAD_WITHOUT_SOUND.save(muted);
         }
+    }
+
+    /**
+     * The button on the video has no TikTok save behind it. Where the plain save stands aside for
+     * TikTok, the button carries on with TikTok's file by name, so a tap is never a dead tap (#299).
+     */
+    @Test public void theButtonOnTheVideoCarriesOnWhereThePlainSaveStandsAside() {
+        boolean details = Settings.DOWNLOAD_DETAILS.get(), check = Settings.CHECK_SAVED_VIDEOS.get();
+        boolean muted = Settings.DOWNLOAD_WITHOUT_SOUND.get(), progress = Settings.DOWNLOAD_PROGRESS.get();
+        try {
+            Settings.DOWNLOAD_ASK_QUALITY.save(false);
+            Settings.DOWNLOAD_DETAILS.save(false);
+            Settings.CHECK_SAVED_VIDEOS.save(false);
+            Settings.DOWNLOAD_WITHOUT_SOUND.save(false);
+            Settings.DOWNLOAD_PROGRESS.save(false);
+            VideoPost post = new VideoPost("7");
+            post.video.downloadNoWatermarkAddr = null;
+            assertFalse("the plain save stands aside for TikTok", VideoDownloads.start(post, activity));
+            assertNull("the plain save has nothing to say", ShadowToast.getLatestToast());
+
+            OriginalPhotos.startFromButton(post, activity);
+
+            assertEquals("No full file for this video. Try again later.",
+                    ShadowToast.getTextOfLatestToast());
+            assertFalse("nothing holds the video afterwards", VideoDownloads.saving("7"));
+        } finally {
+            Settings.DOWNLOAD_DETAILS.save(details);
+            Settings.CHECK_SAVED_VIDEOS.save(check);
+            Settings.DOWNLOAD_WITHOUT_SOUND.save(muted);
+            Settings.DOWNLOAD_PROGRESS.save(progress);
+        }
+    }
+
+    @Test public void theButtonOnTheVideoSaysSoWithNothingOnScreen() {
+        OriginalPhotos.startFromButton(null, activity);
+        assertEquals("No video selected. Open a video first.", ShadowToast.getTextOfLatestToast());
+    }
+
+    /** With the choice on, the button asks the same way the share sheet's Save video does. */
+    @Test public void theButtonOnTheVideoAsksForTheQualityWhenThatIsOn() {
+        OriginalPhotos.startFromButton(new VideoPost("8", FULL, MID), activity);
+        idle();
+        assertNotNull("no choice came up", ShadowAlertDialog.getLatestAlertDialog());
     }
 
     private static List<String> toStrings(CharSequence[] items) {

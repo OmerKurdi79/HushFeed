@@ -1,6 +1,8 @@
 {
   "patches": {
     "Advanced downloads": [
+      "download_button",
+      "download_button_position",
       "download_video_quality",
       "download_ask_quality",
       "download_original_photos",
@@ -38,9 +40,6 @@
       "allow_duet_and_stitch",
       "allow_add_to_story"
     ],
-    "Allow photo comments": [
-      "pinedrama_comment_photos"
-    ],
     "Allow screenshots and Circle to Search": [
       "allow_screen_capture"
     ],
@@ -72,6 +71,7 @@
       "pause_first_video",
       "keep_paused_on_return",
       "leave_on_rest_reminder",
+      "idle_leave_minutes",
       "session_budget_videos",
       "session_budget_minutes",
       "session_budget_lock_minutes",
@@ -217,6 +217,7 @@
       "blocked_creators",
       "local_hidden_creators",
       "creator_filter_exceptions",
+      "live_kept_creators",
       "region_only_from",
       "caption_languages",
       "region_never_from",
@@ -377,6 +378,9 @@
       "hide_profile_thoughts",
       "enable_thoughts"
     ],
+    "Hide read receipts": [
+      "hide_read_receipts"
+    ],
     "Hide search suggestions": [
       "hide_search_rewards",
       "hide_search_suggestions"
@@ -432,6 +436,7 @@
       "live_under_status_bar",
       "touch_target_scale",
       "hide_opened_video_search",
+      "hide_opened_video_back",
       "hide_profile_views_button",
       "hide_profile_add_friends",
       "hide_visual_search",
@@ -455,6 +460,7 @@
     ],
     "Keep playing in the background": [
       "background_play",
+      "background_play_menu",
       "background_replay"
     ],
     "Keep pulled sounds": [
@@ -473,8 +479,13 @@
     "Keep the screen's refresh rate": [
       "uncap_refresh_rate"
     ],
+    "Keep unsent messages": [
+      "keep_unsent_messages",
+      "mark_kept_unsent_messages"
+    ],
     "LIVE controls": [
       "stop_live_auto_enter",
+      "hide_live_service_plus",
       "show_exact_live_viewers",
       "offer_live_quality",
       "remember_live_quality",
@@ -512,7 +523,8 @@
     "Mute feed videos": [
       "feed_muted",
       "feed_mute_button",
-      "feed_mute_button_position"
+      "feed_mute_button_position",
+      "focus_waits_for_video"
     ],
     "Network proxy": [
       "network_proxy",
@@ -643,6 +655,7 @@
     ],
     "Show follow status": [
       "show_follow_status",
+      "show_join_date",
       "local_profile_counts",
       "local_profile_verified_badge",
       "hide_own_profile_restriction_notice",
@@ -857,6 +870,12 @@
     "background_play": {
       "field": "BACKGROUND_PLAY",
       "key": "background_play",
+      "type": "boolean",
+      "default": false
+    },
+    "background_play_menu": {
+      "field": "BACKGROUND_PLAY_MENU",
+      "key": "background_play_menu",
       "type": "boolean",
       "default": false
     },
@@ -1640,6 +1659,18 @@
       "type": "string",
       "default": ""
     },
+    "download_button": {
+      "field": "DOWNLOAD_BUTTON",
+      "key": "download_button",
+      "type": "boolean",
+      "default": false
+    },
+    "download_button_position": {
+      "field": "DOWNLOAD_BUTTON_POSITION",
+      "key": "download_button_position",
+      "type": "string",
+      "default": ""
+    },
     "feed_mute_button": {
       "field": "FEED_MUTE_BUTTON",
       "key": "feed_mute_button",
@@ -1703,6 +1734,12 @@
     "floating_bottom_bar": {
       "field": "FLOATING_BOTTOM_BAR",
       "key": "floating_bottom_bar",
+      "type": "boolean",
+      "default": false
+    },
+    "focus_waits_for_video": {
+      "field": "FOCUS_WAITS_FOR_VIDEO",
+      "key": "focus_waits_for_video",
       "type": "boolean",
       "default": false
     },
@@ -2170,6 +2207,12 @@
       "type": "boolean",
       "default": false
     },
+    "hide_live_service_plus": {
+      "field": "HIDE_LIVE_SERVICE_PLUS",
+      "key": "hide_live_service_plus",
+      "type": "boolean",
+      "default": false
+    },
     "hide_location_labels": {
       "field": "HIDE_LOCATION_LABELS",
       "key": "hide_location_labels",
@@ -2191,6 +2234,12 @@
     "hide_offline_videos": {
       "field": "HIDE_OFFLINE_VIDEOS",
       "key": "hide_offline_videos",
+      "type": "boolean",
+      "default": false
+    },
+    "hide_opened_video_back": {
+      "field": "HIDE_OPENED_VIDEO_BACK",
+      "key": "hide_opened_video_back",
       "type": "boolean",
       "default": false
     },
@@ -2305,6 +2354,12 @@
     "hide_rail_share": {
       "field": "HIDE_RAIL_SHARE",
       "key": "hide_rail_share",
+      "type": "boolean",
+      "default": false
+    },
+    "hide_read_receipts": {
+      "field": "HIDE_READ_RECEIPTS",
+      "key": "hide_read_receipts",
       "type": "boolean",
       "default": false
     },
@@ -2488,6 +2543,14 @@
       "type": "boolean",
       "default": true
     },
+    "idle_leave_minutes": {
+      "field": "IDLE_LEAVE_MINUTES",
+      "key": "idle_leave_minutes",
+      "type": "integer",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 240
+    },
     "imported_font": {
       "field": "IMPORTED_FONT",
       "key": "imported_font",
@@ -2572,6 +2635,12 @@
       "type": "boolean",
       "default": false
     },
+    "keep_unsent_messages": {
+      "field": "KEEP_UNSENT_MESSAGES",
+      "key": "keep_unsent_messages",
+      "type": "boolean",
+      "default": false
+    },
     "larger_comment_like_target": {
       "field": "LARGER_COMMENT_LIKE_TARGET",
       "key": "larger_comment_like_target",
@@ -2643,6 +2712,12 @@
       "key": "live_hide_verified",
       "type": "boolean",
       "default": false
+    },
+    "live_kept_creators": {
+      "field": "LIVE_KEPT_CREATORS",
+      "key": "live_kept_creators",
+      "type": "string",
+      "default": ""
     },
     "live_min_max_followers": {
       "field": "LIVE_MIN_MAX_FOLLOWERS",
@@ -2733,6 +2808,12 @@
       "key": "long_press_sides_only",
       "type": "boolean",
       "default": false
+    },
+    "mark_kept_unsent_messages": {
+      "field": "MARK_KEPT_UNSENT_MESSAGES",
+      "key": "mark_kept_unsent_messages",
+      "type": "boolean",
+      "default": true
     },
     "mark_saved_videos": {
       "field": "MARK_SAVED_VIDEOS",
@@ -3049,12 +3130,6 @@
     "picture_in_picture": {
       "field": "PICTURE_IN_PICTURE",
       "key": "picture_in_picture",
-      "type": "boolean",
-      "default": false
-    },
-    "pinedrama_comment_photos": {
-      "field": "PINEDRAMA_COMMENT_PHOTOS",
-      "key": "pinedrama_comment_photos",
       "type": "boolean",
       "default": false
     },
@@ -3499,6 +3574,12 @@
       "key": "show_follow_status",
       "type": "boolean",
       "default": true
+    },
+    "show_join_date": {
+      "field": "SHOW_JOIN_DATE",
+      "key": "show_join_date",
+      "type": "boolean",
+      "default": false
     },
     "show_poll_results": {
       "field": "SHOW_POLL_RESULTS",

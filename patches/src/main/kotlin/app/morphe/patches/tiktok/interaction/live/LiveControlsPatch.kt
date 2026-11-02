@@ -156,6 +156,40 @@ internal object LiveClearScreenEntryFingerprint : Fingerprint(
     parameters = listOf(),
 )
 
+/**
+ * LIVE's per-room controller (X.0Kl0 on 47.6.3, whose obfuscated name moves every build), found by
+ * its constructor. It owns the actual clear state, including swipe gestures, and that constructor
+ * may restore Clear screen before the room page has resumed.
+ */
+internal object LiveClearScreenControllerFingerprint : Fingerprint(
+    name = "<init>",
+    returnType = "V",
+    parameters = listOf(
+        "Landroidx/fragment/app/Fragment;",
+        "Lcom/bytedance/ies/sdk/datachannel/DataChannel;",
+        "Landroid/view/View;",
+        "Lcom/bytedance/ies/sdk/widgets/LayeredElementManager;",
+        "L",
+        "Lcom/bytedance/ies/sdk/widgets/RecyclableWidgetManager;",
+    ),
+)
+
+/** The controller sets its own state here, regardless of how Clear screen was triggered: (Z, source, Z, Z, Z). */
+internal fun liveClearStateChange(method: Method): Boolean {
+    val parameters = method.parameterTypes.map(CharSequence::toString)
+    return method.returnType == "V" && parameters.size == 5 && parameters[0] == "Z" &&
+        parameters[1].startsWith("L") && parameters.drop(2).all { it == "Z" }
+}
+
+/** Hook the single return, including any branches that jump straight to its label. */
+internal fun nativeClearReturn(method: Method): Int {
+    val code = method.implementation?.instructions?.toList()
+        ?: throw PatchException("LIVE clear screen: ${method.name} has no body")
+    val returns = code.indices.filter { code[it].opcode == Opcode.RETURN_VOID }
+    if (returns.size != 1) throw PatchException("LIVE clear screen: ${method.name} has ${returns.size} returns")
+    return returns.single()
+}
+
 /** The host side of the LIVE SDK's resources, real-named on 47.1.4. */
 internal const val LIVE_HOST_RESOURCE = "Lcom/ss/android/ugc/aweme/live/livehostimpl/LiveHostResource;"
 
@@ -1617,6 +1651,12 @@ private const val BASE_WIDGET = "Lcom/bytedance/android/widget/Widget;"
  * returns without hiding the row when the room has no Service+ item, and only the row's [hide]
  * (V0, run as a preview leaves the screen) takes it away, so a preview bound to the next LIVE
  * without leaving first kept the last LIVE's row.
+ *
+ * The [show] is also entered without a bind: TikTok's visibility observer, the overlay bit
+ * clears and the recycle path all call it with the preview the LAST bind left in [stored],
+ * which the recycle never clears. A diag with eight LIVE rooms and no bind at all (2026-10-31)
+ * is that path. The show hook reads the current room through [roomHolder] and [roomField]
+ * (the same walk the bind makes) and stores it first.
  */
 internal data class ServicePlusBind(
     val method: Method,
@@ -1624,6 +1664,10 @@ internal data class ServicePlusBind(
     val preview: Int,
     val row: Int,
     val hide: Method,
+    val show: Method,
+    val roomHolder: MethodReference,
+    val roomField: FieldReference,
+    val stored: FieldReference,
 )
 
 private fun Method.references() = implementation?.instructions?.toList().orEmpty()
@@ -1677,7 +1721,65 @@ internal fun servicePlusBind(row: ClassDef): ServicePlusBind {
     }
     val hide = hides.singleOrNull()
         ?: throw PatchException("LIVE controls: expected one Service+ row hide, found ${hides.map { it.name }}")
-    return ServicePlusBind(bind, store, put.registerA, self, hide)
+    val stored = (instructions[store] as ReferenceInstruction).reference as FieldReference
+    val shows = instance.filter { it.name == showCall!!.name }
+    val showMethod = shows.singleOrNull()
+        ?: throw PatchException("LIVE controls: expected one Service+ row show ${showCall!!.name}, found ${shows.size}")
+    if (showMethod.references().none { it is FieldReference && it.name == stored.name && it.definingClass == row.type }) {
+        throw PatchException("LIVE controls: the Service+ row show ${showMethod.name} no longer reads the stored preview")
+    }
+    // The show hook walks the current room the way the bind does: one no-argument call before the
+    // store that returns the room holder, and one read of the holder's LiveRoomStruct field.
+    val holders = instructions.take(store).mapNotNull { instruction ->
+        val call = (instruction as? ReferenceInstruction)?.reference as? MethodReference
+        call?.takeIf {
+            instruction.opcode == Opcode.INVOKE_VIRTUAL && it.parameterTypes.isEmpty() && it.returnType.startsWith("L")
+        }
+    }
+    val roomHolder = holders.singleOrNull()
+        ?: throw PatchException("LIVE controls: expected one room holder call in ${bind.name}, found ${holders.map { it.name }}")
+    val roomFields = bind.references().filterIsInstance<FieldReference>().filter { it.type == LIVE_ROOM_STRUCT }
+    val roomField = roomFields.singleOrNull()
+        ?: throw PatchException("LIVE controls: expected one room read in ${bind.name}, found ${roomFields.size}")
+    if (roomField.definingClass != roomHolder.returnType) {
+        throw PatchException("LIVE controls: ${bind.name} reads the room from ${roomField.definingClass}, not ${roomHolder.returnType}")
+    }
+    return ServicePlusBind(bind, store, put.registerA, self, hide, showMethod, roomHolder, roomField, stored)
+}
+
+/**
+ * The Service+ row's show, hooked at its entry (#94). The row is self; v0 to v3 are free, since
+ * the show takes no arguments and TikTok's code writes before it reads. The current room's
+ * preview replaces the stored one before the show reads it, and the row hides instead when that
+ * LIVE has no Service+ item or the switch is on. The holder walk and both decisions live in the
+ * extension, so the one branch here is the hide.
+ */
+internal fun MutableMethod.hookServicePlusShow(bind: ServicePlusBind) {
+    val self = implementation!!.registerCount - 1
+    if (self < 4) {
+        throw PatchException("LIVE controls: the Service+ row show ${bind.show.name} has only ${self + 1} registers")
+    }
+    val stored = "${bind.stored.definingClass}->${bind.stored.name}:${bind.stored.type}"
+    addInstructionsWithLabels(
+        0,
+        """
+            move-object/from16 v2, v$self
+            invoke-virtual {v2}, ${bind.roomHolder.definingClass}->${bind.roomHolder.name}()${bind.roomHolder.returnType}
+            move-result-object v0
+            iget-object v1, v2, $stored
+            const-string v3, "${bind.roomField.name}"
+            invoke-static {v2, v1, v0, v3}, $EXTENSION->servicePlusPreview(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
+            move-result-object v1
+            check-cast v1, $SMB_LIVE_PREVIEW
+            iput-object v1, v2, $stored
+            invoke-static {v2, v1}, $EXTENSION->showServicePlusRow(Ljava/lang/Object;Ljava/lang/Object;)Z
+            move-result v0
+            if-nez v0, :morphe_show_service_plus_row
+            invoke-virtual {v2}, $SERVICE_PLUS_ROW->${bind.hide.name}()V
+            return-void
+        """,
+        ExternalLabel("morphe_show_service_plus_row", getInstruction(0)),
+    )
 }
 
 /** The LIVE room's top-right viewer count, real-named on 47.0.3, 47.1.3 and 47.1.4. */
@@ -1787,7 +1889,8 @@ val liveControlsPatch = bytecodePatch(
         "show a LIVE's exact viewer count instead of a rounded one, offer a quality choice and " +
         "clear screen in more LIVE rooms, and keep your quality pick after TikTok restarts. " +
         "Starts off. Turn it on in Hushfeed settings > Playback. " +
-        "It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it, " +
+        "It also keeps a LIVE in the feed from showing the Service+ row of the LIVE before it " +
+        "(or hides that row altogether), " +
         "and can add a Record button to a LIVE room that saves what you watch from when you tap it.",
 ) {
     category("Playback")
@@ -1924,6 +2027,21 @@ val liveControlsPatch = bytecodePatch(
             "invoke-static/range {p0 .. p0}, $RECORD_EXTENSION->noteRoomFragment(Ljava/lang/Object;)V",
         )
 
+        // TikTok's LIVE Clear screen is separate from the feed's Clear display. The room's
+        // controller changes state for both the menu and swipe gestures. Its constructor also
+        // restores a saved state before the page resumes. Neither hook touches the recording.
+        val initialized = LiveClearScreenControllerFingerprint.method
+        val changed = mutableClassDefBy(initialized.definingClass).methods.singleOrNull(::liveClearStateChange)
+            ?: throw PatchException("LIVE controls: LIVE clear screen state change not found")
+        changed.addInstructionsAtControlFlowLabel(
+            nativeClearReturn(changed),
+            "invoke-static/range {p0 .. p1}, $RECORD_EXTENSION->onNativeClearScreenChanged(Ljava/lang/Object;I)V",
+        )
+        initialized.addInstructionsAtControlFlowLabel(
+            nativeClearReturn(initialized),
+            "invoke-static/range {p0 .. p0}, $RECORD_EXTENSION->onNativeClearScreenInitialized(Ljava/lang/Object;)V",
+        )
+
         // The formatter's result lands in the upper half of the long it was given, so the count
         // can't be read back after the call and the hook needs no spare register: the count is
         // handed over before the call and TikTok's text after it, on the main thread in one
@@ -1970,6 +2088,9 @@ val liveControlsPatch = bytecodePatch(
                 ExternalLabel("morphe_keep_service_plus_row", getInstruction(at)),
             )
         }
+        // The show runs without a bind too, from TikTok's visibility and recycle paths, with the
+        // preview the last bind stored. It reads the current room first, and can hide the row.
+        mutableClassDefBy(SERVICE_PLUS_ROW).findMutableMethodOf(serviceBind.show).hookServicePlusShow(serviceBind)
 
         // A LIVE quality pick that outlives TikTok closing (#57): the picker's setter saves each
         // pick, and both starts that read TikTok's last pick get the saved one while TikTok's is

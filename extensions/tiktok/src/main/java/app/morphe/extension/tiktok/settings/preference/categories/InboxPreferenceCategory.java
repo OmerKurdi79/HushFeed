@@ -11,8 +11,10 @@ import android.preference.PreferenceScreen;
 
 import app.morphe.extension.shared.Utils;
 import app.morphe.extension.tiktok.inbox.AutoStreak;
+import app.morphe.extension.tiktok.inbox.KeepUnsent;
 import app.morphe.extension.tiktok.settings.Settings;
 import app.morphe.extension.tiktok.settings.SettingsStatus;
+import app.morphe.extension.tiktok.settings.preference.ClearKeptMessagesPreference;
 import app.morphe.extension.tiktok.settings.preference.ClockTimePreference;
 import app.morphe.extension.tiktok.settings.preference.InputTextPreference;
 import app.morphe.extension.tiktok.settings.preference.SectionHeadingPreference;
@@ -34,8 +36,10 @@ public final class InboxPreferenceCategory extends ConditionalPreferenceCategory
                 || SettingsStatus.chatDeclutterEnabled
                 || SettingsStatus.expandActivityListEnabled
                 || SettingsStatus.notificationControlsEnabled
+                || SettingsStatus.keepUnsentEnabled
                 || SettingsStatus.suggestedVideoPushBlockEnabled
                 || SettingsStatus.autoStreakEnabled
+                || SettingsStatus.hideReadReceiptsEnabled
                 || SettingsStatus.dmTranslationPreviewEnabled
                 || SettingsStatus.receivedDmTranslationPreviewEnabled;
     }
@@ -47,6 +51,15 @@ public final class InboxPreferenceCategory extends ConditionalPreferenceCategory
 
     @Override
     public void addPreferences(Context context) {
+        if (SettingsStatus.hideReadReceiptsEnabled) {
+            addPreference(new TogglePreference(
+                    context,
+                    "Hide read receipts",
+                    "Stops TikTok telling people you've read their messages. Your own unread badges still clear "
+                            + "as usual.",
+                    Settings.HIDE_READ_RECEIPTS
+            ));
+        }
         if (SettingsStatus.receivedDmTranslationPreviewEnabled) {
             addPreference(new TogglePreference(context, "Received message translation",
                     "Preview a translation from a received text message's menu. The original message stays unchanged.",
@@ -252,6 +265,9 @@ public final class InboxPreferenceCategory extends ConditionalPreferenceCategory
         if (SettingsStatus.autoStreakEnabled) {
             addStreakRows(context);
         }
+        if (SettingsStatus.keepUnsentEnabled) {
+            addKeepUnsentRows(context);
+        }
     }
 
     private void addStreakRows(Context context) {
@@ -279,9 +295,9 @@ public final class InboxPreferenceCategory extends ConditionalPreferenceCategory
         InputTextPreference who = new InputTextPreference(
                 context,
                 "Who to message",
-                "Their usernames, separated by commas or new lines. Each person must already have a chat with you.",
+                "Usernames or group chat names, separated by commas or new lines. Each chat must already exist. A group is found by the name your Inbox shows for it.",
                 Settings.AUTO_STREAK_RECIPIENT
-        ).withNameKeyboard().withNote(value -> AutoStreak.recipientNote(context, value));
+        ).withFreeTextKeyboard().withNote(value -> AutoStreak.recipientNote(context, value));
         who.setOnPreferenceChangeListener((preference, value) -> {
             String before = Settings.AUTO_STREAK_RECIPIENT.get();
             Utils.runOnMainThread(() -> {
@@ -314,5 +330,27 @@ public final class InboxPreferenceCategory extends ConditionalPreferenceCategory
                 Settings.AUTO_STREAK_MESSAGE
         ));
         addPreference(new SendStreakNowPreference(context, refresh));
+    }
+
+    private void addKeepUnsentRows(Context context) {
+        addPreference(new SectionHeadingPreference(context, "Unsent messages"));
+        TogglePreference keep = new TogglePreference(
+                context,
+                "Keep unsent messages",
+                "When someone unsends a message, it stays in your chat instead of disappearing. "
+                        + "Messages you unsend yourself are still removed.",
+                Settings.KEEP_UNSENT_MESSAGES
+        );
+        Runnable refresh = () -> keep.showExtraLine(KeepUnsent.statusLine());
+        refresh.run();
+        addPreference(keep);
+        addPreference(new TogglePreference(
+                context,
+                "Mark kept messages",
+                "Adds (unsent) after the text of a message that was kept, so you can tell it apart "
+                        + "from the rest.",
+                Settings.MARK_KEPT_UNSENT_MESSAGES
+        ));
+        addPreference(new ClearKeptMessagesPreference(context, refresh));
     }
 }

@@ -42,13 +42,14 @@ public final class FeedItemsFilter {
     static final String FINAL_INSERT_SOURCE = "FinalInsert:";
 
     private static final AdsFilter ADS_FILTER = new AdsFilter();
+    private static final LiveFilter LIVE_FILTER = new LiveFilter();
     private static final LocationBadgeFilter LOCATION_FILTER = new LocationBadgeFilter();
     private static final SeenVideoFilter SEEN_FILTER = new SeenVideoFilter();
     private static final ContentMarkerFilters.SubscriberOnlyFilter SUBSCRIBER_ONLY_FILTER =
         new ContentMarkerFilters.SubscriberOnlyFilter();
     private static final List<IFilter> CONTENT_FILTERS = List.of(
         ADS_FILTER,
-        new LiveFilter(),
+        LIVE_FILTER,
         new StoryFilter(),
         new ImageVideoFilter(),
         new ShopFilter(),
@@ -84,6 +85,8 @@ public final class FeedItemsFilter {
     static final String KEPT_WHOLE_KIND = "batches kept whole";
     /** Why a feed capture says a matched video stayed: it's the reader's own post. */
     private static final String OWN_POST = "own-post";
+    /** Why a feed capture says a matched video stayed: the reader liked or saved it. */
+    private static final String LIKED_OR_SAVED = "liked-or-saved";
     /**
      * The main feed's rules: every content rule, then the one that reads For You's own
      * distribution marks, which no other route carries.
@@ -481,6 +484,26 @@ public final class FeedItemsFilter {
         void report() {
             if (kept > 0) HookStatus.bound("main feed", "own posts kept");
         }
+    }
+
+    /** The routes that read a profile's grids, or the pager opened from one. */
+    private static final Set<String> GRID_ROUTES =
+            Set.of(PROFILE_LIST_SOURCE, "ProfileAwemeList", "ProfileDetailAdEvent");
+
+    /**
+     * Whether TikTok's answer says the reader liked or saved this video. The grid routes run the
+     * ad rules, and a video someone chose to keep can carry an ad mark, a paid partnership or
+     * promotional music: TikTok accepted the like, listed the video on Liked, and it was gone from
+     * that list here (#269). The For You routes don't ask, so a liked ad stays out of the feed.
+     * Read by name, since only the two flags are wanted.
+     */
+    private static boolean isLikedOrSaved(Aweme item) {
+        return isSet(Reflect.property(item, "getUserDigg", "userDigg"))
+                || isSet(Reflect.property(item, "getCollectStatus", "collectStatus"));
+    }
+
+    private static boolean isSet(Object flag) {
+        return flag instanceof Number && ((Number) flag).intValue() == 1;
     }
 
     /**
@@ -977,7 +1000,7 @@ public final class FeedItemsFilter {
     private static String friendsFeedReason(Object entry, List<IFilter> activeFilters, boolean hideLive) {
         if (entry == null) return null;
         Object room = Reflect.readField(entry, "roomStruct");
-        if (hideLive && room != null) return "LiveFilter";
+        if (hideLive && room != null && !CreatorExceptions.keepsLiveCard(room)) return "LiveFilter";
         // A Friends card for a LIVE carries its room and no video, so the Shop switch looks at
         // the room itself for a LIVE that is selling (#46).
         if (room != null && Settings.HIDE_SHOP.get() && ShopFilter.roomSells(room)) return "ShopFilter";
@@ -990,6 +1013,24 @@ public final class FeedItemsFilter {
     public static List filterLateInsertedAds(String source, List items) {
         String insertionSource = source == null ? "unknown" : source;
         return filterAdOnlyAwemeList("FeedInsertion:" + insertionSource, items);
+    }
+
+    /**
+     * The drama tab's feed answer, as SeriesFeedResp's constructor finishes (#294). That feed's
+     * own requests build it straight from the server's answer, so the list never passes
+     * {@link #filter(FeedItemList)} and its ads reached the page. Ads only: every item on that
+     * page is an episode, so the series and drama rules would empty it.
+     */
+    @SuppressWarnings("rawtypes")
+    public static List filterDramaFeed(List items) {
+        try {
+            HookStatus.bound("drama feed", "SeriesFeedResp.<init>");
+            return filterAdOnlyAwemeList("DramaFeed", items);
+        } catch (Throwable ex) {
+            HookStatus.threw("drama feed", "SeriesFeedResp.<init>", ex);
+            Logger.printException(() -> "Could not filter the drama feed", ex);
+            return items;
+        }
     }
 
     @SuppressWarnings("rawtypes")
@@ -1020,6 +1061,8 @@ public final class FeedItemsFilter {
         int notVideos = 0;
         String lastReason = null;
         OwnPosts own = new OwnPosts();
+        boolean gridRoute = GRID_ROUTES.contains(source);
+        boolean likedOrSavedKept = false;
         for (int index = 0; index < items.size(); index++) {
             Object container = items.get(index);
             Aweme item = container instanceof Aweme ? (Aweme) container : null;
@@ -1029,12 +1072,17 @@ public final class FeedItemsFilter {
                 if (capture != null) capture.notVideo();
             }
             String matched = item == null ? null : getFilterReason(active, item);
-            String reason = matched != null && own.owns(item) ? null : matched;
+            String spared = matched == null ? null
+                    : own.owns(item) ? OWN_POST
+                    : gridRoute && isLikedOrSaved(item) ? LIKED_OR_SAVED
+                    : null;
+            String reason = spared == null ? matched : null;
             if (reason == null) {
                 if (kept != null) kept.add(container);
                 if (item != null) logKeptItem(source, item, verbose);
+                if (LIKED_OR_SAVED.equals(spared)) likedOrSavedKept = true;
                 if (capture != null && item != null) {
-                    if (matched != null) capture.spared(item, matched, OWN_POST);
+                    if (matched != null) capture.spared(item, matched, spared);
                     else capture.kept(item);
                 }
                 continue;
@@ -1051,6 +1099,7 @@ public final class FeedItemsFilter {
         }
 
         own.report();
+        if (likedOrSavedKept) HookStatus.bound("main feed", "liked or saved posts kept");
         FeedFilterCounters.removedItems(source, removed, lastReason);
         FeedFilterCounters.unreadable(source, notVideos);
         if (capture != null) capture.finish(kept == null ? items.size() : kept.size());
@@ -1086,6 +1135,10 @@ public final class FeedItemsFilter {
 
         boolean cacheInsertion = "golden_house".equals(source)
             || "middle_insert_when_video_lagging".equals(source);
+        // A fresh insert is left to TikTok, except a LIVE it slots into a page already on screen
+        // (#277, after #175 and #210). A link's video arrives in the response, never here.
+        List<IFilter> freshInsertFilters = activeContentFilters.contains(LIVE_FILTER)
+            ? List.of(LIVE_FILTER) : List.of();
         FeedCapture.Batch capture = FeedCapture.batch(route, items.size());
         if (capture != null) capture.rules(activeContentFilters, activeRangeFilters);
         ArrayList kept = null;
@@ -1102,23 +1155,27 @@ public final class FeedItemsFilter {
 
             Aweme item = (Aweme) container;
             int cacheSourceType = AwemeBizExtKt.getCacheSourceType(item);
+            String reason;
             if (!cacheInsertion && !isKnownFeedCacheSource(cacheSourceType)) {
-                if (capture != null) capture.passed(item, "not-a-cached-insert");
-                if (kept != null) kept.add(container);
-                continue;
-            }
-            if (cacheSourceType == CACHE_SOURCE_OFFLINE_MODE && keepsOfflineVideos()) {
-                if (capture != null) capture.passed(item, "offline-video");
-                if (kept != null) kept.add(container);
-                continue;
-            }
-
-            String reason = getFilterReason(activeContentFilters, item);
-            if (reason == null) reason = getFilterReason(activeRangeFilters, item);
-            if (reason == null) {
-                if (capture != null) capture.kept(item);
-                if (kept != null) kept.add(container);
-                continue;
+                reason = getFilterReason(freshInsertFilters, item);
+                if (reason == null) {
+                    if (capture != null) capture.passed(item, "not-a-cached-insert");
+                    if (kept != null) kept.add(container);
+                    continue;
+                }
+            } else {
+                if (cacheSourceType == CACHE_SOURCE_OFFLINE_MODE && keepsOfflineVideos()) {
+                    if (capture != null) capture.passed(item, "offline-video");
+                    if (kept != null) kept.add(container);
+                    continue;
+                }
+                reason = getFilterReason(activeContentFilters, item);
+                if (reason == null) reason = getFilterReason(activeRangeFilters, item);
+                if (reason == null) {
+                    if (capture != null) capture.kept(item);
+                    if (kept != null) kept.add(container);
+                    continue;
+                }
             }
 
             if (kept == null) {
@@ -2126,6 +2183,11 @@ public final class FeedItemsFilter {
         if (!exceptions.isEmpty()) {
             if (builder.length() > 0) builder.append('|');
             builder.append(exceptions);
+        }
+        String liveKeep = CreatorExceptions.liveKeepToken();
+        if (!liveKeep.isEmpty()) {
+            if (builder.length() > 0) builder.append('|');
+            builder.append(liveKeep);
         }
         return builder.toString();
     }

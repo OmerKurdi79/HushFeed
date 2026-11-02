@@ -103,7 +103,7 @@ public class CommentDislikeGestureTest {
                 assertTrue(cell.button.performClick());
                 Shadows.shadowOf(Looper.getMainLooper()).idle();
                 assertTrue("a rejected block left the control silently busy",
-                        String.valueOf(ShadowToast.getTextOfLatestToast()).startsWith("Couldn't confirm the block for "));
+                        String.valueOf(ShadowToast.getTextOfLatestToast()).startsWith("Couldn't confirm blocking "));
                 assertEquals(java.util.List.of(), service.types);
 
                 saturation.release();
@@ -248,8 +248,8 @@ public class CommentDislikeGestureTest {
         // the cache is seeded with ids the test's own views carry.
         Object cache = ReflectionHelpers.getStaticField(CommentTools.class, "RESOURCE_IDS");
         java.util.Map<String, Integer> ids = ReflectionHelpers.getField(cache, "ids");
-        ids.put(activity.getPackageName() + ":47.5.3:k1q", 0x7f000101);
-        ids.put(activity.getPackageName() + ":47.5.3:mo2", 0x7f000102);
+        ids.put(activity.getPackageName() + ":47.6.3:k1e", 0x7f000101);
+        ids.put(activity.getPackageName() + ":47.6.3:mn5", 0x7f000102);
 
         android.widget.FrameLayout itemView = new android.widget.FrameLayout(activity);
         View button = new View(activity);

@@ -32,7 +32,9 @@ import app.morphe.extension.tiktok.settings.SettingsStatus;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +45,8 @@ import java.util.WeakHashMap;
  * the switch is on a small chip shows on that page. Tapping it starts a recording from that
  * moment, tapping it again stops, and leaving the room (another room, the app in the background,
  * the page gone) stops it too. A once-a-second check on the main thread is what notices leaving,
- * so a recording never runs on for more than a second without its room on screen.
+ * so a recording never runs on for more than a second without its room on screen. A screen
+ * recording hides the chip so it isn't filmed, and its notification's Stop ends it (#265).
  */
 @SuppressWarnings("unused")
 public final class LiveRecordChip {
@@ -61,6 +64,8 @@ public final class LiveRecordChip {
      * page to resume is usually one that isn't shown.
      */
     private static final Map<Object, Boolean> PAGES = new WeakHashMap<>();
+    /** Clear-screen controllers can be created before their room page resumes. */
+    private static final Map<String, Boolean> CLEAR_ROOM_STATES = new HashMap<>();
     private static WeakReference<Object> page = new WeakReference<>(null);
     private static WeakReference<Activity> host = new WeakReference<>(null);
     private static TextView chip;
@@ -68,6 +73,7 @@ public final class LiveRecordChip {
     private static boolean saving;
     private static boolean ticking;
     private static boolean callbacksRegistered;
+    private static boolean clearScreen;
 
     /** True while the switch is on and Hushfeed isn't paused. */
     public static boolean enabled() {
@@ -125,6 +131,8 @@ public final class LiveRecordChip {
                 if (destroyed == host.get()) {
                     leave(LiveRecorder.End.APP_EXIT);
                     removeChip();
+                    clearScreen = false;
+                    CLEAR_ROOM_STATES.clear();
                     page = new WeakReference<>(null);
                     host = new WeakReference<>(null);
                 }
@@ -249,6 +257,8 @@ public final class LiveRecordChip {
     private static void refresh() {
         TextView view = chip;
         if (view == null) return;
+        view.setVisibility(hidesChip(recorder == null ? null : recorder.target(), clearScreen)
+                ? View.INVISIBLE : View.VISIBLE);
         if (saving) {
             view.setText(L10n.t("Saving the recording"));
             view.setContentDescription(L10n.t("Saving the recording"));
@@ -263,6 +273,60 @@ public final class LiveRecordChip {
             view.setText(L10n.t("Record"));
             view.setContentDescription(L10n.t("Record this LIVE from now"));
         }
+    }
+
+    /** Screen recordings hide the chip to avoid filming it (#265). */
+    static boolean hidesChip(LiveRecorder.Target target) {
+        return hidesChip(target, false);
+    }
+
+    /** LIVE Clear screen also hides the chip, without changing recording state. */
+    static boolean hidesChip(LiveRecorder.Target target, boolean clearScreen) {
+        return clearScreen || (target != null && target.transport == LiveRecorder.Transport.SCREEN);
+    }
+
+    /** Called after TikTok's LIVE clear-screen controller changes state. */
+    public static void onNativeClearScreenChanged(Object controller, int state) {
+        try {
+            String roomId = roomKey(roomOf(controller));
+            if (roomId == null) return;
+            boolean cleared = state != 0;
+            Utils.runOnMainThread(() -> {
+                CLEAR_ROOM_STATES.put(roomId, cleared);
+                if (roomId.equals(roomKey(roomOf(page.get())))) {
+                    clearScreen = cleared;
+                    refresh();
+                    Logger.printDebug(() -> "LIVE record chip: Clear screen " + (cleared ? "on" : "off"));
+                }
+            });
+        } catch (Throwable failure) {
+            Logger.printException(() -> "Could not follow LIVE Clear screen", failure);
+        }
+    }
+
+    /** The controller can inherit Clear screen from the previous room without a new toggle. */
+    public static void onNativeClearScreenInitialized(Object controller) {
+        try {
+            Boolean current = clearStateOf(controller);
+            if (current != null) onNativeClearScreenChanged(controller, current ? 1 : 0);
+        } catch (Throwable failure) {
+            Logger.printException(() -> "Could not read LIVE Clear screen state", failure);
+        }
+    }
+
+    /** The controller's only no-argument boolean is its clear state, and that shape outlives a rename. */
+    static Boolean clearStateOf(Object controller) throws ReflectiveOperationException {
+        if (controller == null) return null;
+        Method getter = null;
+        for (Method method : controller.getClass().getDeclaredMethods()) {
+            if (method.getReturnType() != boolean.class || method.getParameterTypes().length != 0
+                    || method.isSynthetic()) continue;
+            if (getter != null) return null;
+            getter = method;
+        }
+        if (getter == null) return null;
+        getter.setAccessible(true);
+        return (Boolean) getter.invoke(controller);
     }
 
     static String elapsed(long ms) {
@@ -294,18 +358,35 @@ public final class LiveRecordChip {
 
     private static void onChipTap() {
         try {
-            if (saving) return;
-            if (recorder != null && recorder.recording()) {
-                recorder.stop(LiveRecorder.End.STOPPED);
-                saving = true;
-                refresh();
-                return;
-            }
+            if (saving || stopRecording()) return;
             start();
         } catch (Throwable failure) {
             Logger.printException(() -> "Could not use the LIVE record button", failure);
             Utils.showToastShort(L10n.t("The recording couldn't be saved. Try again."));
         }
+    }
+
+    /** Stops a running recording so it's saved; false when none is running. */
+    private static boolean stopRecording() {
+        if (saving || recorder == null || !recorder.recording()) return false;
+        recorder.stop(LiveRecorder.End.STOPPED);
+        saving = true;
+        refresh();
+        return true;
+    }
+
+    /**
+     * The Stop on the screen recording's notification (#265), the way to end one while the chip
+     * is hidden. With nothing recording any more, the projection it still holds is let go.
+     */
+    static void stopFromNotification() {
+        Utils.runOnMainThread(() -> {
+            try {
+                if (!stopRecording() && !saving) ScreenCapture.discardUnused();
+            } catch (Throwable failure) {
+                Logger.printException(() -> "Could not stop the screen recording", failure);
+            }
+        });
     }
 
     private static void start() throws Exception {
@@ -315,7 +396,7 @@ public final class LiveRecordChip {
         if (Build.VERSION.SDK_INT < 29
                 && activity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Utils.showToastLong(L10n.t("Allow storage for TikTok in Android settings to record LIVEs"));
+            Utils.showToastLong(L10n.t("Allow storage for TikTok to record LIVEs"));
             return;
         }
         Object room = roomOf(fragment);
@@ -327,7 +408,7 @@ public final class LiveRecordChip {
                 LiveRoomStream.forRecording(Settings.LIVE_RECORD_QUALITY.get(), LiveControls.lastQualityPick()));
         if (pick.target == null) {
             Logger.printInfo(() -> "LIVE record: no stream to record (" + pick.problem + ", room offers [" + pick.offered + "])");
-            Utils.showToastShort(L10n.t("Couldn't find this LIVE's stream to record. Leave the room and open it again."));
+            Utils.showToastShort(L10n.t("No stream found to record. Reopen the LIVE."));
             return;
         }
         Logger.printInfo(() -> "LIVE record: " + pick.target.quality + " over " + pick.target.transport
@@ -350,7 +431,7 @@ public final class LiveRecordChip {
     private static void startScreen(Activity activity, Object fragment, Object room) throws Exception {
         LiveRoomStream.Pick pick = LiveRoomStream.screenTarget(room);
         if (pick.target == null) {
-            Utils.showToastShort(L10n.t("Couldn't find this LIVE's stream to record. Leave the room and open it again."));
+            Utils.showToastShort(L10n.t("No stream found to record. Reopen the LIVE."));
             return;
         }
         boolean audio = LiveRecordSource.audioAllowed(Build.VERSION.SDK_INT,
@@ -395,7 +476,12 @@ public final class LiveRecordChip {
     /** Makes {@code fragment} the page the button belongs to; a recording of another page stops. */
     private static void follow(Object fragment) {
         Object previous = page.get();
-        if (previous != null && previous != fragment) leave(LiveRecorder.End.LEFT_ROOM);
+        if (previous != null && previous != fragment) {
+            leave(LiveRecorder.End.LEFT_ROOM);
+        }
+        if (previous != fragment) {
+            clearScreen = Boolean.TRUE.equals(CLEAR_ROOM_STATES.get(roomKey(roomOf(fragment))));
+        }
         page = new WeakReference<>(fragment);
     }
 
@@ -489,14 +575,24 @@ public final class LiveRecordChip {
         return !(id instanceof String) || recorded.equals(id);
     }
 
-    /** The page's one Room-typed field, found by type so it doesn't depend on its obfuscated name. */
-    private static Object roomOf(Object fragment) {
+    /** Stable room identity across the native controller and the resumed room page. */
+    static String roomKey(Object room) {
+        if (room == null) return null;
+        Object text = Reflect.readField(room, "idStr");
+        if (text instanceof String && !((String) text).isEmpty()) return (String) text;
+        Object numeric = Reflect.readField(room, "id");
+        return numeric instanceof Number ? String.valueOf(((Number) numeric).longValue()) : null;
+    }
+
+    /** The Room-typed field on a room page or a native clear-screen controller. */
+    private static Object roomOf(Object holder) {
+        if (holder == null) return null;
         try {
-            for (Class<?> type = fragment.getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
+            for (Class<?> type = holder.getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
                 for (Field field : type.getDeclaredFields()) {
                     if (field.getType().getName().equals("com.bytedance.android.livesdkapi.depend.model.live.Room")) {
                         field.setAccessible(true);
-                        return field.get(fragment);
+                        return field.get(holder);
                     }
                 }
             }

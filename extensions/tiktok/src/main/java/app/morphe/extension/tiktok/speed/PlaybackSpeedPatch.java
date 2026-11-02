@@ -513,6 +513,35 @@ public final class PlaybackSpeedPatch {
         }
     }
 
+    /**
+     * The pill TikTok shows over a hold when the lock is on, telling you to pull down and that
+     * letting go there locks. With Slide to change the hold speed on, the bubble's padlock says
+     * that, so the pill is hidden as its show method ends. Nothing after that method sets it
+     * visible, and its background is its own, so it goes whole rather than part by part.
+     */
+    public static void holdLockBanner(View banner) {
+        try {
+            if (banner != null && HoldSpeedHud.enabled()) banner.setVisibility(View.INVISIBLE);
+        } catch (RuntimeException ex) {
+            Logger.printException(() -> "Could not hide the hold lock banner", ex);
+        }
+    }
+
+    /**
+     * The speed undoing the pull-down lock goes back to, TikTok's "Back to normal speed". With Use
+     * a default playback speed on, normal is the default, so the video goes back to it, not 1x
+     * (#248). TikTok's toast still says normal speed.
+     */
+    public static float holdUnlockSpeed(float nativeSpeed) {
+        try {
+            if (Setting.isPaused() || !Settings.DEFAULT_SPEED_ENABLED.get()) return nativeSpeed;
+            float value = Float.parseFloat(Settings.DEFAULT_SPEED.get());
+            return isValidSpeed(value) && value >= MIN_SPEED && value <= MAX_SPEED ? value : nativeSpeed;
+        } catch (RuntimeException unreadable) {
+            return nativeSpeed;
+        }
+    }
+
     public static float preserveTransitionSpeed(float requestedSpeed) {
         synchronized (PlaybackSpeedPatch.class) {
             // The live bridge brought TikTok's own speed state to a dragged speed, and TikTok carries

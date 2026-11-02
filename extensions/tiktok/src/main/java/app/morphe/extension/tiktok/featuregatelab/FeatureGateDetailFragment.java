@@ -237,9 +237,12 @@ public final class FeatureGateDetailFragment extends Fragment {
             params.setMargins(0, noticeMargin, 0, noticeMargin);
             content.addView(sensitive, params);
         }
-        if (BackgroundPlay.decidesGate(entry.key)) {
+        boolean menuDecides = BackgroundPlay.menuDecidesGate(entry.key);
+        if (menuDecides || BackgroundPlay.decidesGate(entry.key)) {
             View decided = FeatureGateLabUi.notice(context,
-                    L10n.t(context, "Keep playing in the background is on in Hushfeed's Playback settings, so TikTok gets 2 for this key and an override here has no effect until that switch is off."),
+                    menuDecides
+                            ? L10n.t(context, "Background play in the long-press menu is on in Hushfeed's Playback settings, so TikTok gets 1 for this key and an override here has no effect until that switch is off.")
+                            : L10n.t(context, "Keep playing in the background is on in Hushfeed's Playback settings, so TikTok gets 2 for this key and an override here has no effect until that switch is off."),
                     SettingsUi.attentionColor());
             LinearLayout.LayoutParams params = FeatureGateLabUi.matchWrap();
             int noticeMargin = FeatureGateLabUi.dp(context, SettingsUi.NOTICE_MARGIN);
@@ -615,7 +618,7 @@ public final class FeatureGateDetailFragment extends Fragment {
                     setControlsEditable(true);
                     updateStatus();
                 },
-                L10n.t(Utils.getContext(), "Overrides enabled. Restart TikTok to apply this."),
+                L10n.t(Utils.getContext(), "Overrides enabled. Restart TikTok to apply."),
                 L10n.t(Utils.getContext(), "Couldn't change the Lab settings. Try again."));
     }
 
@@ -803,7 +806,13 @@ public final class FeatureGateDetailFragment extends Fragment {
                     // covered the reason.
                     if (refused) Logger.printInfo(() -> "Feature Gate detail change refused", error);
                     else Logger.printException(() -> "Feature Gate detail change failed", error);
-                    failure = refused ? error.getMessage() : translatedFailurePrefix;
+                    // A refusal built with no reason gets the failure line. A null here would
+                    // read as success and leave the controls showing the refused change. The
+                    // message is read in place so the toast wrap scan still finds it.
+                    failure = refused && error.getMessage() != null
+                            && !error.getMessage().trim().isEmpty()
+                            ? error.getMessage()
+                            : translatedFailurePrefix;
                 } finally {
                     detailChangeFinished();
                 }
@@ -1195,7 +1204,7 @@ public final class FeatureGateDetailFragment extends Fragment {
         } catch (Throwable failure) {
             Logger.printException(() -> "Could not collect Feature Gate field values", failure);
             Utils.showToastLong(L10n.t(getContext(),
-                    "A field value couldn't be read. Check the values and try again."));
+                    "Couldn't read a field value. Check and try again."));
             return null;
         }
         return result.toString();
