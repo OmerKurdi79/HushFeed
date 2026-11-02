@@ -45,8 +45,8 @@ private const val CONFIG_LOOKBACK = 6
 /**
  * TTNet's one builder of TikTok's Cronet engine, org.chromium.CronetClient.tryCreateCronetEngine,
  * on every declared build. TikTok's API client goes through the engine this builds once a process;
- * whether its image loader and LIVE websocket share that engine is a device check. The read sits
- * behind isBOEProxyEnabled(), ByteDance's internal test environment, which is off in release.
+ * whether its image loader and LIVE websocket share that engine is a device check. The read runs
+ * when isBOEProxyEnabled(), ByteDance's internal test environment, is off, as it is in release.
  */
 internal object CronetEngineCreateFingerprint : Fingerprint(
     definingClass = "Lorg/chromium/CronetClient;",
@@ -66,7 +66,6 @@ internal fun ttnetConfigReads(method: Method): List<Int> {
     val instructions = method.implementation?.instructions?.toList() ?: return emptyList()
     return instructions.indices.mapNotNull { keyIndex ->
         val key = instructions[keyIndex]
-        // PineDrama 47.5.3 loads the key with const-string/jumbo; the reference is the same.
         if (key.getReference<StringReference>()?.string != TTNET_PROXY_KEY) {
             return@mapNotNull null
         }
@@ -124,12 +123,13 @@ val networkProxyPatch = bytecodePatch(
     name = "Network proxy",
     description = "Sends TikTok's feed, search and comments through a proxy server you set " +
         "up. Videos and LIVEs still load directly, and so do Hushfeed's own saves and short-link " +
-        "lookups. Other apps aren't affected. Starts off. Turn it on in Hushfeed settings > " +
+        "lookups. HTTP and SOCKS5 both work, with or without a password. Other apps aren't " +
+        "affected. Starts off. Turn it on in Hushfeed settings > " +
         "Region, then restart TikTok.",
 ) {
     category("Settings")
     dependsOn(settingsPatch, sharedExtensionPatch)
-    compatibleWith(*AppCompatibilities.tiktokAndPineDrama())
+    compatibleWith(*AppCompatibilities.tiktok())
 
     execute {
         // Everything is found and checked before the first write: the patcher doesn't take a

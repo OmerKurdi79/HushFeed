@@ -130,6 +130,7 @@ public class SettingsStatus {
     public static boolean keepUnsentEnabled = false;
     public static boolean suggestedVideoPushBlockEnabled = false;
     public static boolean autoStreakEnabled = false;
+    public static boolean hideReadReceiptsEnabled = false;
     public static boolean hideSuggestedAccountsEnabled = false;
     public static boolean hideInboxStoriesEnabled = false;
     public static boolean chatDeclutterEnabled = false;
@@ -360,6 +361,13 @@ public class SettingsStatus {
         holdSpeedSlideEnabled = true;
     }
 
+    /** TikTok's speed messages show through the extension, so they can be left out. */
+    public static boolean hideSpeedToastsEnabled = false;
+
+    public static void enableHideSpeedToasts() {
+        hideSpeedToastsEnabled = true;
+    }
+
     public static void enableLongPressSpeedLock() {
         longPressSpeedLockEnabled = true;
     }
@@ -550,6 +558,10 @@ public class SettingsStatus {
 
     public static void enableAutoStreak() {
         autoStreakEnabled = true;
+    }
+
+    public static void enableHideReadReceipts() {
+        hideReadReceiptsEnabled = true;
     }
 
     public static void enableInboxFilter() {
@@ -774,13 +786,6 @@ public class SettingsStatus {
 
     public static void enableVoiceComments() {
         voiceCommentsEnabled = true;
-    }
-
-    /** Allow photo comments put its switch in front of PineDrama's comment gallery check (#156). */
-    public static boolean commentPhotosEnabled = false;
-
-    public static void enableCommentPhotos() {
-        commentPhotosEnabled = true;
     }
 
     /** Skip passkey sign-in put its switch in front of TikTok's passkey support check. */

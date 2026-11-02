@@ -1059,7 +1059,6 @@ Sound on	Səs açıq
 Sound	Səs
 Play feed videos without sound and leave the phone's volume alone. Music from another app keeps playing while it's on. DMs, stories and LIVE keep their sound.	Lent videolarını səssiz oxudun və telefonun səs səviyyəsinə toxunmayın. Bu açıq olduqda başqa tətbiqin musiqisi çalmağa davam edir. Birbaşa mesajlar, hekayələr və LIVE səsini saxlayır.
 Let other apps play until a video starts	Video başlayana qədər digər tətbiqlər çalmağa davam etsin
-Opening TikTok or your messages no longer pauses music from another app. TikTok takes the sound once a video starts playing.	TikTok-u və ya mesajlarınızı açmaq artıq başqa tətbiqdəki musiqini dayandırmır. TikTok səsi yalnız video oxunmağa başlayanda götürür.
 Show the mute button on videos	Videolarda səssiz düyməsini göstərin
 Add a button beside the block control that turns the feed's sound off and on.	Bloklama idarəetməsinin yanına lentin səsini söndürüb yandıran düymə əlavə edin.
 Show the block button on videos	Videolarda bloklama düyməsini göstərin
@@ -1322,7 +1321,6 @@ Value to return	Qaytarılacaq dəyər
 Verified accounts	Təsdiqlənmiş hesablar
 Version %1$s	Versiya %1$s
 Version %1$s for TikTok %2$s	Versiya %1$s, TikTok %2$s üçün
-Version %1$s for PineDrama %2$s	Versiya %1$s, PineDrama %2$s üçün
 Video	Video
 Video (MP4)	Video (MP4)
 Video destination	Video təyinatı
@@ -1405,7 +1403,6 @@ Hide the unread badges on the bottom tabs	Alt nişanlardakı oxunmamış nişanl
 Hide the red counts and dots on every bottom tab, Inbox and Profile included, and the bubble over Inbox that counts new likes, followers, comments and who's LIVE. The inbox itself still shows what came in.	Gələnlər və Profil daxil olmaqla hər alt nişandakı qırmızı say və nöqtələri, həmçinin Gələnlər üzərində yeni bəyənmələri, izləyiciləri, şərhləri və kimin LIVE-da olduğunu sayan balonu gizlədin. Gələnlərin özü yenə də nələrin gəldiyini göstərir.
 Speed while you hold the video	Videonu basıb saxlayarkən sürət
 Slide to change the hold speed	Saxlama sürətini sürüşdürərək dəyiş
-While you hold a video, slide left or right to step through the speed menu's speeds, and a bubble shows the one you're on. Your next hold starts there. Letting go goes back to normal. A pull-down lock keeps the speed you slid to.	Videonu basıb saxlayarkən sürət menyusunun sürətləri arasında keçmək üçün sola və ya sağa sürüşdür, seçilən sürət balonda görünür. Növbəti basıb saxlama oradan başlayır. Barmağını çəkəndə normala qayıdır. Aşağı çəkib kilidləsən, seçdiyin sürət qalır.
 Hide mini dramas	Mini dramaları gizlədin
 Hide TikTok's short drama episodes and the cards that promote them.	TikTok-un qısa drama epizodlarını və onları təbliğ edən kartları gizlədin.
 Mini dramas	Mini dramalar
@@ -1760,7 +1757,7 @@ Play sounds TikTok pulled	TikTok-un çıxardığı səsləri oynat
 Play the audio on videos TikTok silenced because their sound was pulled for copyright or in your region. TikTok may still say the sound isn't available.	Səsi müəllif hüququna görə və ya bölgənizdə çıxarıldığı üçün TikTok-un səssizləşdirdiyi videolarda səsi oynadır. TikTok yenə də səsin əlçatan olmadığını göstərə bilər.
 Match region fields in requests	Sorğulardakı region sahələrini uyğunlaşdır
 Keep the For You feed on your real SIM	Sənin üçün lentini əsl SIM-də saxla
-Sticker search, PineDrama and the rest of TikTok still see the SIM above, while For You asks for videos with your phone's own SIM country and carrier. Your IP address and account history still count.	Stiker axtarışı, PineDrama və TikTok-un qalanı yuxarıdakı SIM-i görməyə davam edir, Sənin üçün isə telefonunuzun öz SIM ölkəsi və operatoru ilə video istəyir. IP ünvanınız və hesab tarixçəniz yenə də nəzərə alınır.
+Sticker search and the rest of TikTok still see the SIM above, while For You asks for videos with your phone's own SIM country and carrier. Your IP address and account history still count.	Stiker axtarışı və TikTok-un qalanı yuxarıdakı SIM-i görməyə davam edir, Sənin üçün isə telefonunuzun öz SIM ölkəsi və operatoru ilə video istəyir. IP ünvanınız və hesab tarixçəniz yenə də nəzərə alınır.
 Show exact LIVE viewer counts	Dəqiq LIVE izləyici sayını göstər
 A LIVE room shows how many people are watching as a rounded number like 1.2K. This shows the exact count instead.	LIVE otağı kimin baxdığını 1.2K kimi yuvarlaqlaşdırılmış rəqəmlə göstərir. Bu, əvəzinə dəqiq sayı göstərir.
 Offer LIVE quality in more rooms	Daha çox LIVE otağında keyfiyyət seçimi təklif et
@@ -1813,12 +1810,10 @@ The proxy's address, like 192.168.1.20 or proxy.example.com.	Proksinin ünvanı,
 Proxy port	Proksi portu
 The port the proxy listens on, like 8080 or 1080.	Proksinin dinlədiyi port, məsələn 8080 və ya 1080.
 Proxy user name	Proksi istifadəçi adı
-Optional. Only connections made by Android itself can sign in to a proxy, not TikTok's own. Leave empty for a proxy without a password.	İstəyə bağlıdır. Proksiyə yalnız Android-in özünün etdiyi bağlantılar daxil ola bilər, TikTok-un öz bağlantıları yox. Parolsuz proksi üçün boş buraxın.
 Proxy password	Proksi parolu
 Optional, used with the user name. It isn't shown, logged or put in a backup.	İstəyə bağlı, istifadəçi adı ilə istifadə olunur. Göstərilmir, jurnala yazılmır və ehtiyat nüsxəyə düşmür.
 Enter a server name or IP address, without http:// or a port number	Server adı və ya IP ünvanı daxil edin, http:// və port nömrəsi olmadan
 A port is a whole number from 1 to 65535	Port 1 ilə 65535 arasında tam ədəddir
-TikTok can't send a password to proxy %1$s. Use another.	%1$s proksisinə parol göndərilmir. Başqa seçin.
 Proxy %1$s is down. Turn it off if TikTok won't load.	Proksi %1$s işləmir. TikTok açılmasa, söndürün.
 Word rules only, not every feed filter:	Yalnız söz qaydaları, lentdəki bütün filtrlər deyil:
 This list is too long to preview here. Saving still follows the usual limit.	Bu siyahı burada önbaxış üçün çox uzundur. Saxlayanda adi limit keçərli qalır.
@@ -2303,8 +2298,6 @@ Tap Stop or leave the room to save it.	Saxlamaq üçün Dayandır düyməsinə t
 Screen recording wasn't allowed	Ekran yazısına icazə verilmədi
 Recording this LIVE's screen from now	Bu LIVE-ın ekranı indi yazılır
 Recording this LIVE's screen from now, without sound	Bu LIVE-ın ekranı indi səssiz yazılır
-Allow photo comments	Foto şərhlərə icazə ver
-Show the gallery tab in the comment box, so you can add a photo to a comment like on TikTok. PineDrama turns it off for everyone. TikTok's server still decides whether your account can post one.	Şərh qutusunda qalereya bölməsini göstərir ki, TikTok-da olduğu kimi şərhə foto əlavə edə biləsiniz. PineDrama onu hamı üçün söndürür. Hesabınızın foto paylaşa bilib-bilməyəcəyinə yenə də TikTok-un serveri qərar verir.
 This screen recording has no sound	Bu ekran yazısında səs yoxdur
 Export recording files	Qeyd fayllarını ixrac et
 Delete recording files	Qeyd fayllarını sil
@@ -2375,7 +2368,7 @@ Removed: %1$d. The other %2$d are still there. Open your Inbox, then try again.	
 Removing the kept messages	Saxlanan mesajlar silinir
 Hide the Back button there too	Oradakı Geri düyməsini də gizlədin
 Hide the Back button beside that search bar as well. Your phone's back gesture or button still takes you back.	O axtarış çubuğunun yanındakı Geri düyməsini də gizlədin. Telefonunuzun geri jesti və ya düyməsi sizi yenə geri aparır.
-# context: PineDrama's comment sticker panel. Create is a button on its Saved page that turns a photo into a sticker. These are its spoken label and its toasts. The panel's tab names come from TikTok's server, not the app, so the last toast describes the saved stickers instead of quoting the tab
+# context: the comment sticker panel. Create is a button on its Saved page that turns a photo into a sticker. These are its spoken label and its toasts. The panel's tab names come from TikTok's server, not the app, so the last toast describes the saved stickers instead of quoting the tab
 Make a sticker from a photo	Fotodan stiker yaradın
 Making your sticker	Stikeriniz hazırlanır
 Couldn't open your photos. Try again.	Fotoları açmaq alınmadı. Yenidən cəhd edin.
@@ -2383,9 +2376,29 @@ Couldn't make the sticker. Try again.	Stikeri yaratmaq alınmadı. Yenidən cəh
 Couldn't read that photo. Try another one.	Bu fotonu oxumaq alınmadı. Başqa birini seçin.
 This account can't make stickers	Bu hesab stiker yarada bilməz
 Sticker added to Saved	Stiker saxlanılanlara əlavə edildi
-# context: PineDrama's comment sticker panel. Recently used is a heading Hushfeed adds above Saved, over the last stickers you sent. TikTok's own label for it isn't in the APK, so this is the usual phone wording
+# context: the comment sticker panel. Recently used is a heading Hushfeed adds above Saved, over the last stickers you sent. TikTok's own label for it isn't in the APK, so this is the usual phone wording
 Recently used	Son istifadə olunanlar
 # context: A video's share sheet. Make sticker is a button Hushfeed adds after Save cover, and it turns the video's cover into one of your saved comment stickers. Keep it about as short as Save cover, since share sheet labels get two short lines under the icon
 Make sticker	Stiker yarat
 TikTok refused the like: %1$s	TikTok bəyənməni rədd etdi: %1$s
 TikTok refused the like with code %1$s	TikTok bəyənməni %1$s kodu ilə rədd etdi
+Hide read receipts	Oxundu bildirişlərini gizlət
+Stops TikTok telling people you've read their messages. Your own unread badges still clear as usual.	TikTok-un insanlara mesajlarını oxuduğunu bildirməsinin qarşısını alır. Öz oxunmamış nişanların əvvəlki kimi silinir.
+Copy name	Adı kopyala
+Background play in the long-press menu	Uzun basma menyusunda fon oxutması
+Adds TikTok's own background play row to the long-press menu, so you pick it for one video and other videos stop as usual. Has no effect while Keep playing in the background is on. Restart TikTok to apply this.	TikTok-un öz fon oxutma sətrini uzun basma menyusuna əlavə edir, onu bir video üçün seçirsiniz, digər videolar isə adi qaydada dayanır. Fonda oxutmağa davam edin açıq olanda təsiri yoxdur. Tətbiq etmək üçün TikTok-u yenidən başladın.
+1, from Background play in the long-press menu	1, Uzun basma menyusunda fon oxutması seçimindən
+Background play in the long-press menu is on in Hushfeed's Playback settings, so TikTok gets 1 for this key and an override here has no effect until that switch is off.	Uzun basma menyusunda fon oxutması Hushfeed-in Oxutma ayarlarında açıqdır, ona görə TikTok bu açar üçün 1 alır və buradakı əvəzləmə həmin açar qapanana qədər təsirsizdir.
+Keep LIVEs from these creators	Bu yaradıcıların LIVE-larını saxla
+With Hide LIVE videos on, these creators' LIVEs stay when TikTok sends them. Separate handles or user IDs with commas.	LIVE videoları gizlədin açıq olanda bu yaradıcıların LIVE-ları TikTok göndərəndə qalır. İstifadəçi adlarını və ya ID-ləri vergüllə ayırın.
+Optional. Leave empty for a proxy without a password. TikTok signs in through a small relay on this phone, which other apps here could reach while TikTok is open.	İstəyə bağlıdır. Parolsuz proksi üçün boş buraxın. TikTok bu telefondakı kiçik bir ötürücü vasitəsilə daxil olur, TikTok açıq olanda buradakı digər tətbiqlər də ona çata bilər.
+Proxy %1$s needs a user name and password	%1$s proksisinə ad və parol lazımdır
+Proxy %1$s refused your user name or password	%1$s proksisi ad və ya parolu rədd etdi
+Save this video	Bu videonu saxlayın
+Show the save button on videos	Videolarda saxlama düyməsini göstərin
+Add a button beside the block control that saves the video on screen in one tap. Drag it wherever you like.	Bloklama idarəetməsinin yanına ekrandakı videonu bir toxunuşla saxlayan düymə əlavə edin. Onu istədiyiniz yerə sürükləyin.
+Couldn't save this one. Try again.	Saxlamaq alınmadı. Yenidən cəhd edin.
+Opening TikTok or your messages no longer pauses music from another app. TikTok takes the sound while a video plays and gives it back when you leave the video.	TikTok-u və ya mesajlarınızı açmaq artıq başqa tətbiqdəki musiqini dayandırmır. TikTok səsi video oxunarkən alır və videodan çıxanda geri qaytarır.
+While you hold a video, slide left or right to step through the speed menu's speeds, and a bubble shows the one you're on. Your next hold starts there. Letting go goes back to normal. A pull-down lock keeps the speed you slid to. On a locked video, letting go locks the new speed.	Videonu basıb saxlayarkən sürət menyusunun sürətləri arasında keçmək üçün sola və ya sağa sürüşdür, seçilən sürət balonda görünür. Növbəti basıb saxlama oradan başlayır. Barmağını çəkəndə normala qayıdır. Aşağı çəkib kilidləsən, seçdiyin sürət qalır. Kilidli videoda barmağını çəkəndə yeni sürət kilidlənir.
+Hide speed messages	Sürət mesajlarını gizlət
+Hides TikTok's message when you pick a speed from the menu, or lock or unlock one with a hold.	Menyudan sürət seçəndə və ya basılı saxlamaqla sürəti kilidləyəndə və ya kilidi açanda TikTok-un mesajını gizlədir.

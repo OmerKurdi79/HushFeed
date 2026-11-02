@@ -1122,7 +1122,6 @@ Sound on	Звук включён
 Sound	Звук
 Play feed videos without sound and leave the phone's volume alone. Music from another app keeps playing while it's on. DMs, stories and LIVE keep their sound.	Воспроизводить видео в ленте без звука, не трогая громкость телефона. Музыка из другого приложения продолжает играть, пока это включено. Личные сообщения, истории и LIVE сохраняют свой звук.
 Let other apps play until a video starts	Не прерывать другие приложения, пока не начнётся видео
-Opening TikTok or your messages no longer pauses music from another app. TikTok takes the sound once a video starts playing.	Открытие TikTok или ваших сообщений больше не ставит на паузу музыку из другого приложения. TikTok забирает звук, только когда начинается видео.
 Show the mute button on videos	Показывать кнопку отключения звука на видео
 Add a button beside the block control that turns the feed's sound off and on.	Добавлять рядом с кнопкой блокировки кнопку, включающую и выключающую звук ленты.
 Show the country a video was posted from next to the creator's name.	Показывать страну, откуда опубликовано видео, рядом с именем автора.
@@ -1397,7 +1396,6 @@ Value to return	Возвращаемое значение
 Verified accounts	Верифицированные аккаунты
 Version %1$s	Версия %1$s
 Version %1$s for TikTok %2$s	Версия %1$s для TikTok %2$s
-Version %1$s for PineDrama %2$s	Версия %1$s для PineDrama %2$s
 Video	Видео
 Video (MP4)	Видео (MP4)
 Video destination	Папка для видео
@@ -1525,7 +1523,6 @@ Hide the unread badges on the bottom tabs	Скрывать значки непр
 Hide the red counts and dots on every bottom tab, Inbox and Profile included, and the bubble over Inbox that counts new likes, followers, comments and who's LIVE. The inbox itself still shows what came in.	Скрывать красные счётчики и точки на всех нижних вкладках, включая «Входящие» и «Профиль», а также всплывающий значок над «Входящими» с числом новых лайков, подписчиков, комментариев и тех, кто в LIVE. Сами входящие по-прежнему показывают, что пришло.
 Speed while you hold the video	Скорость при удержании видео
 Slide to change the hold speed	Смена скорости удержания свайпом
-While you hold a video, slide left or right to step through the speed menu's speeds, and a bubble shows the one you're on. Your next hold starts there. Letting go goes back to normal. A pull-down lock keeps the speed you slid to.	Удерживая видео, проведите влево или вправо, чтобы переключать скорости из меню скорости. Текущую показывает пузырь. Следующее удержание начнётся с неё. Когда отпустите, скорость станет обычной. Блокировка свайпом вниз сохраняет выбранную скорость.
 Hide mini dramas	Скрывать мини-драмы
 Hide TikTok's short drama episodes and the cards that promote them.	Скрывать короткие драма-эпизоды TikTok и карточки, которые их продвигают.
 Mini dramas	Мини-драмы
@@ -1901,7 +1898,7 @@ Play sounds TikTok pulled	Воспроизводить звуки, удалён�
 Play the audio on videos TikTok silenced because their sound was pulled for copyright or in your region. TikTok may still say the sound isn't available.	Воспроизводит звук в видео, которые TikTok заглушил, потому что их звук удалён из-за авторских прав или в вашем регионе. TikTok может по-прежнему писать, что звук недоступен.
 Match region fields in requests	Подменять поля региона в запросах
 Keep the For You feed on your real SIM	Оставить «Рекомендации» на настоящей SIM
-Sticker search, PineDrama and the rest of TikTok still see the SIM above, while For You asks for videos with your phone's own SIM country and carrier. Your IP address and account history still count.	Поиск стикеров, PineDrama и остальной TikTok по-прежнему видят SIM, указанную выше, а «Рекомендации» запрашивают видео со страной и оператором SIM вашего телефона. Ваш IP-адрес и история аккаунта по-прежнему учитываются.
+Sticker search and the rest of TikTok still see the SIM above, while For You asks for videos with your phone's own SIM country and carrier. Your IP address and account history still count.	Поиск стикеров и остальной TikTok по-прежнему видят SIM, указанную выше, а «Рекомендации» запрашивают видео со страной и оператором SIM вашего телефона. Ваш IP-адрес и история аккаунта по-прежнему учитываются.
 Show exact LIVE viewer counts	Показывать точное число зрителей LIVE
 A LIVE room shows how many people are watching as a rounded number like 1.2K. This shows the exact count instead.	В комнате LIVE число зрителей показано округлённо, например 1,2K. Этот переключатель показывает точное число.
 Offer LIVE quality in more rooms	Выбор качества LIVE в большем числе комнат
@@ -1954,12 +1951,10 @@ The proxy's address, like 192.168.1.20 or proxy.example.com.	Адрес прок
 Proxy port	Порт прокси
 The port the proxy listens on, like 8080 or 1080.	Порт, на котором работает прокси, например 8080 или 1080.
 Proxy user name	Имя пользователя прокси
-Optional. Only connections made by Android itself can sign in to a proxy, not TikTok's own. Leave empty for a proxy without a password.	Необязательно. Входить в прокси могут только соединения, которые устанавливает сам Android, но не соединения TikTok. Оставьте пустым для прокси без пароля.
 Proxy password	Пароль прокси
 Optional, used with the user name. It isn't shown, logged or put in a backup.	Необязательно, используется вместе с именем пользователя. Он не показывается, не пишется в журнал и не попадает в резервную копию.
 Enter a server name or IP address, without http:// or a port number	Введите имя сервера или IP-адрес без http:// и номера порта
 A port is a whole number from 1 to 65535	Порт должен быть целым числом от 1 до 65535
-TikTok can't send a password to proxy %1$s. Use another.	Пароль не доходит до прокси %1$s. Выберите другой.
 Proxy %1$s is down. Turn it off if TikTok won't load.	Прокси %1$s упал. Выключите его, если TikTok завис.
 Word rules only, not every feed filter:	Только правила для слов, а не все фильтры ленты:
 This list is too long to preview here. Saving still follows the usual limit.	Этот список слишком длинный для предпросмотра. При сохранении действует обычный лимит.
@@ -2480,8 +2475,6 @@ Tap Stop or leave the room to save it.	Нажмите «Стоп» или вый
 Screen recording wasn't allowed	Запись экрана не разрешена
 Recording this LIVE's screen from now	Запись экрана этого LIVE началась
 Recording this LIVE's screen from now, without sound	Запись экрана этого LIVE началась, без звука
-Allow photo comments	Разрешить комментарии с фото
-Show the gallery tab in the comment box, so you can add a photo to a comment like on TikTok. PineDrama turns it off for everyone. TikTok's server still decides whether your account can post one.	Показывает вкладку галереи в поле комментария, чтобы можно было добавить фото к комментарию, как в TikTok. PineDrama отключает её для всех. Может ли ваш аккаунт его опубликовать, всё равно решает сервер TikTok.
 This screen recording has no sound	В этой записи экрана нет звука
 Export recording files	Экспортировать файлы записи
 Delete recording files	Удалить файлы записи
@@ -2552,7 +2545,7 @@ Removed: %1$d. The other %2$d are still there. Open your Inbox, then try again.	
 Removing the kept messages	Удаляем сохранённые сообщения
 Hide the Back button there too	Скрывать там и кнопку «Назад»
 Hide the Back button beside that search bar as well. Your phone's back gesture or button still takes you back.	Скрывать и кнопку «Назад» рядом с этой строкой поиска. Жест или кнопка «Назад» на телефоне по-прежнему возвращают обратно.
-# context: PineDrama's comment sticker panel. Create is a button on its Saved page that turns a photo into a sticker. These are its spoken label and its toasts. The panel's tab names come from TikTok's server, not the app, so the last toast describes the saved stickers instead of quoting the tab
+# context: the comment sticker panel. Create is a button on its Saved page that turns a photo into a sticker. These are its spoken label and its toasts. The panel's tab names come from TikTok's server, not the app, so the last toast describes the saved stickers instead of quoting the tab
 Make a sticker from a photo	Создать стикер из фото
 Making your sticker	Создаём стикер
 Couldn't open your photos. Try again.	Не удалось открыть фото. Повторите попытку.
@@ -2560,9 +2553,29 @@ Couldn't make the sticker. Try again.	Не удалось создать сти�
 Couldn't read that photo. Try another one.	Не удалось прочитать это фото. Выберите другое.
 This account can't make stickers	Этот аккаунт не может создавать стикеры
 Sticker added to Saved	Стикер добавлен в сохранённые
-# context: PineDrama's comment sticker panel. Recently used is a heading Hushfeed adds above Saved, over the last stickers you sent. TikTok's own label for it isn't in the APK, so this is the usual phone wording
+# context: the comment sticker panel. Recently used is a heading Hushfeed adds above Saved, over the last stickers you sent. TikTok's own label for it isn't in the APK, so this is the usual phone wording
 Recently used	Недавние
 # context: A video's share sheet. Make sticker is a button Hushfeed adds after Save cover, and it turns the video's cover into one of your saved comment stickers. Keep it about as short as Save cover, since share sheet labels get two short lines under the icon
 Make sticker	Создать стикер
 TikTok refused the like: %1$s	TikTok отклонил лайк: %1$s
 TikTok refused the like with code %1$s	TikTok отклонил лайк с кодом %1$s
+Hide read receipts	Скрыть отметки о прочтении
+Stops TikTok telling people you've read their messages. Your own unread badges still clear as usual.	Не дает TikTok сообщать людям, что ты прочитал(а) их сообщения. Твои значки непрочитанного по-прежнему сбрасываются как обычно.
+Copy name	Копировать имя
+Background play in the long-press menu	Фоновое воспроизведение в меню долгого нажатия
+Adds TikTok's own background play row to the long-press menu, so you pick it for one video and other videos stop as usual. Has no effect while Keep playing in the background is on. Restart TikTok to apply this.	Добавляет в меню долгого нажатия собственный пункт TikTok для фонового воспроизведения: вы выбираете его для одного видео, а остальные останавливаются как обычно. Не действует, пока включено «Продолжать воспроизведение в фоне». Перезапустите TikTok, чтобы применить.
+1, from Background play in the long-press menu	1, от «Фоновое воспроизведение в меню долгого нажатия»
+Background play in the long-press menu is on in Hushfeed's Playback settings, so TikTok gets 1 for this key and an override here has no effect until that switch is off.	«Фоновое воспроизведение в меню долгого нажатия» включено в настройках воспроизведения Hushfeed, поэтому TikTok получает значение 1 для этого ключа, и переопределение здесь не действует, пока тот переключатель не выключен.
+Keep LIVEs from these creators	Оставить LIVE этих авторов
+With Hide LIVE videos on, these creators' LIVEs stay when TikTok sends them. Separate handles or user IDs with commas.	Когда включено «Скрывать видео LIVE», LIVE этих авторов остаются, если TikTok их присылает. Разделяйте имена пользователей или ID запятыми.
+Optional. Leave empty for a proxy without a password. TikTok signs in through a small relay on this phone, which other apps here could reach while TikTok is open.	Необязательно. Оставьте пустым для прокси без пароля. TikTok входит через небольшой ретранслятор на этом телефоне, к которому другие приложения здесь могут подключиться, пока TikTok открыт.
+Proxy %1$s needs a user name and password	Прокси %1$s требует логин и пароль
+Proxy %1$s refused your user name or password	Прокси %1$s отклонил логин или пароль
+Save this video	Сохранить это видео
+Show the save button on videos	Показывать кнопку сохранения на видео
+Add a button beside the block control that saves the video on screen in one tap. Drag it wherever you like.	Добавлять рядом с кнопкой блокировки кнопку, сохраняющую видео на экране одним касанием. Её можно перетащить куда угодно.
+Couldn't save this one. Try again.	Не сохранено. Повторите.
+Opening TikTok or your messages no longer pauses music from another app. TikTok takes the sound while a video plays and gives it back when you leave the video.	Открытие TikTok или ваших сообщений больше не ставит на паузу музыку из другого приложения. TikTok забирает звук, пока играет видео, и возвращает его, когда вы уходите с видео.
+While you hold a video, slide left or right to step through the speed menu's speeds, and a bubble shows the one you're on. Your next hold starts there. Letting go goes back to normal. A pull-down lock keeps the speed you slid to. On a locked video, letting go locks the new speed.	Удерживая видео, проведите влево или вправо, чтобы переключать скорости из меню скорости. Текущую показывает пузырь. Следующее удержание начнётся с неё. Когда отпустите, скорость станет обычной. Блокировка свайпом вниз сохраняет выбранную скорость. На заблокированном видео при отпускании блокируется новая скорость.
+Hide speed messages	Скрывать сообщения о скорости
+Hides TikTok's message when you pick a speed from the menu, or lock or unlock one with a hold.	Скрывает сообщение TikTok, когда вы выбираете скорость в меню или блокируете и разблокируете её удержанием.

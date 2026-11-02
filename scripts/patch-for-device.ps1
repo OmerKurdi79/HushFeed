@@ -31,6 +31,9 @@ param(
     [string]$LeaseDir = $env:HUSHFEED_DEVICE_LEASE_DIR,
     [string]$ChatIdentity = $env:HUSHFEED_CHAT_IDENTITY,
     [ValidateRange(1, 30)][int]$LeaseMinutes = 30,
+    # A lease the caller already holds on -Serial (walk-app.ps1 passes its own). The install
+    # runs under it and leaves it held, so no other task can take the phone before the walk.
+    [object]$Lease,
     [switch]$Replace,
     # Print every line the desktop CLI writes, not only errors. The privacy patches say how
     # many call sites they intercepted, and a count of zero is the finding that matters.
@@ -43,9 +46,6 @@ param(
     # Patch option values, each '<patch name>|<key>=<value>' (for example
     # 'Accent color|accentColor=#2D7FF9'). Each one goes to the CLI as -O right after its patch's -e.
     [string[]]$Option = @(),
-    # Patch another app the catalog declares, such as PineDrama (com.ss.android.ttmd.video), with
-    # the patches that declare it and hold the report to that app. Pass its APK with -Apk.
-    [string]$Package,
     # Patch with the release bundle even when a source file is newer than it, for replaying
     # an earlier build on purpose. Without it a stale bundle stops the run.
     [switch]$AllowStaleBundle,
@@ -70,14 +70,14 @@ $root = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot 'Resolve-Java.ps1')
 . (Join-Path $PSScriptRoot 'apk-signing.ps1')
 . (Join-Path $PSScriptRoot 'device-install.ps1')
-. (Join-Path $PSScriptRoot 'release-receipt.ps1')
+. (Join-Path $PSScriptRoot 'apk-facts.ps1')
 $Java = Resolve-Java -Explicit $Java
 $DesktopJar = Resolve-DesktopCli -Explicit $DesktopJar -Root $root -Required
 $catalogPath = Join-Path $root 'patches-list.json'
 if (-not (Test-Path -LiteralPath $catalogPath -PathType Leaf)) { throw "No patch list found: $catalogPath" }
 try { $catalog = Get-Content -LiteralPath $catalogPath -Raw | ConvertFrom-Json }
 catch { throw "Could not read patch list ${catalogPath}: $($_.Exception.Message)" }
-$target = Get-PatchTarget -PatchList $catalog -PackageName $Package
+$target = Get-PatchTarget -PatchList $catalog
 if (-not $Apk -and $env:HUSHFEED_FIXTURE_DIR -and (Test-Path -LiteralPath $env:HUSHFEED_FIXTURE_DIR -PathType Container)) {
     $Apk = (Get-ChildItem -LiteralPath $env:HUSHFEED_FIXTURE_DIR `
         -Filter "*$($target.PackageVersion)*.apk" -File | Select-Object -First 1).FullName
@@ -99,7 +99,7 @@ if (-not $AllowStaleBundle) {
             '(or pass -AllowStaleBundle to patch with it as it is).')
     }
 }
-$names = @(Get-PackagePatchNames -PatchList $catalog -PackageName $target.PackageName | Where-Object { $_ -notin $Exclude })
+$names = @($catalog.patches | ForEach-Object { $_.name } | Where-Object { $_ -notin $Exclude })
 foreach ($excluded in $Exclude) {
     if ($excluded -notin ($catalog.patches | ForEach-Object { $_.name })) { throw "No patch named '$excluded' to exclude." }
 }
@@ -216,8 +216,13 @@ if (-not $Serial) { return }
 $adb = (Get-Command adb -ErrorAction SilentlyContinue).Source
 if (-not $adb) { $adb = Get-ChildItem "$env:LOCALAPPDATA\Microsoft\WinGet\Packages" -Recurse -Filter adb.exe -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName }
 if (-not $adb) { throw 'No adb found. Put it on the PATH or install the platform tools.' }
-$deviceLease = New-DeviceLease -LeaseDir $LeaseDir -Serial $Serial -Project 'hushfeed' `
-    -ChatIdentity $ChatIdentity -Purpose 'patched application install' -LeaseMinutes $LeaseMinutes
+if ($Lease) {
+    Assert-DeviceLease -Lease $Lease -Serial $Serial
+    $deviceLease = $Lease
+} else {
+    $deviceLease = New-DeviceLease -LeaseDir $LeaseDir -Serial $Serial -Project 'hushfeed' `
+        -ChatIdentity $ChatIdentity -Purpose 'patched application install' -LeaseMinutes $LeaseMinutes
+}
 if ($Replace) {
     [void](Remove-AndroidPackageIfInstalled -Adb $adb -Serial $Serial -PackageName $target.PackageName -Lease $deviceLease)
 } else {
@@ -245,7 +250,7 @@ Assert-DeviceLease -Lease $deviceLease -Serial $Serial
             if (Test-Path -LiteralPath $unsigned) { Remove-Item -LiteralPath $unsigned -Force }
         }
     } finally {
-        try { Remove-DeviceLease -Lease $deviceLease -WarnOnFailure }
+        try { if (-not $Lease) { Remove-DeviceLease -Lease $deviceLease -WarnOnFailure } }
         finally { Close-ApkSigningSession -Session $signingSession }
     }
 }

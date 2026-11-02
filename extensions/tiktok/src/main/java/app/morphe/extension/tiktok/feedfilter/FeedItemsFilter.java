@@ -495,7 +495,7 @@ public final class FeedItemsFilter {
      * ad rules, and a video someone chose to keep can carry an ad mark, a paid partnership or
      * promotional music: TikTok accepted the like, listed the video on Liked, and it was gone from
      * that list here (#269). The For You routes don't ask, so a liked ad stays out of the feed.
-     * Read by name, since only the two flags are wanted and PineDrama shares this path.
+     * Read by name, since only the two flags are wanted.
      */
     private static boolean isLikedOrSaved(Aweme item) {
         return isSet(Reflect.property(item, "getUserDigg", "userDigg"))
@@ -1000,7 +1000,7 @@ public final class FeedItemsFilter {
     private static String friendsFeedReason(Object entry, List<IFilter> activeFilters, boolean hideLive) {
         if (entry == null) return null;
         Object room = Reflect.readField(entry, "roomStruct");
-        if (hideLive && room != null) return "LiveFilter";
+        if (hideLive && room != null && !CreatorExceptions.keepsLiveCard(room)) return "LiveFilter";
         // A Friends card for a LIVE carries its room and no video, so the Shop switch looks at
         // the room itself for a LIVE that is selling (#46).
         if (room != null && Settings.HIDE_SHOP.get() && ShopFilter.roomSells(room)) return "ShopFilter";
@@ -1016,8 +1016,8 @@ public final class FeedItemsFilter {
     }
 
     /**
-     * The drama tab's feed answer, as SeriesFeedResp's constructor finishes (#294). PineDrama's
-     * own feed requests build it straight from the server's answer, so the list never passes
+     * The drama tab's feed answer, as SeriesFeedResp's constructor finishes (#294). That feed's
+     * own requests build it straight from the server's answer, so the list never passes
      * {@link #filter(FeedItemList)} and its ads reached the page. Ads only: every item on that
      * page is an episode, so the series and drama rules would empty it.
      */
@@ -2183,6 +2183,11 @@ public final class FeedItemsFilter {
         if (!exceptions.isEmpty()) {
             if (builder.length() > 0) builder.append('|');
             builder.append(exceptions);
+        }
+        String liveKeep = CreatorExceptions.liveKeepToken();
+        if (!liveKeep.isEmpty()) {
+            if (builder.length() > 0) builder.append('|');
+            builder.append(liveKeep);
         }
         return builder.toString();
     }

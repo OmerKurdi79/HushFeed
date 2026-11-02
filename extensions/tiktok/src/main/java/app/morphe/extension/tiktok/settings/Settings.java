@@ -333,6 +333,12 @@ public class Settings extends BaseSettings {
     /** Keep playing in the background (#52). TikTok reads its gate once a process, so a restart applies it. */
     public static final BooleanSetting BACKGROUND_PLAY = new BooleanSetting("background_play", FALSE, true);
     /**
+     * TikTok's own long-press row for background play, which turns it on for one video (#302). It
+     * sets the same gate, so a restart applies it too.
+     */
+    public static final BooleanSetting BACKGROUND_PLAY_MENU = new BooleanSetting(
+            "background_play_menu", FALSE, true, Setting.parentNot(BACKGROUND_PLAY));
+    /**
      * Replay in the background (#99): a video that ends while TikTok plays in the background
      * starts again instead of waiting on the notification's Play. Read at each end, so no restart.
      */
@@ -390,6 +396,12 @@ public class Settings extends BaseSettings {
     public static final BooleanSetting MARK_KEPT_UNSENT_MESSAGES =
             new BooleanSetting("mark_kept_unsent_messages", TRUE);
     /**
+     * Stops TikTok telling people you have read their messages: the request that marks a chat as read is not
+     * sent. Off by default. See HideReadReceipts.
+     */
+    public static final BooleanSetting HIDE_READ_RECEIPTS =
+            new BooleanSetting("hide_read_receipts", FALSE);
+    /**
      * Dispatches one message per selected chat a day at {@link #AUTO_STREAK_MINUTE},
      * so a streak with them keeps going on a day nobody opens the app. Off by default. See
      * AutoStreak.
@@ -425,6 +437,8 @@ public class Settings extends BaseSettings {
             new FeedRuleStringSetting("blocked_creators", true);
     public static final StringSetting LOCAL_HIDDEN_CREATORS =
             new FeedRuleStringSetting("local_hidden_creators", true);
+    public static final StringSetting LIVE_KEPT_CREATORS =
+            new FeedRuleStringSetting("live_kept_creators", true);
     public static final StringSetting CREATOR_FILTER_EXCEPTIONS =
             new FeedRuleStringSetting("creator_filter_exceptions", true);
     public static final StringSetting REGION_ONLY_FROM = new StringSetting("region_only_from", "", true);
@@ -755,6 +769,8 @@ public class Settings extends BaseSettings {
     public static final StringSetting HOLD_SPEED = new StringSetting("hold_speed", "2");
     /** Sliding sideways during the hold changes its speed, with a bubble that shows it (#248). */
     public static final BooleanSetting HOLD_SPEED_SLIDE = new BooleanSetting("hold_speed_slide", FALSE);
+    /** Leaves out TikTok's message when a speed is picked from the menu or locked with a hold (#248). */
+    public static final BooleanSetting HIDE_SPEED_TOASTS = new BooleanSetting("hide_speed_toasts", FALSE);
     public static final BooleanSetting AUTO_ADVANCE = new BooleanSetting("auto_advance", FALSE, true);
     public static final IntegerSetting AUTO_ADVANCE_LIMIT = new IntegerSetting(
             "auto_advance_limit", 0, false, Setting.parent(AUTO_ADVANCE)).withRange(0, 1000);
@@ -922,6 +938,8 @@ public class Settings extends BaseSettings {
      */
     public static final BooleanSetting FEED_MUTED = new BooleanSetting("feed_muted", FALSE, false, false);
     public static final BooleanSetting FEED_MUTE_BUTTON = new BooleanSetting("feed_mute_button", FALSE);
+    /** A save button on the video itself, so a save doesn't start with a long press or the share sheet (#299). */
+    public static final BooleanSetting DOWNLOAD_BUTTON = new BooleanSetting("download_button", FALSE);
     /** TikTok's audio focus waits for a video to play, so opening the app or a chat leaves other apps' music alone (#283). */
     public static final BooleanSetting FOCUS_WAITS_FOR_VIDEO = new BooleanSetting("focus_waits_for_video", FALSE);
     public static final BooleanSetting HIDE_FEED_CAPTION = new BooleanSetting("hide_feed_caption", FALSE);
@@ -1094,6 +1112,8 @@ public class Settings extends BaseSettings {
             new StringSetting("not_interested_button_position", "");
     public static final StringSetting FEED_MUTE_BUTTON_POSITION =
             new StringSetting("feed_mute_button_position", "");
+    public static final StringSetting DOWNLOAD_BUTTON_POSITION =
+            new StringSetting("download_button_position", "");
     public static final BooleanSetting HIDE_INBOX_STORIES = new BooleanSetting("hide_inbox_stories", FALSE);
     public static final BooleanSetting HIDE_INBOX_NEW_FOLLOWERS = new BooleanSetting("hide_inbox_new_followers", FALSE);
     public static final BooleanSetting HIDE_INBOX_ACTIVITY = new BooleanSetting("hide_inbox_activity", FALSE);
@@ -1253,9 +1273,6 @@ public class Settings extends BaseSettings {
     // Enable voice comments, in the default selection with this off. A restart, since TikTok may
     // keep the answer for a comment box it has already built.
     public static final BooleanSetting ENABLE_VOICE_COMMENTS = new BooleanSetting("enable_voice_comments", FALSE, true);
-    // PineDrama's comment box gallery tab, which PineDrama turns off for everyone (#156). A
-    // restart, since the answer is kept per signed-in account.
-    public static final BooleanSetting PINEDRAMA_COMMENT_PHOTOS = new BooleanSetting("pinedrama_comment_photos", FALSE, true);
     public static final BooleanSetting KEEP_FAVORITES_TAB =
             new BooleanSetting("keep_favorites_tab", TRUE, true);
     /** The collections popup from holding the bookmark, dark when TikTok is (issue #142). */
@@ -1457,7 +1474,7 @@ public class Settings extends BaseSettings {
                 BOTTOM_NAVIGATION_OBSERVED_TABS, DOWNLOAD_PATH, DOWNLOAD_PATHS_MIGRATED,
                 REMEMBERED_SPEED, SESSION_BUDGET_STATE, BLOCK_AUTHOR_BUTTON_POSITION,
                 LOCAL_HIDE_BUTTON_POSITION, BLOCK_SOUND_BUTTON_POSITION, NOT_INTERESTED_BUTTON_POSITION,
-                FEED_MUTE_BUTTON_POSITION, COMMENT_TRANSLATE_BUTTON_TURNED_ON,
+                FEED_MUTE_BUTTON_POSITION, DOWNLOAD_BUTTON_POSITION, COMMENT_TRANSLATE_BUTTON_TURNED_ON,
                 SHARE_ACTION_CATALOG, PROFILE_SHORTCUT_CATALOG, POPUP_LABEL_CATALOG, DIAGNOSTIC_REPORT_SALT, AUTO_STREAK_STATE,
                 // The budget's day is worked out from this hour. Paused, the budget counts
                 // nothing and holds nothing, but its record still has to name the right day.
