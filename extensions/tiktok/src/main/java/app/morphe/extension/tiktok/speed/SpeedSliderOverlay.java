@@ -481,29 +481,30 @@ public final class SpeedSliderOverlay {
     }
 
     /**
-     * Custom lightweight overlay view:
-     * - Displays as a compact ghost pill by default on hold.
-     * - Smoothly expands to reveal vertical speed dial when pulling up/down.
-     * - Side-slide toggles lock state.
+     * Custom lightweight circular gauge HUD:
+     * - Renders as an ultra-compact futuristic dial (tachometer / watch crown style).
+     * - Sweeps an electric cyan arc with orbital ticks as speed is scrolled up/down.
+     * - Micro-pulses on each speed notch for a mechanical tactile feel.
+     * - Side-slide locks with an illuminated neon ring and lock badge.
      */
     private static class SpeedSliderView extends View {
         private final List<Float> speeds;
         private int currentIdx;
         private boolean isLocked;
         private boolean isResetNormal = false;
-        private boolean isExpandedMode = false;
         private final float density;
 
         private final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint trackArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint progressArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint activeTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint pillTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint dotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint activeDotOuterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint activeDotInnerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final RectF bounds = new RectF();
+        private final Paint chevronPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint lockGlyphPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint tickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint activeTickOuterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint activeTickInnerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final RectF arcBounds = new RectF();
 
         public SpeedSliderView(Context context, List<Float> speeds, int initialIdx, boolean locked) {
             super(context);
@@ -512,77 +513,78 @@ public final class SpeedSliderOverlay {
             this.isLocked = locked;
             this.density = getResources().getDisplayMetrics().density;
 
-            bgPaint.setColor(Color.argb(185, 16, 18, 24)); // Frosted dark obsidian
+            bgPaint.setColor(Color.argb(205, 14, 16, 22)); // Deep obsidian glass
             bgPaint.setStyle(Paint.Style.FILL);
 
-            borderPaint.setColor(Color.argb(45, 255, 255, 255));
             borderPaint.setStyle(Paint.Style.STROKE);
             borderPaint.setStrokeWidth(1f * density);
 
-            linePaint.setColor(Color.argb(55, 255, 255, 255));
-            linePaint.setStrokeWidth(1.5f * density);
-            linePaint.setStrokeCap(Paint.Cap.ROUND);
+            trackArcPaint.setColor(Color.argb(35, 255, 255, 255));
+            trackArcPaint.setStyle(Paint.Style.STROKE);
+            trackArcPaint.setStrokeWidth(2.5f * density);
+            trackArcPaint.setStrokeCap(Paint.Cap.ROUND);
 
-            textPaint.setColor(Color.argb(150, 255, 255, 255));
-            textPaint.setTextSize(12f * density);
+            progressArcPaint.setColor(Color.parseColor("#00E5FF")); // Electric neon cyan
+            progressArcPaint.setStyle(Paint.Style.STROKE);
+            progressArcPaint.setStrokeWidth(2.5f * density);
+            progressArcPaint.setStrokeCap(Paint.Cap.ROUND);
+
+            textPaint.setColor(Color.WHITE);
+            textPaint.setTextSize(13.5f * density);
             textPaint.setTextAlign(Paint.Align.CENTER);
-            textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+            textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-            activeTextPaint.setColor(Color.parseColor("#3897F0"));
-            activeTextPaint.setTextSize(13.5f * density);
-            activeTextPaint.setTextAlign(Paint.Align.CENTER);
-            activeTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            chevronPaint.setColor(Color.argb(120, 0, 229, 255));
+            chevronPaint.setTextSize(7.5f * density);
+            chevronPaint.setTextAlign(Paint.Align.CENTER);
+            chevronPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
 
-            pillTextPaint.setColor(Color.WHITE);
-            pillTextPaint.setTextSize(13.5f * density);
-            pillTextPaint.setTextAlign(Paint.Align.CENTER);
-            pillTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            lockGlyphPaint.setColor(Color.parseColor("#00E5FF"));
+            lockGlyphPaint.setTextSize(9.5f * density);
+            lockGlyphPaint.setTextAlign(Paint.Align.CENTER);
 
-            dotPaint.setColor(Color.argb(140, 255, 255, 255));
-            dotPaint.setStyle(Paint.Style.FILL);
+            tickPaint.setColor(Color.argb(80, 255, 255, 255));
+            tickPaint.setStyle(Paint.Style.FILL);
 
-            activeDotOuterPaint.setColor(Color.parseColor("#3897F0"));
-            activeDotOuterPaint.setStyle(Paint.Style.FILL);
+            activeTickOuterPaint.setColor(Color.parseColor("#00E5FF"));
+            activeTickOuterPaint.setStyle(Paint.Style.FILL);
 
-            activeDotInnerPaint.setColor(Color.WHITE);
-            activeDotInnerPaint.setStyle(Paint.Style.FILL);
+            activeTickInnerPaint.setColor(Color.WHITE);
+            activeTickInnerPaint.setStyle(Paint.Style.FILL);
         }
 
         public void setExpandedMode(boolean expanded) {
-            if (this.isExpandedMode != expanded) {
-                this.isExpandedMode = expanded;
-                requestLayout();
-                invalidate();
-            }
+            // Circle seamlessly adapts in place without bloating layout
+            invalidate();
         }
 
         public void setCurrentIndex(int idx) {
-            this.currentIdx = idx;
-            this.isResetNormal = false;
-            invalidate();
+            if (this.currentIdx != idx) {
+                this.currentIdx = idx;
+                this.isResetNormal = false;
+                // Punchy mechanical notch scale-pulse
+                animate().scaleX(1.12f).scaleY(1.12f).setDuration(60)
+                    .withEndAction(() -> animate().scaleX(1.0f).scaleY(1.0f).setDuration(90).start())
+                    .start();
+                invalidate();
+            }
         }
 
         public void setLockedState(boolean locked, boolean resetNormal) {
             this.isLocked = locked;
             this.isResetNormal = resetNormal;
+            // Magnetic snap scale-pop
+            animate().scaleX(1.18f).scaleY(1.18f).setDuration(80)
+                .withEndAction(() -> animate().scaleX(1.0f).scaleY(1.0f).setDuration(110).start())
+                .start();
             invalidate();
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            if (!isExpandedMode) {
-                // Minimalist compact pill: only speed number & lock icon
-                int pillWidth = isLocked ? (int) (96f * density) : (int) (76f * density);
-                int pillHeight = (int) (32f * density);
-                setMeasuredDimension(pillWidth, pillHeight);
-            } else {
-                // Vertical sleek dial: slim width, dynamic height based on steps
-                int count = Math.max(2, speeds.size());
-                float itemHeight = 26f * density;
-                int height = (int) (count * itemHeight + 20f * density);
-                int width = isLocked ? (int) (86f * density) : (int) (70f * density);
-                setMeasuredDimension(width, height);
-            }
+            // Elegant compact circular footprint (54dp diameter)
+            int diameter = (int) (54f * density);
+            setMeasuredDimension(diameter, diameter);
         }
 
         @Override
@@ -591,74 +593,79 @@ public final class SpeedSliderOverlay {
 
             float w = getWidth();
             float h = getHeight();
-            float radius = isExpandedMode ? 18f * density : (h / 2f);
+            float cx = w / 2f;
+            float cy = h / 2f;
+            float outerRadius = Math.min(w, h) / 2f - (1f * density);
 
-            bounds.set(borderPaint.getStrokeWidth(), borderPaint.getStrokeWidth(),
-                       w - borderPaint.getStrokeWidth(), h - borderPaint.getStrokeWidth());
+            // 1. Sleek circular glass base
+            canvas.drawCircle(cx, cy, outerRadius, bgPaint);
 
-            // 1. Sleek frosted glass card
-            canvas.drawRoundRect(bounds, radius, radius, bgPaint);
+            // 2. Specular border ring (glows cyan when locked)
             if (isLocked) {
-                borderPaint.setColor(Color.parseColor("#3897F0"));
+                borderPaint.setColor(Color.parseColor("#00E5FF"));
                 borderPaint.setStrokeWidth(1.5f * density);
             } else {
                 borderPaint.setColor(Color.argb(45, 255, 255, 255));
                 borderPaint.setStrokeWidth(1f * density);
             }
-            canvas.drawRoundRect(bounds, radius, radius, borderPaint);
+            canvas.drawCircle(cx, cy, outerRadius, borderPaint);
 
-            float currentSpeedVal = (speeds != null && currentIdx < speeds.size()) ? speeds.get(currentIdx) : 2.0f;
-            String speedStr = PlaybackSpeedPatch.speedLabel(currentSpeedVal) + "x";
-
-            if (!isExpandedMode) {
-                // Minimalist pill: just the speed number, lock icon if locked
-                String pillText;
-                if (isResetNormal) {
-                    pillTextPaint.setColor(Color.parseColor("#FFCC00"));
-                    pillText = "1.0x";
-                } else if (isLocked) {
-                    pillTextPaint.setColor(Color.parseColor("#3897F0"));
-                    pillText = "🔒 " + speedStr;
-                } else {
-                    pillTextPaint.setColor(Color.WHITE);
-                    pillText = speedStr;
-                }
-                canvas.drawText(pillText, w / 2f, (h / 2f) + (4.5f * density), pillTextPaint);
-                return;
-            }
-
-            // Expanded vertical dial: sleek vertical rail, higher speeds at top, lower at bottom
             if (speeds == null || speeds.isEmpty()) return;
 
             int count = speeds.size();
-            float itemHeight = 26f * density;
-            float topPadding = 18f * density;
-            float railX = 18f * density;
-            float textX = isLocked ? (w / 2f + 4f * density) : (w / 2f + 4f * density);
+            float arcRadius = outerRadius - (3.5f * density);
+            arcBounds.set(cx - arcRadius, cy - arcRadius, cx + arcRadius, cy + arcRadius);
 
-            // Vertical track line connecting dots
-            float startY = topPadding;
-            float endY = topPadding + ((count - 1) * itemHeight);
-            canvas.drawLine(railX, startY, railX, endY, linePaint);
+            float startAngle = 135f;
+            float totalSweep = 270f;
 
-            // Speeds: Top is fastest (count - 1), bottom is slowest (0)
+            // 3. Circular track gauge
+            canvas.drawArc(arcBounds, startAngle, totalSweep, false, trackArcPaint);
+
+            // 4. Electric cyan speed progress arc
+            float ratio = count > 1 ? (float) currentIdx / (float) (count - 1) : 1f;
+            float currentSweep = Math.max(3f, ratio * totalSweep);
+            canvas.drawArc(arcBounds, startAngle, currentSweep, false, progressArcPaint);
+
+            // 5. Orbital notch ticks along the perimeter
             for (int i = 0; i < count; i++) {
-                int displayIdx = (count - 1) - i;
-                float y = topPadding + (i * itemHeight);
-                float speedVal = speeds.get(displayIdx);
-                String label = PlaybackSpeedPatch.speedLabel(speedVal) + "x";
+                float stepRatio = count > 1 ? (float) i / (float) (count - 1) : 0f;
+                float angleDeg = startAngle + (stepRatio * totalSweep);
+                double angleRad = Math.toRadians(angleDeg);
+                float dotX = cx + (float) (arcRadius * Math.cos(angleRad));
+                float dotY = cy + (float) (arcRadius * Math.sin(angleRad));
 
-                if (displayIdx == currentIdx) {
-                    if (isLocked) {
-                        label = "🔒 " + label;
-                    }
-                    canvas.drawText(label, textX, y + (4.5f * density), activeTextPaint);
-                    canvas.drawCircle(railX, y, 5.5f * density, activeDotOuterPaint);
-                    canvas.drawCircle(railX, y, 2.5f * density, activeDotInnerPaint);
+                if (i == currentIdx) {
+                    canvas.drawCircle(dotX, dotY, 4f * density, activeTickOuterPaint);
+                    canvas.drawCircle(dotX, dotY, 1.8f * density, activeTickInnerPaint);
                 } else {
-                    canvas.drawText(label, textX, y + (4f * density), textPaint);
-                    canvas.drawCircle(railX, y, 2.5f * density, dotPaint);
+                    canvas.drawCircle(dotX, dotY, 1.2f * density, tickPaint);
                 }
+            }
+
+            // 6. Center typography & status
+            float currentSpeedVal = (currentIdx < speeds.size()) ? speeds.get(currentIdx) : 2.0f;
+            String speedStr = PlaybackSpeedPatch.speedLabel(currentSpeedVal) + "x";
+
+            if (isResetNormal) {
+                textPaint.setColor(Color.parseColor("#FFCC00"));
+                textPaint.setTextSize(13f * density);
+                canvas.drawText("1.0x", cx, cy + (4.5f * density), textPaint);
+            } else if (isLocked) {
+                // Lock icon above, speed below
+                canvas.drawText("🔒", cx, cy - (3.5f * density), lockGlyphPaint);
+                textPaint.setColor(Color.parseColor("#00E5FF"));
+                textPaint.setTextSize(11f * density);
+                canvas.drawText(speedStr, cx, cy + (9.5f * density), textPaint);
+            } else {
+                // Centered speed value with micro chevrons
+                textPaint.setColor(Color.WHITE);
+                textPaint.setTextSize(13.5f * density);
+                canvas.drawText(speedStr, cx, cy + (4.5f * density), textPaint);
+
+                // Subtle guide chevrons hinting vertical movement
+                canvas.drawText("▲", cx, cy - (9.5f * density), chevronPaint);
+                canvas.drawText("▼", cx, cy + (16f * density), chevronPaint);
             }
         }
     }
