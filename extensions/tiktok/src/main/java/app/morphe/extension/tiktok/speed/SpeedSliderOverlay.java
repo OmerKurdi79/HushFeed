@@ -33,13 +33,12 @@ public final class SpeedSliderOverlay {
     private static volatile boolean holding = false;
     private static volatile boolean currentlyLocked = false;
     private static boolean wasLockedBeforeGesture = false;
-    private static boolean draggedDown = false;
-    private static boolean isSliding = false;
-    private static boolean axisLockedVertical = false;
+    private static boolean draggedSide = false;
+    private static boolean isVerticalScrubbing = false;
 
     private static float startX = 0f;
     private static float startY = 0f;
-    private static float lastScrubX = 0f;
+    private static float lastScrubY = 0f;
     private static int currentIndex = 0;
     private static float lastHoldSpeed = 2.0f;
 
@@ -63,7 +62,8 @@ public final class SpeedSliderOverlay {
             currentlyLocked = false;
             wasLockedBeforeGesture = false;
         }
-        draggedDown = false;
+        draggedSide = false;
+        isVerticalScrubbing = false;
         if (android.os.Looper.myLooper() == android.os.Looper.getMainLooper()) {
             removeOverlay();
         } else {
@@ -138,11 +138,10 @@ public final class SpeedSliderOverlay {
 
                 startX = x;
                 startY = y;
-                lastScrubX = x;
+                lastScrubY = y;
                 currentIndex = bestIdx;
-                draggedDown = false;
-                isSliding = false;
-                axisLockedVertical = false;
+                draggedSide = false;
+                isVerticalScrubbing = false;
                 wasLockedBeforeGesture = currentlyLocked;
 
                 float selectedSpeed = speedSteps.get(currentIndex);
@@ -178,59 +177,14 @@ public final class SpeedSliderOverlay {
             if (activity == null) return;
             float density = activity.getResources().getDisplayMetrics().density;
 
-            // 1. Check for vertical dominant intent (Axis Locking)
-            // If dragging downward significantly more than sideways, lock out horizontal changes
-            if (!axisLockedVertical && dyTotal > 18f * density && dyTotal > Math.abs(dxTotal)) {
-                axisLockedVertical = true;
-            }
-
-            // 2. Relative horizontal scrub (only when not locked to vertical axis)
-            if (!axisLockedVertical) {
-                // Check if user has started sliding horizontally
-                if (!isSliding && Math.abs(dxTotal) > 16f * density) {
-                    isSliding = true;
-                    lastScrubX = curX;
-                    SpeedSliderView view = viewReference.get();
-                    if (view != null) {
-                        view.setSlidingMode(true);
-                    }
-                }
-
-                if (isSliding) {
-                    float scrubDelta = curX - lastScrubX;
-                    float stepThreshold = 32f * density;
-
-                    if (Math.abs(scrubDelta) >= stepThreshold) {
-                        int stepCount = (int) (scrubDelta / stepThreshold);
-                        int newIdx = Math.max(0, Math.min(speedSteps.size() - 1, currentIndex + stepCount));
-
-                        if (newIdx != currentIndex) {
-                            currentIndex = newIdx;
-                            float speed = speedSteps.get(currentIndex);
-                            PlaybackSpeedPatch.setLiveSpeed(speed);
-
-                            // Remember this speed for next time
-                            lastHoldSpeed = speed;
-
-                            SpeedSliderView view = viewReference.get();
-                            if (view != null) {
-                                view.setCurrentIndex(currentIndex);
-                            }
-                        }
-                        // Advance lastScrubX by the consumed distance
-                        lastScrubX += stepCount * stepThreshold;
-                    }
-                }
-            }
-
-            // 3. Vertical pull-down to lock or reset to normal
-            float lockThreshold = 52f * density;
-            if (dyTotal > lockThreshold && !draggedDown) {
-                draggedDown = true;
+            // 1. Horizontal slide to Lock / Unlock (swiping left or right past threshold)
+            float lockThreshold = 38f * density;
+            if (Math.abs(dxTotal) > lockThreshold && !draggedSide) {
+                draggedSide = true;
                 SpeedSliderView view = viewReference.get();
 
                 if (wasLockedBeforeGesture) {
-                    // Pulling down while already locked resets back to normal 1.0x
+                    // Swiping sideways while already locked unlocks and resets back to normal 1.0x
                     currentlyLocked = false;
                     PlaybackSpeedPatch.setLiveSpeed(1.0f);
                     if (Settings.REMEMBER_SPEED.get()) {
@@ -250,6 +204,44 @@ public final class SpeedSliderOverlay {
                     }
                 }
             }
+
+            // 2. Vertical scrub (pulling UP for faster, DOWN for slower)
+            if (!draggedSide) {
+                if (!isVerticalScrubbing && Math.abs(dyTotal) > 12f * density) {
+                    isVerticalScrubbing = true;
+                    lastScrubY = curY;
+                    SpeedSliderView view = viewReference.get();
+                    if (view != null) {
+                        view.setExpandedMode(true);
+                    }
+                }
+
+                if (isVerticalScrubbing) {
+                    float scrubDelta = curY - lastScrubY;
+                    float stepThreshold = 26f * density;
+
+                    // Pulling UP (negative dy) = faster (increase index)
+                    // Pulling DOWN (positive dy) = slower (decrease index)
+                    if (Math.abs(scrubDelta) >= stepThreshold) {
+                        int stepCount = (int) (-scrubDelta / stepThreshold);
+                        int newIdx = Math.max(0, Math.min(speedSteps.size() - 1, currentIndex + stepCount));
+
+                        if (newIdx != currentIndex) {
+                            currentIndex = newIdx;
+                            float speed = speedSteps.get(currentIndex);
+                            PlaybackSpeedPatch.setLiveSpeed(speed);
+
+                            lastHoldSpeed = speed;
+
+                            SpeedSliderView view = viewReference.get();
+                            if (view != null) {
+                                view.setCurrentIndex(currentIndex);
+                            }
+                        }
+                        lastScrubY -= stepCount * stepThreshold;
+                    }
+                }
+            }
         } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             onHoldEnd();
         }
@@ -264,8 +256,8 @@ public final class SpeedSliderOverlay {
         if (!holding && view == null) return;
         holding = false;
 
-        // If user didn't pull down during this gesture, lock state must NOT change
-        if (!draggedDown) {
+        // If user didn't swipe sideways during this gesture, lock state must NOT change
+        if (!draggedSide) {
             currentlyLocked = wasLockedBeforeGesture;
         }
 
@@ -491,14 +483,15 @@ public final class SpeedSliderOverlay {
     /**
      * Custom lightweight overlay view:
      * - Displays as a compact ghost pill by default on hold.
-     * - Smoothly expands to reveal horizontal speed track when sliding horizontally.
+     * - Smoothly expands to reveal vertical speed dial when pulling up/down.
+     * - Side-slide toggles lock state.
      */
     private static class SpeedSliderView extends View {
         private final List<Float> speeds;
         private int currentIdx;
         private boolean isLocked;
         private boolean isResetNormal = false;
-        private boolean isSlidingMode = false;
+        private boolean isExpandedMode = false;
         private final float density;
 
         private final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -519,18 +512,18 @@ public final class SpeedSliderOverlay {
             this.isLocked = locked;
             this.density = getResources().getDisplayMetrics().density;
 
-            bgPaint.setColor(Color.argb(175, 18, 18, 22)); // Translucent dark frosted
+            bgPaint.setColor(Color.argb(185, 16, 18, 24)); // Frosted dark obsidian
             bgPaint.setStyle(Paint.Style.FILL);
 
             borderPaint.setColor(Color.argb(45, 255, 255, 255));
             borderPaint.setStyle(Paint.Style.STROKE);
             borderPaint.setStrokeWidth(1f * density);
 
-            linePaint.setColor(Color.argb(60, 255, 255, 255));
-            linePaint.setStrokeWidth(2f * density);
+            linePaint.setColor(Color.argb(55, 255, 255, 255));
+            linePaint.setStrokeWidth(1.5f * density);
             linePaint.setStrokeCap(Paint.Cap.ROUND);
 
-            textPaint.setColor(Color.argb(165, 255, 255, 255));
+            textPaint.setColor(Color.argb(150, 255, 255, 255));
             textPaint.setTextSize(12f * density);
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
@@ -545,7 +538,7 @@ public final class SpeedSliderOverlay {
             pillTextPaint.setTextAlign(Paint.Align.CENTER);
             pillTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-            dotPaint.setColor(Color.argb(160, 255, 255, 255));
+            dotPaint.setColor(Color.argb(140, 255, 255, 255));
             dotPaint.setStyle(Paint.Style.FILL);
 
             activeDotOuterPaint.setColor(Color.parseColor("#3897F0"));
@@ -555,9 +548,9 @@ public final class SpeedSliderOverlay {
             activeDotInnerPaint.setStyle(Paint.Style.FILL);
         }
 
-        public void setSlidingMode(boolean sliding) {
-            if (this.isSlidingMode != sliding) {
-                this.isSlidingMode = sliding;
+        public void setExpandedMode(boolean expanded) {
+            if (this.isExpandedMode != expanded) {
+                this.isExpandedMode = expanded;
                 requestLayout();
                 invalidate();
             }
@@ -577,19 +570,17 @@ public final class SpeedSliderOverlay {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int screenWidth = getResources().getDisplayMetrics().widthPixels;
-            if (!isSlidingMode) {
+            if (!isExpandedMode) {
                 // Minimalist compact pill: only speed number & lock icon
                 int pillWidth = isLocked ? (int) (96f * density) : (int) (76f * density);
                 int pillHeight = (int) (32f * density);
                 setMeasuredDimension(pillWidth, pillHeight);
             } else {
-                // Minimalist scrubber: speed ticks and track only, zero text instructions
+                // Vertical sleek dial: slim width, dynamic height based on steps
                 int count = Math.max(2, speeds.size());
-                float itemWidth = 44f * density;
-                float totalWidth = (count - 1) * itemWidth + 48f * density;
-                int width = (int) Math.min(totalWidth, screenWidth - (int) (32f * density));
-                int height = (int) (48f * density);
+                float itemHeight = 26f * density;
+                int height = (int) (count * itemHeight + 20f * density);
+                int width = isLocked ? (int) (86f * density) : (int) (70f * density);
                 setMeasuredDimension(width, height);
             }
         }
@@ -600,19 +591,26 @@ public final class SpeedSliderOverlay {
 
             float w = getWidth();
             float h = getHeight();
-            float radius = isSlidingMode ? 16f * density : (h / 2f);
+            float radius = isExpandedMode ? 18f * density : (h / 2f);
 
             bounds.set(borderPaint.getStrokeWidth(), borderPaint.getStrokeWidth(),
                        w - borderPaint.getStrokeWidth(), h - borderPaint.getStrokeWidth());
 
-            // 1. Sleek frosted background card
+            // 1. Sleek frosted glass card
             canvas.drawRoundRect(bounds, radius, radius, bgPaint);
+            if (isLocked) {
+                borderPaint.setColor(Color.parseColor("#3897F0"));
+                borderPaint.setStrokeWidth(1.5f * density);
+            } else {
+                borderPaint.setColor(Color.argb(45, 255, 255, 255));
+                borderPaint.setStrokeWidth(1f * density);
+            }
             canvas.drawRoundRect(bounds, radius, radius, borderPaint);
 
             float currentSpeedVal = (speeds != null && currentIdx < speeds.size()) ? speeds.get(currentIdx) : 2.0f;
             String speedStr = PlaybackSpeedPatch.speedLabel(currentSpeedVal) + "x";
 
-            if (!isSlidingMode) {
+            if (!isExpandedMode) {
                 // Minimalist pill: just the speed number, lock icon if locked
                 String pillText;
                 if (isResetNormal) {
@@ -629,39 +627,37 @@ public final class SpeedSliderOverlay {
                 return;
             }
 
-            // Expanded scrubber mode (clean track & numbers only, zero instructions)
+            // Expanded vertical dial: sleek vertical rail, higher speeds at top, lower at bottom
             if (speeds == null || speeds.isEmpty()) return;
 
-            float paddingHorizontal = 20f * density;
-            float usableWidth = w - (paddingHorizontal * 2f);
-            float topTextY = 19f * density;
-            float trackY = 32f * density;
-
             int count = speeds.size();
-            float step = count > 1 ? usableWidth / (count - 1) : 0;
+            float itemHeight = 26f * density;
+            float topPadding = 18f * density;
+            float railX = 18f * density;
+            float textX = isLocked ? (w / 2f + 4f * density) : (w / 2f + 4f * density);
 
-            // 2. Horizontal track line
-            canvas.drawLine(paddingHorizontal, trackY, w - paddingHorizontal, trackY, linePaint);
+            // Vertical track line connecting dots
+            float startY = topPadding;
+            float endY = topPadding + ((count - 1) * itemHeight);
+            canvas.drawLine(railX, startY, railX, endY, linePaint);
 
-            // 3. Speed ticks and labels
+            // Speeds: Top is fastest (count - 1), bottom is slowest (0)
             for (int i = 0; i < count; i++) {
-                float x = paddingHorizontal + (i * step);
-                float speedVal = speeds.get(i);
+                int displayIdx = (count - 1) - i;
+                float y = topPadding + (i * itemHeight);
+                float speedVal = speeds.get(displayIdx);
                 String label = PlaybackSpeedPatch.speedLabel(speedVal) + "x";
 
-                if (i == currentIdx) {
+                if (displayIdx == currentIdx) {
                     if (isLocked) {
-                        activeTextPaint.setColor(Color.parseColor("#3897F0"));
                         label = "🔒 " + label;
-                    } else {
-                        activeTextPaint.setColor(Color.parseColor("#3897F0"));
                     }
-                    canvas.drawText(label, x, topTextY, activeTextPaint);
-                    canvas.drawCircle(x, trackY, 5.5f * density, activeDotOuterPaint);
-                    canvas.drawCircle(x, trackY, 2.5f * density, activeDotInnerPaint);
+                    canvas.drawText(label, textX, y + (4.5f * density), activeTextPaint);
+                    canvas.drawCircle(railX, y, 5.5f * density, activeDotOuterPaint);
+                    canvas.drawCircle(railX, y, 2.5f * density, activeDotInnerPaint);
                 } else {
-                    canvas.drawText(label, x, topTextY, textPaint);
-                    canvas.drawCircle(x, trackY, 2.5f * density, dotPaint);
+                    canvas.drawText(label, textX, y + (4f * density), textPaint);
+                    canvas.drawCircle(railX, y, 2.5f * density, dotPaint);
                 }
             }
         }
