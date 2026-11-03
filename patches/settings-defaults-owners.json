@@ -561,11 +561,8 @@
     ],
     "Playback speed": [
       "REMEMBER_SPEED",
-      "DEFAULT_SPEED_ENABLED",
-      "DEFAULT_SPEED",
-      "CUSTOM_SPEEDS",
-      "HOLD_SPEED",
-      "HOLD_SPEED_SLIDE",
+      "HOLD_SPEED_SLIDER_ENABLED",
+      "HOLD_SPEED_SLIDER_STEPS",
       "REMEMBERED_SPEED"
     ],
     "Prefer H.264 playback": [

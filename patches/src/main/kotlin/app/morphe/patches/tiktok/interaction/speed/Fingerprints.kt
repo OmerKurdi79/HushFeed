@@ -43,12 +43,6 @@ internal object PlayerControllerSetSpeedFingerprint : Fingerprint(
     custom = { method, _ -> method.playerManagerSpeedBoundary() != null },
 )
 
-internal object PlaybackSpeedMenuFingerprint : Fingerprint(
-    returnType = "V",
-    parameters = listOf("Lcom/ss/android/ugc/aweme/share/base/model/BaseSharePackage;"),
-    strings = listOf("is_highlight_fast_speed"),
-)
-
 internal object LongPressSpeedUpEnableFingerprint : Fingerprint(
     name = "<clinit>",
     returnType = "V",

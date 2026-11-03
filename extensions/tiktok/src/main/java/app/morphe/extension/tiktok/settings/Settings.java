@@ -761,12 +761,6 @@ public class Settings extends BaseSettings {
     public static final BooleanSetting COPY_COMMENTS_WITHOUT_USERNAME = new BooleanSetting("copy_comments_without_username", TRUE);
     public static final FloatSetting REMEMBERED_SPEED = new FloatSetting("remembered_speed_v2", 1.0f);
     public static final BooleanSetting REMEMBER_SPEED = new BooleanSetting("remember_playback_speed", TRUE);
-    public static final BooleanSetting DEFAULT_SPEED_ENABLED = new BooleanSetting("default_speed_enabled", FALSE);
-    public static final StringSetting DEFAULT_SPEED = new StringSetting(
-            "default_speed", "1.5", false, Setting.parent(DEFAULT_SPEED_ENABLED));
-    public static final StringSetting CUSTOM_SPEEDS = new StringSetting("custom_speeds", "", true);
-    /** The speed the hold gesture plays at and its pull-down lock keeps; TikTok's own is 2x (upstream #52). */
-    public static final StringSetting HOLD_SPEED = new StringSetting("hold_speed", "2");
     /** Interactive speed scrubber HUD on hold (slide side to side, pull down to lock/reset). */
     public static final BooleanSetting HOLD_SPEED_SLIDER_ENABLED = new BooleanSetting("hold_speed_slider_enabled", TRUE, true);
     public static final StringSetting HOLD_SPEED_SLIDER_STEPS = new StringSetting(

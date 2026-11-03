@@ -17,28 +17,21 @@ import app.morphe.patches.tiktok.shared.OnRenderFirstFrameFingerprint
 import app.morphe.patches.tiktok.interaction.blockauthor.PlayerProgressAidFingerprint
 import app.morphe.patches.tiktok.interaction.cleardisplay.OnRenderFirstFrameBodyFingerprint
 import app.morphe.patches.tiktok.misc.settings.SettingsStatusLoadFingerprint
-import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.cloneMutable
 import app.morphe.util.getReference
 import app.morphe.util.implementationOrPatchException
-import app.morphe.util.sameBodiedOrPatchException
 import app.morphe.util.singleOrPatchException
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ThreeRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION = "Lapp/morphe/extension/tiktok/speed/PlaybackSpeedPatch;"
 private const val SLIDER_EXTENSION = "Lapp/morphe/extension/tiktok/speed/SpeedSliderOverlay;"
 private const val AWEME = "Lcom/ss/android/ugc/aweme/feed/model/Aweme;"
-private const val VIEW = "Landroid/view/View;"
-private const val BASE_SHARE_PACKAGE = "Lcom/ss/android/ugc/aweme/share/base/model/BaseSharePackage;"
 
 /**
  * The no-argument PlayerController getter the first-frame body reads the video from. The class
@@ -101,9 +94,9 @@ internal fun liveAwemeBridgeBody(controller: String, awemeGetter: MethodReferenc
 @Suppress("unused")
 val playbackSpeedPatch = bytecodePatch(
     name = "Playback speed",
-    description = "Remembers the speed you picked for the next video, and lets you set a " +
-        "default speed, add speeds up to 3x to the menu and choose the speed for press and hold. " +
-        "On by default. Turn it off in Hushfeed settings > Playback.",
+    description = "Remembers the speed you picked for the next video, and enables an " +
+        "interactive speed slider when holding the video. On by default. " +
+        "Turn it off in Hushfeed settings > Playback.",
     default = true,
 ) {
     category("Playback")
@@ -295,100 +288,10 @@ val playbackSpeedPatch = bytecodePatch(
             )
         }
 
-        // Resolve the menu's lazy Float-list factory from its own constructor references.
-        val menuClass = mutableClassDefBy(PlaybackSpeedMenuFingerprint.method.definingClass)
-        val factoryOwners = menuClass.methods.filter { it.name == "<init>" }.flatMap { method ->
-            method.implementationOrPatchException("Playback speed").instructions
-                .mapNotNull { it.getReference<MethodReference>() }
-        }.filter {
-            it.parameterTypes == listOf("I") && it.returnType == it.definingClass &&
-                it.definingClass.startsWith("Lkotlin/jvm/internal/")
-        }.map { it.definingClass }.distinct()
-        val expected = listOf(0.5f, 1f, 1.5f, 2f, 3f).map { it.toRawBits() }
-        val factories = factoryOwners.flatMap { mutableClassDefBy(it).methods }.filter { method ->
-            method.returnType == "Ljava/lang/Object;" && AccessFlags.STATIC.isSet(method.accessFlags) &&
-                method.implementation?.instructions?.filterIsInstance<NarrowLiteralInstruction>()
-                    ?.map { it.narrowLiteral }?.containsAll(expected) == true
-        }
-        // 46.9.3 carries this body twice on one lambda class, invoke$328 and invoke$851, with
-        // identical instructions: R8 outlined the same lambda once per call site. Both hand back
-        // the same speed list and the menu reaches one of them, so refusing on the count would
-        // have taken the patch down over a duplicate of itself. Two bodies that are not the same
-        // body are a different matter and still refuse, because then this would be guessing
-        // which one the menu means.
-        factories.sameBodiedOrPatchException("Playback speed: menu list factory").forEach { factory ->
-            val returns = factory.implementationOrPatchException("Playback speed").instructions
-                .withIndex().filter { it.value.opcode == Opcode.RETURN_OBJECT }
-            check(returns.isNotEmpty()) {
-                "Playback speed: the menu list factory returns no object to replace."
-            }
-            returns.asReversed().forEach { (index, instruction) ->
-                val register = (instruction as OneRegisterInstruction).registerA
-                factory.addInstructionsAtControlFlowLabel(index, """
-                    invoke-static/range {v$register .. v$register}, $EXTENSION->menuSpeeds(Ljava/lang/Object;)Ljava/lang/Object;
-                    move-result-object v$register
-                """)
-            }
-        }
-        // TikTok's speed menu toast names the nearest built-in speed for a custom one: the click
-        // handler picks the label by exact value (only 0.5, 1.5, 2 and 3 have their own) and
-        // formats "Playing at %s speed", so 2.5x reads "Playing at 2x speed". Where the label goes
-        // into the format's one argument the chosen speed field is also still in hand, so the label
-        // is reworded to the speed there. Of the class's three (View, BaseSharePackage) methods the
-        // other two are trivial delegators; the handler is the one that reads the speed and builds
-        // the toast's single format argument.
-        val speedField = menuClass.fields.filter { it.type == "F" }
-            .singleOrPatchException("Playback speed: the speed menu class's float speed field")
-        fun readsSpeed(instruction: com.android.tools.smali.dexlib2.iface.instruction.Instruction) =
-            instruction.opcode == Opcode.IGET && instruction.getReference<FieldReference>()?.let {
-                it.definingClass == speedField.definingClass && it.name == speedField.name && it.type == "F"
-            } == true
-        val toastHandler = menuClass.methods.filter { method ->
-            method.parameterTypes == listOf(VIEW, BASE_SHARE_PACKAGE) && method.returnType == "V" &&
-                method.implementation?.instructions?.count { it.opcode == Opcode.APUT_OBJECT } == 1 &&
-                method.implementation!!.instructions.any(::readsSpeed)
-        }.singleOrPatchException("Playback speed: the speed menu toast handler")
-        val toastInstructions = toastHandler.implementationOrPatchException("Playback speed").instructions.toList()
-        val speedRegister = toastInstructions.filter(::readsSpeed)
-            .singleOrPatchException("Playback speed: the menu toast's speed field read")
-            .let { (it as OneRegisterInstruction).registerA }
-        val labelPut = toastInstructions.withIndex().filter { it.value.opcode == Opcode.APUT_OBJECT }
-            .singleOrPatchException("Playback speed: the menu toast's format argument")
-        val labelRegister = (labelPut.value as ThreeRegisterInstruction).registerA
-        if (labelRegister > 15 || speedRegister > 15) {
-            throw PatchException("Playback speed: the menu toast's registers no longer fit a short call.")
-        }
-        toastHandler.addInstructions(
-            labelPut.index,
-            """
-                invoke-static {v$labelRegister, v$speedRegister}, $EXTENSION->menuSpeedText(Ljava/lang/String;F)Ljava/lang/String;
-                move-result-object v$labelRegister
-            """,
-        )
+        suppressHoldBanners(HoldBannerReceiverFingerprint.method)
 
-        // The hold gesture plays at a literal 2x (upstream #52): one 2.0f in the press method,
-        // feeding the apply call and the "already at 2x" lock state, and two in the release
-        // method, one for the speed-up telemetry and one the pull-down lock applies and
-        // persists through the selection boundary. Every one of them goes through the hold
-        // speed row, so press, lock and telemetry agree on the number, and so do TikTok's own
-        // words for the hold: the two banners and the lock toast (HoldSpeed.kt).
         val press = EdgeSpeedupPressFingerprint.method
         val release = EdgeSpeedupReleaseFingerprint.method
-        press.routeThroughHoldSpeed(press.holdSpeedLiterals("the hold gesture's press method"))
-        release.routeThroughHoldSpeed(release.holdSpeedLiterals("the hold gesture's release method"))
-        rewordHoldSpeedToasts(release)
-        val lockShow = rewordHoldSpeedBanners(HoldBannerReceiverFingerprint.method)
-
-        // Undoing the lock plays a literal 1x, "Back to normal speed"; with a default speed on,
-        // normal is the default (#248). An add-on like the live change, so only a declared build
-        // has to have it.
-        try {
-            release.routeThroughUnlockSpeed(release.unlockSpeedLiteral())
-        } catch (problem: PatchException) {
-            if (packageMetadata.versionName in declaredVersions()) throw problem
-            println("[Playback speed] Left out the default speed on unlock on ${packageMetadata.versionName}: ${problem.message}")
-        }
-
         press.addInstruction(
             0,
             "invoke-static/range {p1 .. p2}, $SLIDER_EXTENSION->onHoldPress(FF)V",

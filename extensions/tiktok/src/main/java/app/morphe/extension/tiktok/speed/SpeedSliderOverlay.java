@@ -41,6 +41,7 @@ public final class SpeedSliderOverlay {
     private static float startY = 0f;
     private static float lastScrubX = 0f;
     private static int currentIndex = 0;
+    private static float lastHoldSpeed = 2.0f;
 
     private static List<Float> speedSteps = new ArrayList<>();
     private static WeakReference<SpeedSliderView> viewReference = new WeakReference<>(null);
@@ -121,11 +122,8 @@ public final class SpeedSliderOverlay {
 
                 speedSteps = parseSpeedSteps(Settings.HOLD_SPEED_SLIDER_STEPS.get());
 
-                // Determine start speed (from remembered hold speed or 2.0x default)
-                float remembered = 2.0f;
-                try {
-                    remembered = Float.parseFloat(Settings.HOLD_SPEED.get());
-                } catch (Exception ignored) {}
+                // Determine start speed (from last scrubbed speed or 2.0x default)
+                float remembered = lastHoldSpeed;
 
                 // Find closest matching index
                 int bestIdx = 0;
@@ -212,7 +210,7 @@ public final class SpeedSliderOverlay {
                             PlaybackSpeedPatch.setLiveSpeed(speed);
 
                             // Remember this speed for next time
-                            Settings.HOLD_SPEED.save(PlaybackSpeedPatch.speedLabel(speed));
+                            lastHoldSpeed = speed;
 
                             SpeedSliderView view = viewReference.get();
                             if (view != null) {
@@ -280,7 +278,7 @@ public final class SpeedSliderOverlay {
                 if (speedSteps != null && currentIndex >= 0 && currentIndex < speedSteps.size()) {
                     float chosen = speedSteps.get(currentIndex);
                     PlaybackSpeedPatch.setLiveSpeed(chosen);
-                    Settings.HOLD_SPEED.save(PlaybackSpeedPatch.speedLabel(chosen));
+                    lastHoldSpeed = chosen;
 
                     if (Settings.REMEMBER_SPEED.get()) {
                         PlaybackSpeedPatch.rememberPlaybackSpeed(chosen, "long_press");
