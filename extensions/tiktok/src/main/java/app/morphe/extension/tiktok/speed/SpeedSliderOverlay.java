@@ -218,7 +218,7 @@ public final class SpeedSliderOverlay {
 
                 if (isVerticalScrubbing) {
                     float scrubDelta = curY - lastScrubY;
-                    float stepThreshold = 26f * density;
+                    float stepThreshold = 20f * density;
 
                     // Pulling UP (negative dy) = faster (increase index)
                     // Pulling DOWN (positive dy) = slower (decrease index)
@@ -385,7 +385,7 @@ public final class SpeedSliderOverlay {
         lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
 
         boolean isLandscape = activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        float marginRatio = isLandscape ? 0.08f : 0.14f;
+        float marginRatio = isLandscape ? 0.03f : 0.06f;
         lp.topMargin = (int) (activity.getResources().getDisplayMetrics().heightPixels * marginRatio);
 
         view.setLayoutParams(lp);
@@ -482,10 +482,10 @@ public final class SpeedSliderOverlay {
 
     /**
      * Custom lightweight circular gauge HUD:
-     * - Renders as an ultra-compact futuristic dial (tachometer / watch crown style).
-     * - Sweeps an electric cyan arc with orbital ticks as speed is scrolled up/down.
-     * - Micro-pulses on each speed notch for a mechanical tactile feel.
-     * - Side-slide locks with an illuminated neon ring and lock badge.
+     * - Renders as an ultra-compact, calm frosted circular dial (52dp).
+     * - Silky smooth, instantaneous notch response with zero jitter or scale flashing.
+     * - Soft matte silver/ice radial arc that blends into video without stealing focus.
+     * - Consistent subtle frosted border that remains steady when locked/unlocked.
      */
     private static class SpeedSliderView extends View {
         private final List<Float> speeds;
@@ -499,7 +499,6 @@ public final class SpeedSliderOverlay {
         private final Paint trackArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint progressArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint chevronPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint lockGlyphPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint tickPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint activeTickOuterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -513,40 +512,36 @@ public final class SpeedSliderOverlay {
             this.isLocked = locked;
             this.density = getResources().getDisplayMetrics().density;
 
-            bgPaint.setColor(Color.argb(205, 14, 16, 22)); // Deep obsidian glass
+            bgPaint.setColor(Color.argb(190, 16, 18, 24)); // Soft obsidian frost
             bgPaint.setStyle(Paint.Style.FILL);
 
+            borderPaint.setColor(Color.argb(35, 255, 255, 255)); // Constant subtle hairline
             borderPaint.setStyle(Paint.Style.STROKE);
             borderPaint.setStrokeWidth(1f * density);
 
-            trackArcPaint.setColor(Color.argb(35, 255, 255, 255));
+            trackArcPaint.setColor(Color.argb(25, 255, 255, 255));
             trackArcPaint.setStyle(Paint.Style.STROKE);
-            trackArcPaint.setStrokeWidth(2.5f * density);
+            trackArcPaint.setStrokeWidth(2f * density);
             trackArcPaint.setStrokeCap(Paint.Cap.ROUND);
 
-            progressArcPaint.setColor(Color.parseColor("#00E5FF")); // Electric neon cyan
+            progressArcPaint.setColor(Color.argb(185, 215, 225, 235)); // Soft matte silver-frost
             progressArcPaint.setStyle(Paint.Style.STROKE);
-            progressArcPaint.setStrokeWidth(2.5f * density);
+            progressArcPaint.setStrokeWidth(2f * density);
             progressArcPaint.setStrokeCap(Paint.Cap.ROUND);
 
             textPaint.setColor(Color.WHITE);
-            textPaint.setTextSize(13.5f * density);
+            textPaint.setTextSize(13f * density);
             textPaint.setTextAlign(Paint.Align.CENTER);
             textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-            chevronPaint.setColor(Color.argb(120, 0, 229, 255));
-            chevronPaint.setTextSize(7.5f * density);
-            chevronPaint.setTextAlign(Paint.Align.CENTER);
-            chevronPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-
-            lockGlyphPaint.setColor(Color.parseColor("#00E5FF"));
+            lockGlyphPaint.setColor(Color.argb(220, 255, 255, 255));
             lockGlyphPaint.setTextSize(9.5f * density);
             lockGlyphPaint.setTextAlign(Paint.Align.CENTER);
 
-            tickPaint.setColor(Color.argb(80, 255, 255, 255));
+            tickPaint.setColor(Color.argb(50, 255, 255, 255));
             tickPaint.setStyle(Paint.Style.FILL);
 
-            activeTickOuterPaint.setColor(Color.parseColor("#00E5FF"));
+            activeTickOuterPaint.setColor(Color.argb(150, 255, 255, 255));
             activeTickOuterPaint.setStyle(Paint.Style.FILL);
 
             activeTickInnerPaint.setColor(Color.WHITE);
@@ -554,7 +549,6 @@ public final class SpeedSliderOverlay {
         }
 
         public void setExpandedMode(boolean expanded) {
-            // Circle seamlessly adapts in place without bloating layout
             invalidate();
         }
 
@@ -562,10 +556,6 @@ public final class SpeedSliderOverlay {
             if (this.currentIdx != idx) {
                 this.currentIdx = idx;
                 this.isResetNormal = false;
-                // Punchy mechanical notch scale-pulse
-                animate().scaleX(1.12f).scaleY(1.12f).setDuration(60)
-                    .withEndAction(() -> animate().scaleX(1.0f).scaleY(1.0f).setDuration(90).start())
-                    .start();
                 invalidate();
             }
         }
@@ -573,17 +563,13 @@ public final class SpeedSliderOverlay {
         public void setLockedState(boolean locked, boolean resetNormal) {
             this.isLocked = locked;
             this.isResetNormal = resetNormal;
-            // Magnetic snap scale-pop
-            animate().scaleX(1.18f).scaleY(1.18f).setDuration(80)
-                .withEndAction(() -> animate().scaleX(1.0f).scaleY(1.0f).setDuration(110).start())
-                .start();
             invalidate();
         }
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            // Elegant compact circular footprint (54dp diameter)
-            int diameter = (int) (54f * density);
+            // Calm, compact circular footprint (52dp diameter)
+            int diameter = (int) (52f * density);
             setMeasuredDimension(diameter, diameter);
         }
 
@@ -597,17 +583,10 @@ public final class SpeedSliderOverlay {
             float cy = h / 2f;
             float outerRadius = Math.min(w, h) / 2f - (1f * density);
 
-            // 1. Sleek circular glass base
+            // 1. Sleek circular frosted glass base
             canvas.drawCircle(cx, cy, outerRadius, bgPaint);
 
-            // 2. Specular border ring (glows cyan when locked)
-            if (isLocked) {
-                borderPaint.setColor(Color.parseColor("#00E5FF"));
-                borderPaint.setStrokeWidth(1.5f * density);
-            } else {
-                borderPaint.setColor(Color.argb(45, 255, 255, 255));
-                borderPaint.setStrokeWidth(1f * density);
-            }
+            // 2. Steady specular border ring (never flashes or changes thickness)
             canvas.drawCircle(cx, cy, outerRadius, borderPaint);
 
             if (speeds == null || speeds.isEmpty()) return;
@@ -619,15 +598,15 @@ public final class SpeedSliderOverlay {
             float startAngle = 135f;
             float totalSweep = 270f;
 
-            // 3. Circular track gauge
+            // 3. Subtle background track arc
             canvas.drawArc(arcBounds, startAngle, totalSweep, false, trackArcPaint);
 
-            // 4. Electric cyan speed progress arc
+            // 4. Soft frosted progress arc
             float ratio = count > 1 ? (float) currentIdx / (float) (count - 1) : 1f;
             float currentSweep = Math.max(3f, ratio * totalSweep);
             canvas.drawArc(arcBounds, startAngle, currentSweep, false, progressArcPaint);
 
-            // 5. Orbital notch ticks along the perimeter
+            // 5. Perimeter notch dots
             for (int i = 0; i < count; i++) {
                 float stepRatio = count > 1 ? (float) i / (float) (count - 1) : 0f;
                 float angleDeg = startAngle + (stepRatio * totalSweep);
@@ -636,36 +615,32 @@ public final class SpeedSliderOverlay {
                 float dotY = cy + (float) (arcRadius * Math.sin(angleRad));
 
                 if (i == currentIdx) {
-                    canvas.drawCircle(dotX, dotY, 4f * density, activeTickOuterPaint);
+                    canvas.drawCircle(dotX, dotY, 3.5f * density, activeTickOuterPaint);
                     canvas.drawCircle(dotX, dotY, 1.8f * density, activeTickInnerPaint);
                 } else {
                     canvas.drawCircle(dotX, dotY, 1.2f * density, tickPaint);
                 }
             }
 
-            // 6. Center typography & status
+            // 6. Clean center typography (minimal, zero screen clutter)
             float currentSpeedVal = (currentIdx < speeds.size()) ? speeds.get(currentIdx) : 2.0f;
             String speedStr = PlaybackSpeedPatch.speedLabel(currentSpeedVal) + "x";
 
             if (isResetNormal) {
-                textPaint.setColor(Color.parseColor("#FFCC00"));
-                textPaint.setTextSize(13f * density);
+                textPaint.setColor(Color.parseColor("#FFD54F"));
+                textPaint.setTextSize(12.5f * density);
                 canvas.drawText("1.0x", cx, cy + (4.5f * density), textPaint);
             } else if (isLocked) {
-                // Lock icon above, speed below
+                // Lock glyph above, speed below
                 canvas.drawText("🔒", cx, cy - (3.5f * density), lockGlyphPaint);
-                textPaint.setColor(Color.parseColor("#00E5FF"));
+                textPaint.setColor(Color.WHITE);
                 textPaint.setTextSize(11f * density);
                 canvas.drawText(speedStr, cx, cy + (9.5f * density), textPaint);
             } else {
-                // Centered speed value with micro chevrons
+                // Pure centered speed value
                 textPaint.setColor(Color.WHITE);
-                textPaint.setTextSize(13.5f * density);
+                textPaint.setTextSize(13f * density);
                 canvas.drawText(speedStr, cx, cy + (4.5f * density), textPaint);
-
-                // Subtle guide chevrons hinting vertical movement
-                canvas.drawText("▲", cx, cy - (9.5f * density), chevronPaint);
-                canvas.drawText("▼", cx, cy + (16f * density), chevronPaint);
             }
         }
     }
