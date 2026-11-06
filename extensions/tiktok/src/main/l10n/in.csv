@@ -1399,7 +1399,7 @@ The file hushfeed-safe-mode couldn't be removed. Delete it from TikTok's folder 
 Hide TikTok Shop in search,Sembunyikan TikTok Shop di pencarian
 Hide the Products block and product cards in search results.,Sembunyikan blok Produk dan kartu produk di hasil pencarian.
 Hide TikTok's Auto scroll button,Sembunyikan tombol Auto scroll TikTok
-Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll switch beside videos on tablets and unfolded foldables. Works with Auto-advance off too.,Menghapus aksi Auto scroll milik TikTok dari panel video serta sakelar Auto scroll di samping video pada tablet dan ponsel lipat yang terbuka. Tetap berfungsi saat lanjut otomatis nonaktif.
+Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll label off the top of videos. Tablets and unfolded foldables also lose the Auto scroll switch beside videos. Works with Auto-advance off too.,Menghapus aksi Auto scroll milik TikTok dari panel video serta label Auto scroll di bagian atas video. Sakelar Auto scroll di samping video pada tablet dan ponsel lipat yang terbuka juga dihapus. Tetap berfungsi saat lanjut otomatis nonaktif.
 Hide the unread badges on the bottom tabs,Sembunyikan lencana belum dibaca di tab bawah
 "Hide the red counts and dots on every bottom tab, Inbox and Profile included, and the bubble over Inbox that counts new likes, followers, comments and who's LIVE. The inbox itself still shows what came in.","Menyembunyikan angka dan titik merah di semua tab bawah, termasuk Kotak Masuk dan Profil, serta gelembung di atas Kotak Masuk yang menghitung suka, pengikut, dan komentar baru, juga siapa yang sedang LIVE. Kotak masuk sendiri tetap menampilkan yang masuk."
 Speed while you hold the video,Kecepatan saat video ditahan
@@ -1408,6 +1408,10 @@ Hold speed bubble style,Gaya gelembung kecepatan tahan
 Pill,Pil
 Circle,Lingkaran
 Pill is the wide bubble with a row of dots under the speed. Circle is a small round dial with a notch for each speed around its edge.,Pil adalah gelembung lebar dengan sederet titik di bawah kecepatan. Lingkaran adalah dial bulat kecil dengan tanda untuk setiap kecepatan di tepinya.
+Hold speed slide direction,Arah geser kecepatan tahan
+Sideways,Ke samping
+Up and down,Atas dan bawah
+"With Sideways, slide left or right to change the speed and pull down to lock it. With Up and down, slide up for faster and down for slower, and slide to the side to lock it, so a hold near the edge still reaches every speed.","Dengan Ke samping, geser ke kiri atau kanan untuk mengubah kecepatan dan tarik ke bawah untuk menguncinya. Dengan Atas dan bawah, geser ke atas untuk lebih cepat dan ke bawah untuk lebih lambat, lalu geser ke samping untuk menguncinya, jadi tahan di dekat tepi tetap bisa mencapai semua kecepatan."
 Hide mini dramas,Sembunyikan drama mini
 Hide TikTok's short drama episodes and the cards that promote them.,Sembunyikan episode drama pendek TikTok dan kartu yang mempromosikannya.
 Mini dramas,Drama mini
@@ -2445,6 +2449,8 @@ Hide streak pop-ups,Sembunyikan pop-up streak
 Stop the streak alerts that slide in over TikTok and the streak messages and tips it adds to your chats.,Menghentikan peringatan streak yang muncul di atas TikTok serta pesan dan tips streak yang ditambahkan ke obrolan Anda.
 Long press on For You opens my watch history,Tekan lama Untuk Kamu membuka riwayat tontonan saya
 Instead of these settings. The list has a button that brings you back here.,Sebagai ganti pengaturan ini. Daftarnya punya tombol untuk kembali ke sini.
+Long press on Profile opens my watch history,Tekan lama Profil membuka riwayat tontonan saya
+"Instead of TikTok's Watch history. A tap on Profile works as before. If holding Profile switches accounts for you, this takes that press.","Sebagai ganti riwayat tontonan TikTok. Mengetuk Profil tetap berfungsi seperti biasa. Jika menekan lama Profil mengganti akunmu, opsi ini mengambil alih tekanan itu."
 Auto tap in LIVE rooms,Ketuk otomatis di ruang LIVE
 "Adds an Auto tap button to LIVE rooms. Tap it to send taps to the stream at a steady pace, and tap it again to stop. It also stops when you leave or swipe to another room, leave TikTok or lock the screen.","Menambahkan tombol Ketuk otomatis ke ruang LIVE. Ketuk untuk mengirim ketukan ke siaran dengan tempo tetap, lalu ketuk lagi untuk berhenti. Ini juga berhenti saat kamu keluar atau menggeser ke ruang lain, keluar dari TikTok, atau mengunci layar."
 Auto tap speed,Kecepatan ketuk otomatis
@@ -2491,3 +2497,5 @@ Offer Audio only in LIVE quality,Tawarkan Hanya audio di kualitas LIVE
 Audio only,Hanya audio
 "Adds Audio only to a LIVE's Video quality list. The room plays its sound without the picture, which uses much less data, until you pick another quality or leave. Recording from the stream still saves the video.","Menambahkan Hanya audio ke daftar kualitas video LIVE. Ruang memutar suaranya tanpa gambar, yang jauh lebih hemat data, sampai kamu memilih kualitas lain atau keluar. Merekam dari siaran tetap menyimpan videonya."
 Pick a video quality to record the screen,Pilih kualitas video untuk merekam layar
+Discover in the bottom bar,Temukan di bilah bawah
+"Discover takes the place of Friends in the bottom bar, the way TikTok lays it out in some countries. Your region and your feed stay as they are.","Temukan menggantikan Teman di bilah bawah, seperti tata letak TikTok di beberapa negara. Wilayah dan feed kamu tetap seperti semula."

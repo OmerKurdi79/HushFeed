@@ -1403,7 +1403,7 @@ The file hushfeed-safe-mode couldn't be removed. Delete it from TikTok's folder 
 Hide TikTok Shop in search	Axtarışda TikTok Shop-u gizlədin
 Hide the Products block and product cards in search results.	Axtarış nəticələrindəki Məhsullar blokunu və məhsul kartlarını gizlədin.
 Hide TikTok's Auto scroll button	TikTok-un Auto scroll düyməsini gizlədin
-Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll switch beside videos on tablets and unfolded foldables. Works with Auto-advance off too.	TikTok-un öz Auto scroll əməliyyatını video panelindən, planşetlərdə və açılmış qatlanan telefonlarda isə videonun yanındakı Auto scroll açarını çıxarır. Avtomatik keçid söndürülü olanda da işləyir.
+Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll label off the top of videos. Tablets and unfolded foldables also lose the Auto scroll switch beside videos. Works with Auto-advance off too.	TikTok-un öz Auto scroll əməliyyatını video panelindən, Auto scroll yazısını isə videonun yuxarısından çıxarır. Planşetlərdə və açılmış qatlanan telefonlarda videonun yanındakı Auto scroll açarı da yox olur. Avtomatik keçid söndürülü olanda da işləyir.
 Hide the unread badges on the bottom tabs	Alt nişanlardakı oxunmamış nişanları gizlədin
 Hide the red counts and dots on every bottom tab, Inbox and Profile included, and the bubble over Inbox that counts new likes, followers, comments and who's LIVE. The inbox itself still shows what came in.	Gələnlər və Profil daxil olmaqla hər alt nişandakı qırmızı say və nöqtələri, həmçinin Gələnlər üzərində yeni bəyənmələri, izləyiciləri, şərhləri və kimin LIVE-da olduğunu sayan balonu gizlədin. Gələnlərin özü yenə də nələrin gəldiyini göstərir.
 Speed while you hold the video	Videonu basıb saxlayarkən sürət
@@ -1412,6 +1412,10 @@ Hold speed bubble style	Saxlama sürəti balonunun üslubu
 Pill	Kapsul
 Circle	Dairə
 Pill is the wide bubble with a row of dots under the speed. Circle is a small round dial with a notch for each speed around its edge.	Kapsul sürətin altında bir sıra nöqtə olan geniş balondur. Dairə kənarında hər sürət üçün bir çentik olan kiçik dəyirmi siferblatdır.
+Hold speed slide direction	Saxlama sürətinin sürüşdürmə istiqaməti
+Sideways	Yana
+Up and down	Yuxarı və aşağı
+With Sideways, slide left or right to change the speed and pull down to lock it. With Up and down, slide up for faster and down for slower, and slide to the side to lock it, so a hold near the edge still reaches every speed.	Yana seçimində sürəti dəyişmək üçün sola və ya sağa sürüşdürün, kilidləmək üçün aşağı çəkin. Yuxarı və aşağı seçimində daha sürətli üçün yuxarı, daha yavaş üçün aşağı sürüşdürün, kilidləmək üçün isə yana sürüşdürün. Beləcə kənara yaxın saxlama da hər sürətə çatır.
 Hide mini dramas	Mini dramaları gizlədin
 Hide TikTok's short drama episodes and the cards that promote them.	TikTok-un qısa drama epizodlarını və onları təbliğ edən kartları gizlədin.
 Mini dramas	Mini dramalar
@@ -2474,6 +2478,8 @@ Hide streak pop-ups	Seriya bildirişlərini gizlət
 Stop the streak alerts that slide in over TikTok and the streak messages and tips it adds to your chats.	TikTok-un üzərinə sürüşən seriya bildirişlərini və söhbətlərə əlavə etdiyi seriya mesajlarını və məsləhətlərini dayandırır.
 Long press on For You opens my watch history	«Sənin üçün» üzərində uzun basma baxış tarixçəmi açır
 Instead of these settings. The list has a button that brings you back here.	Bu ayarların yerinə. Siyahıda səni bura qaytaran düymə var.
+Long press on Profile opens my watch history	Profil üzərində uzun basma baxış tarixçəmi açır
+Instead of TikTok's Watch history. A tap on Profile works as before. If holding Profile switches accounts for you, this takes that press.	TikTok-un Baxış tarixçəsinin yerinə. Profilə toxunmaq əvvəlki kimi işləyir. Profili basıb saxlamaq sizdə hesabı dəyişirsə, bu seçim həmin basmanı götürür.
 Auto tap in LIVE rooms	LIVE otaqlarında avto toxunma
 Adds an Auto tap button to LIVE rooms. Tap it to send taps to the stream at a steady pace, and tap it again to stop. It also stops when you leave or swipe to another room, leave TikTok or lock the screen.	LIVE otaqlarına Avto toxunma düyməsi əlavə edir. Yayıma bərabər sürətlə toxunuş göndərmək üçün ona toxun, dayandırmaq üçün yenə toxun. Otaqdan çıxanda və ya başqa otağa sürüşdürəndə, TikTok-dan çıxanda və ya ekranı kilidləyəndə də dayanır.
 Auto tap speed	Avto toxunma sürəti
@@ -2520,3 +2526,5 @@ Offer Audio only in LIVE quality	LIVE keyfiyyətində Yalnız səs təklif et
 Audio only	Yalnız səs
 Adds Audio only to a LIVE's Video quality list. The room plays its sound without the picture, which uses much less data, until you pick another quality or leave. Recording from the stream still saves the video.	LIVE-ın Video keyfiyyəti siyahısına Yalnız səs əlavə edir. Otaq şəkilsiz yalnız səsi oynadır, bu da çox az data işlədir, başqa keyfiyyət seçənə və ya çıxana qədər. Yayımdan yazmaq yenə də videonu saxlayır.
 Pick a video quality to record the screen	Ekranı yazmaq üçün video keyfiyyəti seç
+Discover in the bottom bar	Alt paneldə Kəşf et
+Discover takes the place of Friends in the bottom bar, the way TikTok lays it out in some countries. Your region and your feed stay as they are.	Kəşf et alt paneldə Dostlar bölməsinin yerini tutur, TikTok bəzi ölkələrdə paneli belə düzür. Regionunuz və lentiniz olduğu kimi qalır.

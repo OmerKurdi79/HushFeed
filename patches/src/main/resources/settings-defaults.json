@@ -282,6 +282,7 @@
       "bottom_navigation",
       "bottom_navigation_tabs",
       "bottom_navigation_block_new_tabs",
+      "discover_bottom_tab",
       "hide_tab_badges",
       "hide_bottom_tab_labels",
       "bottom_tab_name_home",
@@ -333,7 +334,8 @@
       "seen_video_retention_days",
       "seen_video_mark_percent",
       "local_watch_history",
-      "for_you_hold_opens_watch_history"
+      "for_you_hold_opens_watch_history",
+      "profile_hold_opens_local_watch_history"
     ],
     "Hide comment popup ads": [
       "hide_comment_eggs"
@@ -595,6 +597,7 @@
       "hold_speed",
       "hold_speed_slide",
       "hold_speed_hud_style",
+      "hold_speed_slide_axis",
       "hide_speed_toasts",
       "remembered_speed_v2"
     ],
@@ -1368,6 +1371,12 @@
     "disable_long_press_repost": {
       "field": "DISABLE_LONG_PRESS_REPOST",
       "key": "disable_long_press_repost",
+      "type": "boolean",
+      "default": false
+    },
+    "discover_bottom_tab": {
+      "field": "DISCOVER_BOTTOM_TAB",
+      "key": "discover_bottom_tab",
       "type": "boolean",
       "default": false
     },
@@ -2671,6 +2680,12 @@
       "type": "boolean",
       "default": false
     },
+    "hold_speed_slide_axis": {
+      "field": "HOLD_SPEED_SLIDE_AXIS",
+      "key": "hold_speed_slide_axis",
+      "type": "string",
+      "default": "sideways"
+    },
     "home_tab_opens_settings": {
       "field": "HOME_TAB_OPENS_SETTINGS",
       "key": "home_tab_opens_settings",
@@ -3344,6 +3359,12 @@
       "key": "profile_grid_sort",
       "type": "string",
       "default": "off"
+    },
+    "profile_hold_opens_local_watch_history": {
+      "field": "PROFILE_HOLD_OPENS_LOCAL_WATCH_HISTORY",
+      "key": "profile_hold_opens_local_watch_history",
+      "type": "boolean",
+      "default": false
     },
     "profile_shortcut_picks": {
       "field": "PROFILE_SHORTCUT_PICKS",

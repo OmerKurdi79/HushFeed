@@ -550,6 +550,8 @@ public class Settings extends BaseSettings {
             false,
             false
     );
+    /** Discover in the Friends spot of the bottom bar; TikTok reads the layout once at launch. */
+    public static final BooleanSetting DISCOVER_BOTTOM_TAB = new BooleanSetting("discover_bottom_tab", FALSE, true);
     /** The red count on Inbox and the dot on Profile, the pull that reopens the app. */
     public static final BooleanSetting HIDE_TAB_BADGES = new BooleanSetting("hide_tab_badges", FALSE, true);
     /** The names under the bottom tab icons, and a name of the user's own for each; empty keeps TikTok's. Read before each frame. */
@@ -817,6 +819,9 @@ public class Settings extends BaseSettings {
     /** How that bubble looks: the pill, or the round dial adapted from OmerKurdi79's fork (#248). */
     public static final StringSetting HOLD_SPEED_HUD_STYLE = new StringSetting(
             "hold_speed_hud_style", "pill", false, Setting.parent(HOLD_SPEED_SLIDE));
+    /** Which way that slide goes: sideways with TikTok's pull-down lock, or up and down with a sideways lock (#248). */
+    public static final StringSetting HOLD_SPEED_SLIDE_AXIS = new StringSetting(
+            "hold_speed_slide_axis", "sideways", false, Setting.parent(HOLD_SPEED_SLIDE));
     /** Leaves out TikTok's message when a speed is picked from the menu or locked with a hold (#248). */
     public static final BooleanSetting HIDE_SPEED_TOASTS = new BooleanSetting("hide_speed_toasts", FALSE);
     public static final BooleanSetting AUTO_ADVANCE = new BooleanSetting("auto_advance", FALSE, true);
@@ -1244,6 +1249,12 @@ public class Settings extends BaseSettings {
     /** A long press on For You opens that list over the feed instead of these settings (#172). */
     public static final BooleanSetting FOR_YOU_HOLD_OPENS_WATCH_HISTORY = new BooleanSetting(
             "for_you_hold_opens_watch_history", FALSE, Setting.parent(LOCAL_WATCH_HISTORY));
+    /**
+     * A long press on the Profile tab opens that list, in place of TikTok's Watch history or its
+     * account switcher, so For You can keep opening these settings (#172).
+     */
+    public static final BooleanSetting PROFILE_HOLD_OPENS_LOCAL_WATCH_HISTORY = new BooleanSetting(
+            "profile_hold_opens_local_watch_history", FALSE, Setting.parent(LOCAL_WATCH_HISTORY));
     public static final BooleanSetting HIDE_PLAYLIST_BAR = new BooleanSetting("hide_playlist_bar", FALSE, true);
     public static final BooleanSetting HIDE_EVENT_BADGE = new BooleanSetting("hide_event_badge", FALSE, true);
     public static final BooleanSetting HIDE_INSERTED_CARDS = new BooleanSetting("hide_inserted_cards", FALSE, true);

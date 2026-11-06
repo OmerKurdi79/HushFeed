@@ -1403,7 +1403,7 @@ The file hushfeed-safe-mode couldn't be removed. Delete it from TikTok's folder 
 Hide TikTok Shop in search	Esconder o TikTok Shop na busca
 Hide the Products block and product cards in search results.	Esconder o bloco de Produtos e os cartões de produto nos resultados da busca.
 Hide TikTok's Auto scroll button	Esconder o botão Auto scroll do TikTok
-Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll switch beside videos on tablets and unfolded foldables. Works with Auto-advance off too.	Remove a ação Auto scroll do TikTok do painel do vídeo e a chave Auto scroll ao lado do vídeo em tablets e dobráveis abertos. Funciona também com o avanço automático desligado.
+Takes TikTok's own Auto scroll action out of the video panel and the Auto scroll label off the top of videos. Tablets and unfolded foldables also lose the Auto scroll switch beside videos. Works with Auto-advance off too.	Remove a ação Auto scroll do TikTok do painel do vídeo e o rótulo Auto scroll do topo do vídeo. Em tablets e dobráveis abertos, a chave Auto scroll ao lado do vídeo também some. Funciona também com o avanço automático desligado.
 Hide the unread badges on the bottom tabs	Esconder os selos de não lidos nas abas inferiores
 Hide the red counts and dots on every bottom tab, Inbox and Profile included, and the bubble over Inbox that counts new likes, followers, comments and who's LIVE. The inbox itself still shows what came in.	Esconde os contadores e pontos vermelhos de todas as abas inferiores, incluindo Caixa de entrada e Perfil, e o balão sobre a Caixa de entrada que conta novas curtidas, seguidores, comentários e quem está em LIVE. A caixa de entrada continua mostrando o que chegou.
 Speed while you hold the video	Velocidade enquanto você segura o vídeo
@@ -1412,6 +1412,10 @@ Hold speed bubble style	Estilo da bolha de velocidade ao segurar
 Pill	Pílula
 Circle	Círculo
 Pill is the wide bubble with a row of dots under the speed. Circle is a small round dial with a notch for each speed around its edge.	Pílula é a bolha larga com uma fileira de pontos abaixo da velocidade. Círculo é um pequeno mostrador redondo com uma marca para cada velocidade na borda.
+Hold speed slide direction	Direção do deslize da velocidade ao segurar
+Sideways	Para os lados
+Up and down	Para cima e para baixo
+With Sideways, slide left or right to change the speed and pull down to lock it. With Up and down, slide up for faster and down for slower, and slide to the side to lock it, so a hold near the edge still reaches every speed.	Com Para os lados, deslize para a esquerda ou para a direita para mudar a velocidade e puxe para baixo para travá-la. Com Para cima e para baixo, deslize para cima para acelerar e para baixo para desacelerar, e deslize para o lado para travá-la, assim segurar perto da borda ainda alcança todas as velocidades.
 Hide mini dramas	Esconder minidramas
 Hide TikTok's short drama episodes and the cards that promote them.	Esconder os episódios de dramas curtos do TikTok e os cartões que os promovem.
 Mini dramas	Minidramas
@@ -2474,6 +2478,8 @@ Hide streak pop-ups	Ocultar pop-ups de ofensiva
 Stop the streak alerts that slide in over TikTok and the streak messages and tips it adds to your chats.	Para os avisos de ofensiva que deslizam sobre o TikTok e as mensagens e dicas de ofensiva que ele coloca nos seus chats.
 Long press on For You opens my watch history	Tocar e segurar em Para você abre meu histórico de exibição
 Instead of these settings. The list has a button that brings you back here.	Em vez destas configurações. A lista tem um botão que traz você de volta aqui.
+Long press on Profile opens my watch history	Tocar e segurar em Perfil abre meu histórico de exibição
+Instead of TikTok's Watch history. A tap on Profile works as before. If holding Profile switches accounts for you, this takes that press.	Em vez do histórico de exibição do TikTok. Tocar em Perfil funciona como antes. Se tocar e segurar Perfil troca de conta para você, esta opção assume esse gesto.
 Auto tap in LIVE rooms	Toque automático nas salas de LIVE
 Adds an Auto tap button to LIVE rooms. Tap it to send taps to the stream at a steady pace, and tap it again to stop. It also stops when you leave or swipe to another room, leave TikTok or lock the screen.	Adiciona um botão Toque automático às salas de LIVE. Toque nele para enviar toques à transmissão em ritmo constante e toque de novo para parar. Ele também para quando você sai ou desliza para outra sala, sai do TikTok ou bloqueia a tela.
 Auto tap speed	Velocidade do toque automático
@@ -2520,3 +2526,5 @@ Offer Audio only in LIVE quality	Oferecer Só áudio na qualidade da LIVE
 Audio only	Só áudio
 Adds Audio only to a LIVE's Video quality list. The room plays its sound without the picture, which uses much less data, until you pick another quality or leave. Recording from the stream still saves the video.	Adiciona Só áudio à lista de qualidade de vídeo da LIVE. A sala toca o som sem a imagem, o que usa bem menos dados, até você escolher outra qualidade ou sair. Gravar pela transmissão continua salvando o vídeo.
 Pick a video quality to record the screen	Escolha uma qualidade de vídeo para gravar a tela
+Discover in the bottom bar	Descobrir na barra de baixo
+Discover takes the place of Friends in the bottom bar, the way TikTok lays it out in some countries. Your region and your feed stay as they are.	Descobrir fica no lugar de Amigos na barra de baixo, do jeito que o TikTok organiza em alguns países. Sua região e seu feed continuam como estão.
